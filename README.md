@@ -208,21 +208,58 @@ uv run python tests/auto_test.py --scenarios small_morning_rush
 
 ## 使用方法
 
-### 1. 启动电梯模拟器服务
+### 方式一：使用 CLI 工具（推荐）⭐
+
+**一键运行，无需手动启动服务器**：
+
+```bash
+# 查看所有可用算法
+uv run python main.py list-algorithms
+
+# 运行混合算法（默认，推荐）
+uv run python main.py run
+
+# 运行指定算法
+uv run python main.py run --algorithm OptimizedScanAlgorithm
+
+# 运行 RL 算法并启用训练
+uv run python main.py run -a RLDQNAlgorithm --training
+
+# 查看算法详细信息
+uv run python main.py info HybridScanRLAlgorithm
+
+# 查看帮助
+uv run python main.py run --help
+```
+
+**CLI 特性**：
+- ✅ 美观的表格输出（使用 Rich）
+- ✅ 支持所有算法参数配置
+- ✅ 详细的帮助文档
+- ✅ 算法信息查询
+- ✅ 错误处理和友好提示
+
+### 方式二：手动启动（传统方式）
+
+#### 1. 启动电梯模拟器服务
 
 在一个终端窗口中运行：
 
 ```bash
-uv run python -m elevator_saga.server.simulator
+uv run -m elevator server
 ```
 
 服务将在 http://127.0.0.1:8000 启动。
 
-### 2. 运行电梯控制算法
+#### 2. 运行电梯控制算法
 
 在另一个终端窗口中运行：
 
 ```bash
+# 使用 main.py（支持命令行参数）
+uv run python main.py run
+
+# 或使用 elevator_controller.py（需修改代码切换算法）
 uv run python elevator_controller.py
 ```
 
