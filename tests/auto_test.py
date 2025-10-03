@@ -30,7 +30,7 @@ import requests
 class ServerManager:
     """Manages elevator simulator server lifecycle"""
 
-    def __init__(self, port: int = 8000, startup_timeout: int = 30):
+    def __init__(self, port: int = 8000, startup_timeout: int = 60):
         self.port = port
         self.startup_timeout = startup_timeout
         self.process: Optional[subprocess.Popen] = None
@@ -60,16 +60,36 @@ class ServerManager:
         start_time = time.time()
         url = f"http://127.0.0.1:{self.port}/"
 
+        print("  Waiting for server to be ready...", end='', flush=True)
+
+        # Need to wait longer as Flask debug mode restarts the server
+        consecutive_successes = 0
+        required_successes = 3  # Need 3 consecutive successful responses
+
         while time.time() - start_time < self.startup_timeout:
             try:
-                response = requests.get(url, timeout=2)
-                if response.status_code == 200:
-                    print("  ✓ Server is ready")
-                    return True
+                response = requests.get(url, timeout=5)
+                # Accept any HTTP response (even 404) as server is running
+                if response.status_code in [200, 404]:
+                    consecutive_successes += 1
+                    if consecutive_successes >= required_successes:
+                        print(" ✓")
+                        return True
+                    time.sleep(1)  # Wait between checks
+                else:
+                    consecutive_successes = 0
             except (requests.ConnectionError, requests.Timeout):
+                consecutive_successes = 0
                 pass
-            time.sleep(1)
 
+            # Show progress
+            elapsed = int(time.time() - start_time)
+            if elapsed > 0 and elapsed % 5 == 0:
+                print(".", end='', flush=True)
+
+            time.sleep(2)
+
+        print(" ✗")
         return False
 
     def start(self) -> bool:
@@ -88,7 +108,7 @@ class ServerManager:
             self.process = subprocess.Popen(
                 ['uv', 'run', 'python', '-m', 'elevator_saga.server.simulator'],
                 cwd=self.project_root,
-                stdout=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,  # Suppress output
                 stderr=subprocess.PIPE,
                 text=True,
                 preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -99,6 +119,12 @@ class ServerManager:
                 return True
             else:
                 print("  ✗ Server failed to start within timeout")
+                # Check if process is still running
+                if self.process.poll() is not None:
+                    # Process died, show error
+                    stderr_output = self.process.stderr.read() if self.process.stderr else ""
+                    if stderr_output:
+                        print(f"  Server error: {stderr_output[:200]}")
                 self.stop()
                 return False
 
@@ -194,10 +220,17 @@ class AutoTester:
         }
 
     def prepare_scenario(self, scenario_file: Path) -> bool:
-        """Copy scenario to traffic directory"""
+        """Copy scenario to traffic directory, replacing sample_traffic.json"""
         try:
             traffic_dir = self.project_root / "traffic"
-            target_file = traffic_dir / "test_scenario.json"
+            # Replace sample_traffic.json so server loads our scenario
+            target_file = traffic_dir / "sample_traffic.json"
+
+            # Backup original if it exists
+            if target_file.exists():
+                backup_file = traffic_dir / "sample_traffic.json.bak"
+                if not backup_file.exists():
+                    shutil.copy(target_file, backup_file)
 
             shutil.copy(scenario_file, target_file)
             time.sleep(0.5)  # Give filesystem time to sync
@@ -212,6 +245,10 @@ class AutoTester:
 
         # Create test script
         test_script = f"""
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from algo import {algorithm_name}
 
 algorithm = {algorithm_name}(enable_logging=False)
@@ -236,6 +273,12 @@ algorithm.start()
 
             if 'error' in metrics:
                 print(f" ✗ {metrics['error']}")
+                # Show debugging info
+                if result.stderr:
+                    print(f"      Error:")
+                    for line in result.stderr.split('\n')[:10]:
+                        if line.strip():
+                            print(f"        {line}")
             else:
                 avg_wait = metrics.get('avg_wait', 0)
                 p95_wait = metrics.get('p95_wait', 0)
@@ -284,7 +327,7 @@ algorithm.start()
         return {'error': 'No metrics found in output'}
 
     def run_test(self, algorithm: str, scenario_file: Path) -> Tuple[bool, Dict]:
-        """Run complete test: start server, prepare scenario, run algorithm, stop server"""
+        """Run complete test: prepare scenario, start server, run algorithm, stop server"""
         scenario_info = self.load_scenario_info(scenario_file)
         scenario_name = scenario_info['name']
 
@@ -293,15 +336,15 @@ algorithm.start()
         print(f"    {scenario_info['floors']} floors, {scenario_info['elevators']} elevators, "
               f"{scenario_info['passengers']} passengers")
 
-        # Start server
+        # Prepare scenario BEFORE starting server
+        if not self.prepare_scenario(scenario_file):
+            return False, {'error': 'Failed to prepare scenario'}
+
+        # Start server (will load the scenario we just copied)
         if not self.server_manager.start():
             return False, {'error': 'Failed to start server'}
 
         try:
-            # Prepare scenario
-            if not self.prepare_scenario(scenario_file):
-                return False, {'error': 'Failed to prepare scenario'}
-
             # Run algorithm
             metrics = self.run_algorithm(algorithm, scenario_name)
 

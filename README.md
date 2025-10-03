@@ -84,12 +84,16 @@ algorithm.start()
 
 查看 [algo/README.md](algo/README.md) 了解如何添加自定义算法。
 
-## 环境要求
+## 快速开始 🚀
+
+**完全零基础？** 查看 [快速上手指南](快速上手指南.md)，10分钟从安装到测试一步到位！
+
+### 环境要求
 
 - Python >= 3.12
 - uv (依赖管理工具)
 
-## 安装
+### 安装
 
 1. 安装uv（如果尚未安装）：
 ```bash
@@ -103,6 +107,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 2. 同步项目依赖：
 ```bash
 uv sync
+```
+
+3. 运行快速测试验证安装：
+```bash
+uv run python tests/auto_test.py --scenarios small_morning_rush
 ```
 
 ## 使用方法
@@ -190,31 +199,98 @@ uv run python elevator_controller.py
 - `large_morning_rush.json` - 大规模上班高峰 (320人) ★★★★★
 - `xlarge_stress_test.json` - 极限压力测试 (360人) ★★★★★
 
-### 自动化测试（推荐）
+### 自动化测试（推荐）⭐
 
-**完全自动化，无需手动操作**：
+**🚀 完全自动化，一键测试所有场景**
+
+自动化测试脚本会自动管理服务器生命周期，为每个测试提供完全隔离的环境，确保结果准确可靠。
+
+#### 快速开始
 
 ```bash
-# 测试所有算法和所有场景
+# 完整测试 - 测试所有算法在所有场景下的表现
 uv run python tests/auto_test.py
 
-# 测试特定算法
+# 快速验证 - 只测试小型场景（5-10分钟）
+uv run python tests/auto_test.py --scenarios small_morning_rush,small_evening_rush,small_burst_traffic
+
+# 单算法测试 - 验证特定算法
 uv run python tests/auto_test.py --algorithms OptimizedScanAlgorithm
 
-# 测试特定场景
-uv run python tests/auto_test.py --scenarios small_morning_rush,medium_inter_floor
-
-# 快速测试（仅小型场景）
-uv run python tests/auto_test.py --scenarios small_morning_rush,small_evening_rush,small_burst_traffic
+# 组合筛选 - 灵活组合算法和场景
+uv run python tests/auto_test.py \
+    --algorithms OptimizedScanAlgorithm,RLDQNAlgorithm \
+    --scenarios small_morning_rush,medium_inter_floor
 ```
 
-**特性**：
-- ✅ 自动启动/停止服务器
-- ✅ 完全隔离的测试环境（每个测试独立服务器）
-- ✅ 自动生成详细报告
-- ✅ 支持算法和场景筛选
+#### 核心特性
 
-详细使用说明请查看 [自动化测试指南](docs/auto_test_usage.md)
+| 特性 | 说明 |
+|------|------|
+| 🔄 自动服务器管理 | 自动启动/停止服务器，无需手动操作 |
+| 🔒 完全隔离测试 | 每个测试独立服务器实例，确保无相互影响 |
+| 📊 自动报告生成 | 生成 JSON 和 Markdown 格式的详细报告 |
+| 🎯 灵活筛选 | 支持按算法、场景过滤，加速开发迭代 |
+| ⚡ 健壮性保证 | 完善的错误处理、超时保护、自动清理 |
+
+#### 输出内容
+
+测试完成后自动生成：
+
+1. **JSON 原始数据**: `test_results/auto_test_YYYYMMDD_HHMMSS.json`
+   - 完整的性能指标
+   - 场景信息
+   - 测试状态
+
+2. **Markdown 报告**: `docs/auto_test_report_YYYYMMDD_HHMMSS.md`
+   - 算法性能对比表
+   - 成功率统计
+   - 可读性强，易于分享
+
+#### 典型使用场景
+
+```bash
+# 场景1: 开发新算法，快速验证
+uv run python tests/auto_test.py \
+    --algorithms MyNewAlgorithm \
+    --scenarios small_morning_rush
+
+# 场景2: 提交前完整回归测试
+uv run python tests/auto_test.py
+
+# 场景3: 对比两个算法的表现
+uv run python tests/auto_test.py \
+    --algorithms OptimizedScanAlgorithm,RLDQNAlgorithm
+
+# 场景4: 测试算法在极限场景下的表现
+uv run python tests/auto_test.py \
+    --scenarios large_mixed,xlarge_stress_test
+```
+
+#### 预计时间
+
+| 测试范围 | 预计时间 | 推荐场景 |
+|---------|---------|---------|
+| 3个小型场景 | 5-10分钟 | 快速验证、开发迭代 |
+| 所有场景（10个） | 20-40分钟 | 完整测试、提交前检查 |
+| 单算法所有场景 | 10-20分钟 | 新算法验证 |
+
+#### 进阶使用
+
+**查看详细文档**:
+- 📖 [完整指南](docs/automated_testing_guide.md) - 系统架构、技术细节、最佳实践
+- 📘 [快速使用说明](docs/auto_test_usage.md) - 常见问题、故障排查、性能优化
+
+**集成到 CI/CD**:
+
+```yaml
+# .github/workflows/test.yml
+- name: Run automated tests
+  run: |
+    uv sync
+    uv run python tests/auto_test.py
+  timeout-minutes: 60
+```
 
 ### 手动测试
 
@@ -277,9 +353,15 @@ uv run python tests/generate_test_data.py
 
 ## 详细文档
 
+### 算法相关
 - [算法扩展指南](algo/README.md) - 如何添加和实现自定义算法
 - [算法设计文档](docs/algorithm.md) - 详细的算法设计、评分系统、复杂度分析
-- [测试指南](docs/testing_guide.md) - 完整的测试使用说明、故障排除、最佳实践
+
+### 测试相关
+- 📖 [快速上手指南](快速上手指南.md) - **新手必读**，从安装到测试的完整流程
+- 📘 [自动化测试快速使用](docs/auto_test_usage.md) - 使用方法、故障排查、性能优化、常见问题
+- 📙 [自动化测试完整指南](docs/automated_testing_guide.md) - 系统架构、组件详解、配置定制、技术细节
+- 📗 [测试指南](docs/testing_guide.md) - 手动测试使用说明、批量测试工具、最佳实践
 
 ## 参考文档
 

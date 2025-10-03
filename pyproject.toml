@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "elevator-py>=0.0.4",
+    "requests>=2.32.5",
 ]
