@@ -7,16 +7,17 @@
 ```
 elevator_homework/
 ├── elevator_controller.py    # 主要的电梯调度算法实现
-├── generate_test_data.py     # 测试数据生成器
-├── run_tests.py              # 批量测试工具（推荐）
-├── batch_test.py             # 测试报告生成器
-├── traffic/                  # 示例流量数据
-│   └── sample_traffic.json
+├── tests/                    # 测试工具目录
+│   ├── generate_test_data.py # 测试数据生成器
+│   ├── run_tests.py          # 批量测试工具（推荐）
+│   └── batch_test.py         # 测试报告生成器
 ├── data/                     # 测试数据集（10个场景）
 │   ├── small_morning_rush.json
 │   ├── medium_inter_floor.json
 │   ├── large_mixed.json
 │   └── ...
+├── traffic/                  # 示例流量数据
+│   └── sample_traffic.json
 ├── docs/                     # 文档目录
 │   ├── algorithm.md         # 算法设计文档
 │   └── testing_guide.md     # 测试指南
@@ -152,7 +153,7 @@ uv run python -m elevator_saga.server.simulator
 
 2. **运行批量测试**（终端2）：
 ```bash
-uv run python run_tests.py
+uv run python tests/run_tests.py
 ```
 
 3. **按照提示操作**：
@@ -177,9 +178,9 @@ uv run python run_tests.py
 ### 生成自定义测试数据
 
 ```bash
-# 编辑 generate_test_data.py 添加场景
+# 编辑 tests/generate_test_data.py 添加场景
 # 然后运行
-uv run python generate_test_data.py
+uv run python tests/generate_test_data.py
 ```
 
 ### 性能指标说明

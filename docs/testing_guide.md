@@ -19,7 +19,7 @@
 如果还没有测试数据，首先运行：
 
 ```bash
-uv run python generate_test_data.py
+uv run python tests/generate_test_data.py
 ```
 
 这会在 `data/` 目录下生成10个测试场景文件。
@@ -39,7 +39,7 @@ uv run python -m elevator_saga.server.simulator
 在另一个终端窗口中运行测试脚本：
 
 ```bash
-uv run python run_tests.py
+uv run python tests/run_tests.py
 ```
 
 ---
@@ -52,7 +52,7 @@ uv run python run_tests.py
 
 1. **启动脚本**
    ```bash
-   uv run python run_tests.py
+   uv run python tests/run_tests.py
    ```
 
 2. **按照提示操作**
@@ -119,7 +119,7 @@ uv run python run_tests.py
 这个脚本提供更详细的测试框架和报告模板。
 
 ```bash
-uv run python batch_test.py
+uv run python tests/batch_test.py
 ```
 
 功能：
@@ -268,7 +268,7 @@ uv run python batch_test.py
 
 ### 自定义测试场景
 
-编辑 `generate_test_data.py` 添加新场景：
+编辑 `tests/generate_test_data.py` 添加新场景：
 
 ```python
 # 添加自定义场景
@@ -290,7 +290,7 @@ scenarios.append({
 
 ### 批量运行特定场景
 
-修改 `run_tests.py` 中的场景过滤：
+修改 `tests/run_tests.py` 中的场景过滤：
 
 ```python
 # 只测试小型场景
