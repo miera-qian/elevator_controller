@@ -36,8 +36,9 @@ elevator_homework/
 本项目采用模块化设计，算法实现位于 `algo/` 目录：
 
 - **BaseAlgorithm**: 抽象基类，定义统一接口
-- **OptimizedScanAlgorithm**: 默认算法实现（优化SCAN）
+- **OptimizedScanAlgorithm**: 优化SCAN算法（启发式）
 - **RLDQNAlgorithm**: 强化学习Q-learning算法
+- **HybridScanRLAlgorithm**: 混合SCAN-RL算法 ⭐ 推荐
 
 ### 已实现算法
 
@@ -79,6 +80,97 @@ algorithm.save_model()
 algorithm = RLDQNAlgorithm(training_mode=False, model_path="models/rl_elevator.pkl")
 algorithm.start()
 ```
+
+#### 3. HybridScanRLAlgorithm (混合SCAN-RL算法) ⭐ 推荐
+
+**类型**: 混合算法（启发式 + 机器学习）
+
+**核心理念**: 结合两种算法的优势，消除冷启动问题
+
+**工作流程**:
+1. **冷启动阶段** (初期)
+   - 使用 SCAN 算法提供立即可用的良好性能
+   - 同时在后台训练 RL 代理
+   - 持续监控两个算法的性能表现
+
+2. **性能监控** (运行中)
+   - 记录 SCAN 和 RL 的平均等待时间
+   - 当 RL 性能达到阈值（默认 85% SCAN 性能）时触发切换
+   - 需要最少样本数（默认 50 个乘客）以确保统计可靠
+
+3. **智能切换** (自动)
+   - 满足条件时自动从 SCAN 切换到 RL
+   - 记录切换时刻和冷启动持续时间
+   - 提供详细的切换日志
+
+4. **自动回退** (可选)
+   - 持续监控 RL 性能
+   - 如果 RL 性能显著下降（> 120% SCAN），自动回退
+   - 确保系统始终保持良好性能
+
+**特性**:
+- ✅ **零冷启动成本**: 初期使用成熟的 SCAN 算法
+- ✅ **自适应学习**: RL 在后台持续学习优化
+- ✅ **智能切换**: 基于性能指标自动决策
+- ✅ **性能保障**: 自动回退机制防止性能下降
+- ✅ **透明监控**: 详细的性能统计和切换日志
+
+**适用场景**:
+- 🎯 **生产环境首选**: 需要稳定性和适应性
+- 🎯 长期运行的系统（RL 有足够时间学习）
+- 🎯 流量模式可能变化的场景
+- 🎯 无法接受冷启动性能下降的场景
+
+**配置参数**:
+```python
+from algo import HybridScanRLAlgorithm
+
+algorithm = HybridScanRLAlgorithm(
+    training_mode=True,              # 是否训练 RL（False=仅使用已训练模型）
+    switch_threshold=0.85,           # RL切换阈值（RL等待 <= 0.85 * SCAN等待）
+    min_samples_before_switch=50,    # 切换前最少样本数
+    enable_fallback=True,            # 是否启用自动回退
+    model_path="models/hybrid_rl.pkl" # RL 模型保存路径
+)
+
+algorithm.start()
+
+# 查看统计信息
+algorithm.print_statistics()
+```
+
+**性能统计输出示例**:
+```
+============================================================
+HYBRID ALGORITHM STATISTICS
+============================================================
+Active Algorithm: RL
+Has Switched to RL: True
+Switch Tick: 850
+Cold Start Duration: 850 ticks
+
+Passengers Handled:
+  Total: 160
+  By SCAN: 75 (46.9%)
+  By RL: 85 (53.1%)
+
+Performance:
+  SCAN Average Wait: 122.5 ticks
+  RL Average Wait: 98.3 ticks
+  Performance Ratio (RL/SCAN): 0.80
+============================================================
+```
+
+**与其他算法对比**:
+
+| 特性 | OptimizedScan | RLDQNAlgorithm | HybridScanRL ⭐ |
+|------|---------------|----------------|----------------|
+| 启动性能 | ✅ 优秀 | ❌ 差（需训练） | ✅ 优秀 |
+| 长期性能 | ⚠️ 固定 | ✅ 可优化 | ✅ 可优化 |
+| 适应性 | ❌ 无 | ✅ 强 | ✅ 强 |
+| 稳定性 | ✅ 高 | ⚠️ 中等 | ✅ 高（有回退） |
+| 生产就绪 | ✅ 是 | ⚠️ 需训练 | ✅ 是 |
+| 推荐指数 | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 
 ### 扩展新算法
 
