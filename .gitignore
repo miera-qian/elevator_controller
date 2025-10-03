@@ -1,18 +1,16 @@
 # Python
+.venv/
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
+*.so
+*.egg
 *.egg-info/
 dist/
 build/
-
-# Virtual Environment
-.venv/
-venv/
-ENV/
-env/
+.pytest_cache/
 
 # IDE
 .vscode/
@@ -21,10 +19,11 @@ env/
 *.swo
 *~
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
+# Test artifacts
+.playwright-mcp/
+
+# Backup files
+*.bak
 
 # OS
 .DS_Store
