@@ -37,18 +37,48 @@ elevator_homework/
 
 - **BaseAlgorithm**: 抽象基类，定义统一接口
 - **OptimizedScanAlgorithm**: 默认算法实现（优化SCAN）
+- **RLDQNAlgorithm**: 强化学习Q-learning算法
 
-### 当前算法特性
+### 已实现算法
 
-OptimizedScanAlgorithm 实现了以下优化策略：
+#### 1. OptimizedScanAlgorithm (优化SCAN算法)
 
-1. **SCAN算法**：电梯持续向一个方向移动，直到该方向没有更多请求
-2. **最近邻分配**：为空闲电梯分配最近的等待乘客
-3. **负载均衡**：在多个电梯之间智能分配任务
-4. **智能评分系统**：
-   - 优先选择已经朝着目标方向移动的电梯
-   - 优先选择距离更近的电梯
-   - 优先选择负载较轻的电梯
+**类型**: 启发式算法
+
+**特性**:
+- SCAN算法：电梯持续向一个方向移动，直到该方向没有更多请求
+- 最近邻分配：为空闲电梯分配最近的等待乘客
+- 负载均衡：在多个电梯之间智能分配任务
+- 智能评分系统：综合考虑距离、负载、方向匹配度
+
+**适用场景**: 中小型建筑、混合流量模式、通用场景
+
+#### 2. RLDQNAlgorithm (强化学习Q-learning算法)
+
+**类型**: 机器学习算法
+
+**特性**:
+- Q-learning：通过试错学习最优策略
+- 经验回放：存储历史经验用于训练
+- Epsilon-greedy探索：平衡探索与利用
+- 模型持久化：支持保存/加载学习结果
+
+**适用场景**: 需要自适应学习、流量模式固定但未知、长期运行优化
+
+**使用方法**:
+```python
+from algo import RLDQNAlgorithm
+
+# 训练模式
+algorithm = RLDQNAlgorithm(training_mode=True)
+algorithm.start()
+# 运行多次后保存模型
+algorithm.save_model()
+
+# 生产模式
+algorithm = RLDQNAlgorithm(training_mode=False, model_path="models/rl_elevator.pkl")
+algorithm.start()
+```
 
 ### 扩展新算法
 

@@ -9,6 +9,7 @@ algo/
 ├── __init__.py              # 包初始化，导出可用算法
 ├── base_algorithm.py        # 抽象基类
 ├── optimized_scan.py        # 优化的SCAN算法（默认）
+├── rl_dqn.py               # 强化学习Q-learning算法
 └── README.md               # 本文件
 ```
 
@@ -17,6 +18,8 @@ algo/
 ### 1. OptimizedScanAlgorithm (优化SCAN算法)
 
 **文件**: `optimized_scan.py`
+
+**类型**: 启发式算法
 
 **特性**:
 - SCAN算法：电梯持续向一个方向移动直到无更多请求
@@ -33,6 +36,54 @@ algo/
 - 平均等待时间：良好
 - P95等待时间：优秀
 - 吞吐量：高
+
+### 2. RLDQNAlgorithm (强化学习Q-learning算法)
+
+**文件**: `rl_dqn.py`
+
+**类型**: 机器学习算法
+
+**特性**:
+- Q-learning：通过试错学习最优策略
+- 经验回放：存储历史经验用于训练
+- Epsilon-greedy探索：平衡探索与利用
+- 自动保存/加载模型：支持持续学习
+
+**状态表示**:
+- 每层等待乘客数（离散化：0/1/2）
+- 电梯位置（离散化为3个区域）
+- 电梯负载（离散化：空/半满/满）
+
+**动作空间**:
+- 为新乘客呼叫选择哪部电梯
+
+**奖励函数**:
+- 负的乘客等待时间（鼓励快速服务）
+
+**适用场景**:
+- 需要自适应学习的场景
+- 流量模式固定但未知
+- 长期运行可优化性能
+
+**性能**:
+- 初期：较差（探索期）
+- 训练后：可能优于启发式算法
+- 需要大量训练数据
+
+**使用方法**:
+```python
+from algo import RLDQNAlgorithm
+
+# 训练模式（探索学习）
+algorithm = RLDQNAlgorithm(training_mode=True)
+algorithm.start()
+# 运行多次场景进行训练
+algorithm.save_model()
+
+# 生产模式（利用学习结果）
+algorithm = RLDQNAlgorithm(training_mode=False, model_path="models/rl_elevator.pkl")
+algorithm.start()
+```
 
 ---
 
