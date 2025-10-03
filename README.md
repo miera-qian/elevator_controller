@@ -6,12 +6,25 @@
 
 ```
 elevator_homework/
-├── elevator_controller.py    # 主入口程序
+├── main.py                   # CLI 入口程序
+├── elevator_controller.py    # 传统入口程序
 ├── algo/                     # 算法实现目录
 │   ├── __init__.py          # 包初始化
 │   ├── base_algorithm.py    # 算法基类
-│   ├── optimized_scan.py    # 优化SCAN算法（默认）
+│   ├── optimized_scan.py    # 优化SCAN算法
+│   ├── rl_dqn.py            # 强化学习算法
+│   ├── hybrid_scan_rl.py    # 混合算法（推荐）
 │   └── README.md            # 算法扩展指南
+├── webui/                    # Web 可视化界面 ⭐
+│   ├── app.py               # FastAPI 应用
+│   ├── mock_simulation.py   # Mock 模拟引擎
+│   └── static/              # 前端资源
+│       ├── index.html       # 主页面
+│       ├── css/style.css    # 样式表
+│       └── js/              # JavaScript
+│           ├── app.js       # 应用逻辑
+│           ├── renderer.js  # Canvas 渲染
+│           └── websocket.js # WebSocket 管理
 ├── tests/                    # 测试工具目录
 │   ├── generate_test_data.py # 测试数据生成器
 │   ├── run_tests.py          # 批量测试工具（推荐）
@@ -208,7 +221,46 @@ uv run python tests/auto_test.py --scenarios small_morning_rush
 
 ## 使用方法
 
-### 方式一：使用 CLI 工具（推荐）⭐
+### 方式一：Web 可视化界面（推荐）⭐⭐⭐
+
+**图形化展示电梯调度过程，实时查看运行状态**：
+
+```bash
+# 启动 WebUI 服务器
+uv run python -m webui.app
+```
+
+然后在浏览器中访问 http://localhost:8080
+
+**WebUI 特性**：
+- ✅ 实时可视化电梯运行状态
+- ✅ Canvas 2D 渲染电梯、乘客和楼层
+- ✅ 支持暂停、继续、停止操作
+- ✅ 可调节模拟速度（0.1x - 5x）
+- ✅ 实时统计信息展示（等待/运行中/已完成）
+- ✅ 选择不同测试场景（10+ 预设场景）
+- ✅ WebSocket 实时通信
+- ✅ 页面加载时自动显示默认配置
+- ✅ 左对齐可视化区域，优化布局
+- ✅ 模拟结束后电梯自动归位到1层
+
+**使用方式**：
+1. 访问 http://localhost:8080，页面自动加载默认电梯配置
+2. （可选）在左侧边栏选择测试场景（会立即更新可视化）
+3. （可选）调整模拟速度（0.1x - 5x）
+4. 点击"开始模拟"按钮
+5. 在右侧Canvas区域观察电梯实时运行
+6. 使用暂停/继续/停止按钮控制模拟
+7. 查看左下方统计面板中的实时性能指标
+
+**注意事项**：
+- ⚠️ 当前使用 Mock 模拟引擎，采用简化的调度逻辑（最近电梯分配策略）
+- ⚠️ 不运行真实的调度算法（OptimizedScan/RL/Hybrid）
+- ⚠️ 性能数据仅供参考，不适用于算法对比研究
+- ℹ️ 主要用于演示、UI开发和教学目的
+- ℹ️ 如需运行真实算法并获得准确性能指标，请使用"方式二：CLI工具"或"方式三：手动启动"
+
+### 方式二：使用 CLI 工具
 
 **一键运行，无需手动启动服务器**：
 
@@ -239,7 +291,7 @@ uv run python main.py run --help
 - ✅ 算法信息查询
 - ✅ 错误处理和友好提示
 
-### 方式二：手动启动（传统方式）
+### 方式三：手动启动（传统方式）
 
 #### 1. 启动电梯模拟器服务
 
@@ -483,7 +535,8 @@ uv run python tests/generate_test_data.py
 ## 详细文档
 
 ### 算法相关
-- [算法扩展指南](algo/README.md) - 如何添加和实现自定义算法
+- 📘 [Quick Start Guide](docs/quick_start_guide.md) - **快速开发指南**，15分钟添加自定义算法（推荐新手）
+- [算法扩展指南](algo/README.md) - 如何添加和实现自定义算法（详细版）
 - [算法设计文档](docs/algorithm.md) - 详细的算法设计、评分系统、复杂度分析
 
 ### 测试相关
