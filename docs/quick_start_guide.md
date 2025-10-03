@@ -351,6 +351,7 @@ class FCFSAlgorithm(BaseAlgorithm):
    - `algo/hybrid_scan_rl.py` - Best of both worlds
 
 2. **Read detailed docs**:
+   - [Simulator API Reference](simulator_api_reference.md) - **Complete list of available data and metrics** ⭐
    - [Algorithm Design Guide](algorithm.md) - In-depth explanation
    - [Algorithm Extension Guide](../algo/README.md) - Advanced topics
    - [Testing Guide](testing_guide.md) - Testing best practices

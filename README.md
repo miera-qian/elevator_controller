@@ -37,8 +37,12 @@ elevator_homework/
 ├── traffic/                  # 示例流量数据
 │   └── sample_traffic.json
 ├── docs/                     # 文档目录
-│   ├── algorithm.md         # 算法设计文档
-│   └── testing_guide.md     # 测试指南
+│   ├── quick_start_guide.md        # 快速开发指南（英文）
+│   ├── simulator_api_reference.md  # 模拟器API参考（所有可用数据和指标）
+│   ├── algorithm.md                # 算法设计文档
+│   ├── testing_guide.md            # 测试指南
+│   ├── auto_test_usage.md          # 自动化测试快速使用
+│   └── automated_testing_guide.md  # 自动化测试完整指南
 ├── test_results/            # 测试报告输出目录
 ├── pyproject.toml           # uv项目配置
 └── README.md                # 本文件
@@ -536,6 +540,7 @@ uv run python tests/generate_test_data.py
 
 ### 算法相关
 - 📘 [Quick Start Guide](docs/quick_start_guide.md) - **快速开发指南**，15分钟添加自定义算法（推荐新手）
+- 🔧 [Simulator API Reference](docs/simulator_api_reference.md) - **模拟器API完整参考**，所有可用数据和指标说明
 - [算法扩展指南](algo/README.md) - 如何添加和实现自定义算法（详细版）
 - [算法设计文档](docs/algorithm.md) - 详细的算法设计、评分系统、复杂度分析
 
