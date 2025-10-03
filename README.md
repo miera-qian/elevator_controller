@@ -6,7 +6,12 @@
 
 ```
 elevator_homework/
-├── elevator_controller.py    # 主要的电梯调度算法实现
+├── elevator_controller.py    # 主入口程序
+├── algo/                     # 算法实现目录
+│   ├── __init__.py          # 包初始化
+│   ├── base_algorithm.py    # 算法基类
+│   ├── optimized_scan.py    # 优化SCAN算法（默认）
+│   └── README.md            # 算法扩展指南
 ├── tests/                    # 测试工具目录
 │   ├── generate_test_data.py # 测试数据生成器
 │   ├── run_tests.py          # 批量测试工具（推荐）
@@ -26,9 +31,16 @@ elevator_homework/
 └── README.md                # 本文件
 ```
 
-## 算法特性
+## 算法架构
 
-该调度算法实现了以下优化策略：
+本项目采用模块化设计，算法实现位于 `algo/` 目录：
+
+- **BaseAlgorithm**: 抽象基类，定义统一接口
+- **OptimizedScanAlgorithm**: 默认算法实现（优化SCAN）
+
+### 当前算法特性
+
+OptimizedScanAlgorithm 实现了以下优化策略：
 
 1. **SCAN算法**：电梯持续向一个方向移动，直到该方向没有更多请求
 2. **最近邻分配**：为空闲电梯分配最近的等待乘客
@@ -37,6 +49,10 @@ elevator_homework/
    - 优先选择已经朝着目标方向移动的电梯
    - 优先选择距离更近的电梯
    - 优先选择负载较轻的电梯
+
+### 扩展新算法
+
+查看 [algo/README.md](algo/README.md) 了解如何添加自定义算法。
 
 ## 环境要求
 
@@ -203,6 +219,7 @@ uv run python tests/generate_test_data.py
 
 ## 详细文档
 
+- [算法扩展指南](algo/README.md) - 如何添加和实现自定义算法
 - [算法设计文档](docs/algorithm.md) - 详细的算法设计、评分系统、复杂度分析
 - [测试指南](docs/testing_guide.md) - 完整的测试使用说明、故障排除、最佳实践
 
