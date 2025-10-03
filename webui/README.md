@@ -1,0 +1,284 @@
+# Elevator Scheduling WebUI
+
+实时可视化电梯调度算法的Web界面。
+
+## 功能特性
+
+- ✅ 实时电梯位置可视化
+- ✅ Canvas渲染电梯、乘客和楼层
+- ✅ 支持暂停/继续/停止操作
+- ✅ 速度调节 (0.1x - 5x)
+- ✅ 实时统计信息
+- ✅ 选择不同算法和测试场景
+- ✅ WebSocket实时通信
+- ✅ 自动启动/停止电梯服务器
+
+## 快速开始
+
+### 启动WebUI
+
+```bash
+# 方式1：使用启动脚本
+./start_webui.sh
+
+# 方式2：直接运行
+uv run python -m webui.app
+
+# 方式3：使用Python模块
+cd webui && uv run python app.py
+```
+
+服务器将在 http://localhost:8080 启动。
+
+### 使用步骤
+
+1. 在浏览器中访问 http://localhost:8080
+2. 在左侧边栏选择算法（OptimizedScan / RL DQN / Hybrid SCAN-RL）
+3. 选择测试场景（10+ 预设场景）
+4. （可选）调整模拟速度
+5. 点击"开始模拟"按钮
+6. 在右侧Canvas区域观察电梯实时运行
+7. 查看左下方统计面板中的性能指标
+
+## 架构说明
+
+### 后端 (FastAPI)
+
+- **app.py**: FastAPI应用主文件
+  - `GET /`: 主页面
+  - `GET /api/algorithms`: 获取可用算法列表
+  - `GET /api/scenarios`: 获取测试场景列表
+  - `WebSocket /ws/simulation`: 实时模拟通信
+
+- **simulation.py**: 模拟引擎
+  - 自动启动电梯服务器 (`uv run -m elevator server`)
+  - 加载场景数据到服务器
+  - 在后台线程运行算法
+  - 轮询服务器状态并通过WebSocket广播
+
+### 前端 (HTML + CSS + JavaScript)
+
+- **index.html**: 主页面结构
+- **css/style.css**: 完整样式系统
+- **js/renderer.js**: Canvas渲染引擎 (343行)
+  - 绘制楼层、电梯、乘客
+  - 平滑动画插值
+  - 自适应布局
+- **js/websocket.js**: WebSocket管理 (126行)
+  - 自动重连机制
+  - 消息分发系统
+- **js/app.js**: 应用主逻辑 (298行)
+  - UI事件处理
+  - 状态管理
+  - 动画循环
+
+## 工作流程
+
+### 当前实现（方案C - Mock模拟）⭐
+
+1. **用户点击"开始模拟"**
+2. WebSocket连接到服务器
+3. 服务器创建MockSimulationEngine实例并在后台任务中启动
+4. MockEngine加载选定的场景数据（JSON文件）
+5. MockEngine使用简化的调度逻辑模拟电梯移动
+   - 最近电梯分配
+   - 简单的上下行逻辑
+   - 乘客上下处理
+6. MockEngine通过WebSocket广播状态更新（每100ms）
+7. 前端接收状态并更新Canvas渲染
+8. 前端使用插值实现平滑动画
+
+**优点**：
+- ✅ 无需外部服务器
+- ✅ 快速响应
+- ✅ 完整的视觉效果
+- ✅ 适合演示和UI开发
+- ✅ 支持暂停/继续/停止/速度调节
+
+**局限**：
+- ⚠️ 不运行真实的调度算法
+- ⚠️ 使用简化的最近电梯策略
+- ⚠️ 性能数据仅供参考
+- ⚠️ 不能用于算法对比研究
+
+**已验证功能**：
+- ✅ 电梯在不同楼层间移动
+- ✅ 乘客上下电梯
+- ✅ 实时统计更新（等待/电梯中/已完成）
+- ✅ 方向指示器和颜色编码
+- ✅ 平滑动画效果
+
+### 未来实现（方案B - 真实算法）🚀
+
+详见 [`docs/webui_real_algorithm_integration.md`](../docs/webui_real_algorithm_integration.md)
+
+通过直接使用elevator_saga内部API运行真实算法：
+1. 创建Simulation实例
+2. 加载traffic数据
+3. 连接算法控制器
+4. 每个tick提取状态并广播
+
+**优点**：
+- ✅ 运行真实算法
+- ✅ 精确的性能指标
+- ✅ 可用于算法研究
+
+**需求**：
+- 修改算法基类支持direct模式
+- 深入研究elevator_saga内部API
+- 预计16-24小时开发时间
+
+## 状态数据格式
+
+### 服务器 → 客户端
+
+#### Init Message
+```json
+{
+  "type": "init",
+  "building": {
+    "floors": 10,
+    "elevators": 3,
+    "capacity": 8,
+    "description": "场景描述",
+    "duration": 300
+  },
+  "algorithm": "HybridScanRLAlgorithm",
+  "scenario": "small_morning_rush"
+}
+```
+
+#### State Update
+```json
+{
+  "type": "state_update",
+  "tick": 42,
+  "elevators": [
+    {
+      "id": 0,
+      "floor": 3.5,
+      "direction": "up",
+      "passengers": [{}, {}],
+      "capacity": 8
+    }
+  ],
+  "waiting": {
+    "1": [{"id": 1, "from_floor": 1, "to_floor": 5}],
+    "4": [{"id": 2, "from_floor": 4, "to_floor": 1}]
+  },
+  "stats": {
+    "total_passengers": 100,
+    "waiting": 20,
+    "in_elevator": 5,
+    "completed": 75,
+    "avg_wait_time": 12.5
+  }
+}
+```
+
+#### Complete Message
+```json
+{
+  "type": "complete",
+  "tick": 300,
+  "stats": {
+    "total_passengers": 100,
+    "avg_wait_time": 15.2
+  }
+}
+```
+
+### 客户端 → 服务器
+
+```json
+{"type": "start", "algorithm": "HybridScanRLAlgorithm", "scenario": "small_morning_rush", "speed": 1.0}
+{"type": "pause"}
+{"type": "resume"}
+{"type": "stop"}
+{"type": "set_speed", "speed": 2.0}
+```
+
+## 故障排除
+
+### 电梯不显示
+
+**可能原因1**: Canvas未正确初始化
+- 打开浏览器开发者工具 (F12)
+- 查看Console是否有JavaScript错误
+- 检查是否看到 "ElevatorRenderer: Initializing..." 日志
+
+**可能原因2**: WebSocket连接失败
+- 查看Console中的WebSocket连接日志
+- 确认服务器正在运行
+- 检查端口8080是否被占用
+
+**可能原因3**: 场景加载失败
+- 检查 `data/` 目录中是否存在场景JSON文件
+- 查看服务器端日志是否有错误
+
+**可能原因4**: 电梯服务器未启动
+- WebUI会自动启动服务器，但可能失败
+- 检查端口8000是否可用
+- 查看Console中的错误信息
+
+### 手动测试渲染器
+
+访问 http://localhost:8080/static/test.html 查看渲染器测试页面。
+这个页面会独立测试Canvas渲染功能。
+
+### 查看日志
+
+打开浏览器开发者工具 (F12) → Console标签，查看:
+- `Initializing application...`
+- `Creating renderer...`
+- `Renderer created, canvas size: ...`
+- `ElevatorRenderer: Initializing with config: ...`
+- `WebSocket connected`
+
+## 开发指南
+
+### 修改渲染样式
+
+编辑 `static/js/renderer.js` 中的 `colors` 对象：
+
+```javascript
+this.colors = {
+    background: '#ffffff',
+    elevator: '#3498db',      // 电梯颜色
+    elevatorUp: '#27ae60',    // 上行电梯
+    elevatorDown: '#e67e22',  // 下行电梯
+    passenger: '#e74c3c',     // 等待乘客
+    // ...
+};
+```
+
+### 修改布局
+
+编辑 `static/js/renderer.js` 中的布局参数：
+
+```javascript
+this.floorHeight = 60;        // 楼层高度
+this.elevatorWidth = 80;      // 电梯宽度
+this.elevatorHeight = 50;     // 电梯高度
+this.elevatorSpacing = 100;   // 电梯间距
+```
+
+### 添加新的UI控件
+
+1. 在 `static/index.html` 中添加HTML元素
+2. 在 `static/css/style.css` 中添加样式
+3. 在 `static/js/app.js` 中添加事件处理
+
+## 性能优化
+
+- Canvas渲染使用requestAnimationFrame确保60fps
+- 状态更新频率: 10次/秒 (可通过speed参数调节)
+- WebSocket使用JSON格式最小化传输数据
+- 插值算法实现平滑动画而不增加网络负载
+
+## 浏览器兼容性
+
+- ✅ Chrome/Edge (推荐)
+- ✅ Firefox
+- ✅ Safari
+- ⚠️ IE不支持 (使用了Canvas 2D API和WebSocket)

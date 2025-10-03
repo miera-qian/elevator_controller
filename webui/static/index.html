@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevator Scheduling Visualization</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar: Controls -->
+        <div class="sidebar">
+            <h1>电梯调度可视化</h1>
+
+            <!-- Algorithm Selection -->
+            <div class="control-group">
+                <label for="algorithm-select">选择算法:</label>
+                <select id="algorithm-select">
+                    <option value="">加载中...</option>
+                </select>
+                <div id="algorithm-description" class="description"></div>
+            </div>
+
+            <!-- Scenario Selection -->
+            <div class="control-group">
+                <label for="scenario-select">选择场景:</label>
+                <select id="scenario-select">
+                    <option value="">加载中...</option>
+                </select>
+                <div id="scenario-info" class="info-box"></div>
+            </div>
+
+            <!-- Speed Control -->
+            <div class="control-group">
+                <label for="speed-slider">模拟速度: <span id="speed-value">1.0x</span></label>
+                <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1.0">
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="button-group">
+                <button id="start-btn" class="btn btn-primary">开始模拟</button>
+                <button id="pause-btn" class="btn btn-secondary" disabled>暂停</button>
+                <button id="resume-btn" class="btn btn-secondary" disabled>继续</button>
+                <button id="stop-btn" class="btn btn-danger" disabled>停止</button>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-panel">
+                <h3>统计信息</h3>
+                <div class="stat-item">
+                    <span class="stat-label">当前时刻:</span>
+                    <span id="stat-tick" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">总乘客数:</span>
+                    <span id="stat-total" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">等待中:</span>
+                    <span id="stat-waiting" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">电梯中:</span>
+                    <span id="stat-in-elevator" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">已完成:</span>
+                    <span id="stat-completed" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">平均等待时间:</span>
+                    <span id="stat-avg-wait" class="stat-value">0.0</span>
+                </div>
+            </div>
+
+            <!-- Status Messages -->
+            <div id="status-message" class="status-message"></div>
+        </div>
+
+        <!-- Right Side: Visualization -->
+        <div class="visualization">
+            <canvas id="elevator-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="/static/js/websocket.js?v=7"></script>
+    <script src="/static/js/renderer.js?v=7"></script>
+    <script src="/static/js/app.js?v=7"></script>
+</body>
+</html>

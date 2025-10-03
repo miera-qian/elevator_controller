@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Renderer Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        #test-canvas {
+            background: white;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Elevator Renderer Test</h1>
+    <canvas id="test-canvas" width="800" height="600"></canvas>
+
+    <script src="/static/js/renderer.js"></script>
+    <script>
+        console.log('Test page loaded');
+
+        // Create renderer
+        const renderer = new ElevatorRenderer('test-canvas');
+
+        // Initialize with test config
+        renderer.initialize({
+            floors: 6,
+            elevators: 2,
+            capacity: 8
+        });
+
+        console.log('Renderer initialized');
+
+        // Simulate some elevator movement
+        setTimeout(() => {
+            console.log('Updating state...');
+            renderer.updateState({
+                elevators: [
+                    { id: 0, floor: 3, direction: 'up', passengers: [{}, {}] },
+                    { id: 1, floor: 1, direction: 'idle', passengers: [] }
+                ],
+                waiting: {
+                    '1': [{ id: 1, from_floor: 1, to_floor: 5 }],
+                    '4': [{ id: 2, from_floor: 4, to_floor: 1 }]
+                }
+            });
+
+            // Start animation
+            function animate() {
+                renderer.animate();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }, 1000);
+    </script>
+</body>
+</html>
