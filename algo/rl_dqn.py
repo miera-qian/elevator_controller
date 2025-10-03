@@ -125,14 +125,18 @@ class QLearningAgent:
 
     def load(self, filepath: str):
         """Load Q-table from file"""
-        if Path(filepath).exists():
-            with open(filepath, 'rb') as f:
-                data = pickle.load(f)
-                self.q_table = defaultdict(lambda: defaultdict(float), data['q_table'])
-                self.epsilon = data.get('epsilon', self.epsilon)
-                self.total_rewards = data.get('total_rewards', 0)
-                self.episode_count = data.get('episode_count', 0)
-            return True
+        file_path = Path(filepath)
+        if file_path.exists() and file_path.stat().st_size > 0:
+            try:
+                with open(filepath, 'rb') as f:
+                    data = pickle.load(f)
+                    self.q_table = defaultdict(lambda: defaultdict(float), data['q_table'])
+                    self.epsilon = data.get('epsilon', self.epsilon)
+                    self.total_rewards = data.get('total_rewards', 0)
+                    self.episode_count = data.get('episode_count', 0)
+                return True
+            except (EOFError, pickle.UnpicklingError):
+                return False
         return False
 
 
@@ -309,9 +313,9 @@ class RLDQNAlgorithm(BaseAlgorithm):
 
     def on_passenger_board(self, elevator: ProxyElevator, passenger: ProxyPassenger) -> None:
         """Handle passenger boarding - update RL agent with reward"""
-        floor_num = passenger.origin_floor
+        floor_num = passenger.origin
         passenger_id = passenger.id
-        destination = passenger.destination_floor
+        destination = passenger.destination
 
         # Remove from waiting lists
         self.waiting_up[floor_num].discard(passenger_id)

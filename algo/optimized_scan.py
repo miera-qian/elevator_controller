@@ -82,9 +82,9 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
 
     def on_passenger_board(self, elevator: ProxyElevator, passenger: ProxyPassenger) -> None:
         """Handle passenger boarding - register destination and update tracking"""
-        floor_num = passenger.origin_floor
+        floor_num = passenger.origin
         passenger_id = passenger.id
-        destination = passenger.destination_floor
+        destination = passenger.destination
 
         # Remove from waiting lists
         self.waiting_up[floor_num].discard(passenger_id)
