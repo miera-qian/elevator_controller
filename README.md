@@ -190,7 +190,35 @@ uv run python elevator_controller.py
 - `large_morning_rush.json` - 大规模上班高峰 (320人) ★★★★★
 - `xlarge_stress_test.json` - 极限压力测试 (360人) ★★★★★
 
-### 快速开始测试
+### 自动化测试（推荐）
+
+**完全自动化，无需手动操作**：
+
+```bash
+# 测试所有算法和所有场景
+uv run python tests/auto_test.py
+
+# 测试特定算法
+uv run python tests/auto_test.py --algorithms OptimizedScanAlgorithm
+
+# 测试特定场景
+uv run python tests/auto_test.py --scenarios small_morning_rush,medium_inter_floor
+
+# 快速测试（仅小型场景）
+uv run python tests/auto_test.py --scenarios small_morning_rush,small_evening_rush,small_burst_traffic
+```
+
+**特性**：
+- ✅ 自动启动/停止服务器
+- ✅ 完全隔离的测试环境（每个测试独立服务器）
+- ✅ 自动生成详细报告
+- ✅ 支持算法和场景筛选
+
+详细使用说明请查看 [自动化测试指南](docs/auto_test_usage.md)
+
+### 手动测试
+
+如需手动控制测试过程：
 
 1. **启动模拟器**（终端1）：
 ```bash
