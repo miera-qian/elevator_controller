@@ -124,6 +124,7 @@ class ScanController(BaseAlgorithm):
             self.waiting_down[origin_floor].discard(passenger.id)
 
         print(f"  > E{elevator_id} internal targets are now: {self.internal_targets[elevator_id]}")
+        self.assigned_calls.discard(origin_floor)
 
     def on_elevator_stopped(self, elevator: ProxyElevator, floor: ProxyFloor) -> None:
         """
@@ -209,7 +210,12 @@ class ScanController(BaseAlgorithm):
             # a. 如果当前方向还有任务，继续前进
             print(f"  > Decision: Continue {current_direction} to next target: {next_target}.")
             elevator.go_to_floor(next_target)
-            self.assigned_calls.add(next_target)
+            if current_direction == "up" and len(self.waiting_up.get(floor_num, set())) <= (
+                    1 - elevator.load_factor) * elevator.max_capacity:
+                self.assigned_calls.add(next_target)
+            elif current_direction == "down" and len(self.waiting_down.get(floor_num, set())) <= (
+                    1 - elevator.load_factor) * elevator.max_capacity:
+                self.assigned_calls.add(next_target)
         else:
             # b. 如果当前方向没任务了，尝试掉头
             opposite_direction = "down" if current_direction == "up" else "up"
@@ -221,7 +227,12 @@ class ScanController(BaseAlgorithm):
                     f"  > Decision: No more {current_direction} targets. Reversing to {opposite_direction} for target {next_target_after_turn}.")
                 self.elevator_direction[elevator_id] = opposite_direction
                 elevator.go_to_floor(next_target_after_turn)
-                self.assigned_calls.add(next_target_after_turn)
+                if opposite_direction == "up" and len(self.waiting_up.get(floor_num, set())) <= (
+                        1 - elevator.load_factor) * elevator.max_capacity:
+                    self.assigned_calls.add(next_target)
+                elif opposite_direction == "down" and len(self.waiting_down.get(floor_num, set())) <= (
+                        1 - elevator.load_factor) * elevator.max_capacity:
+                    self.assigned_calls.add(next_target)
             else:
                 # c. 如果所有方向都没有任务了，进入空闲
                 print(f"  > Decision: No targets in any direction. E{elevator_id} will become idle.")
@@ -341,6 +352,7 @@ class ScanController(BaseAlgorithm):
                     f"  > Assignment: Assigning closest idle E{elevator_to_assign.id} to call at floor {target_floor}.")
 
                 # 5. 立即更新状态，为下一次循环（如果需要）做准备
+
                 self.assigned_calls.add(target_floor)
 
                 if target_floor > elevator_to_assign.current_floor:
