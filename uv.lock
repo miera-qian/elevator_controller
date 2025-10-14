@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 
 [[package]]
@@ -122,7 +122,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "elevator-py", specifier = ">=0.0.4" },
+    { name = "elevator-py", specifier = ">=0.0.5" },
     { name = "fastapi", specifier = ">=0.115.0" },
     { name = "jinja2", specifier = ">=3.1.4" },
     { name = "requests", specifier = ">=2.32.5" },
@@ -133,15 +133,15 @@ requires-dist = [
 
 [[package]]
 name = "elevator-py"
-version = "0.0.4"
+version = "0.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flask" },
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c2/3f/7c84dac1971b6f9bbce7f24f51897cbae4a9f277a86efb14d61555346927/elevator_py-0.0.4.tar.gz", hash = "sha256:a8af7a35cffd03a53889392fe1989768d7ca634645cc8d920ac4c69dc0822cd6", size = 42536, upload-time = "2025-10-01T10:09:36.707Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/cb/260298ec8afdfaa8624fd43e60b3704d0a45f5781870ea1c1c6d7471cc82/elevator_py-0.0.5.tar.gz", hash = "sha256:c05faaef123fba571ec1beeeb3934c3626a583fee046797cc7842b64c7e60890", size = 42457, upload-time = "2025-10-06T07:20:25.282Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/3e/47c01fc4cb5ee76aaa02ede6e81816a36f516cf3a26f33d25e6b9f0567f4/elevator_py-0.0.4-py3-none-any.whl", hash = "sha256:fe68e7ad3130a0358d424e7ec7e9f1f253bca344c6e7e0bc64bfba590ebe0c64", size = 52488, upload-time = "2025-10-01T10:09:35.537Z" },
+    { url = "https://files.pythonhosted.org/packages/f0/8a/db71a0d60f30edbe6c82bcf9ea4948f32e73dba0e21b7afeedb0afd97112/elevator_py-0.0.5-py3-none-any.whl", hash = "sha256:853c40235801cbab06dbe46170f9b35c6b40a8cf5c27f3aea3c7674253abad60", size = 52485, upload-time = "2025-10-06T07:20:23.97Z" },
 ]
 
 [[package]]

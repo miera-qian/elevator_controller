@@ -174,8 +174,10 @@ class ElevatorRenderer {
         } else {
             // Update target positions for elevators
             if (state.elevators) {
+                console.log('[Renderer] Updating elevator targets:', state.elevators);
                 state.elevators.forEach((elevator, idx) => {
                     if (idx < this.targetPositions.length) {
+                        console.log(`[Renderer] E${idx}: current=${this.elevatorPositions[idx]}, target=${elevator.floor}, direction=${elevator.direction}`);
                         this.targetPositions[idx] = elevator.floor;
                     }
                 });
@@ -291,10 +293,13 @@ class ElevatorRenderer {
 
             // Determine elevator color based on direction
             let elevatorColor = this.colors.elevatorIdle;
+            console.log(`[Renderer] E${idx} direction: "${elevator.direction}", color will be: ${elevatorColor}`);
             if (elevator.direction === 'up') {
                 elevatorColor = this.colors.elevatorUp;
+                console.log(`[Renderer] E${idx} -> UP color: ${elevatorColor}`);
             } else if (elevator.direction === 'down') {
                 elevatorColor = this.colors.elevatorDown;
+                console.log(`[Renderer] E${idx} -> DOWN color: ${elevatorColor}`);
             }
 
             // Draw elevator box

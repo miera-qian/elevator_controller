@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 import requests
+import os
 
 
 class ServerManager:
@@ -102,16 +103,25 @@ class ServerManager:
             if not self.wait_for_port_free():
                 print(f"  ✗ Port {self.port} is still in use after timeout")
                 return False
+        popen_kwargs = {
+            'cwd': self.project_root,
+            'stdout': subprocess.DEVNULL,
+            'stderr': subprocess.PIPE,
+            'text': True,
+        }
+        # On POSIX systems (Linux, macOS), use preexec_fn to ignore SIGINT in the child.
+        if os.name == 'posix':
+            popen_kwargs['preexec_fn'] = lambda: signal.signal(signal.SIGINT, signal.SIG_IGN)
+        # On Windows, create a new process group to prevent Ctrl+C from affecting the child.
+        elif os.name == 'nt':
+            popen_kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP
 
         # Start server
         try:
+            # Use the prepared arguments
             self.process = subprocess.Popen(
                 ['uv', 'run', 'python', '-m', 'elevator_saga.server.simulator'],
-                cwd=self.project_root,
-                stdout=subprocess.DEVNULL,  # Suppress output
-                stderr=subprocess.PIPE,
-                text=True,
-                preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_IGN)
+                **popen_kwargs
             )
 
             # Wait for server to be ready
@@ -139,15 +149,31 @@ class ServerManager:
 
         print("  Stopping server...")
 
-        # Try graceful termination
         try:
-            self.process.terminate()
+            if os.name == 'nt':  # Windows-specific termination
+                # Sending CTRL_BREAK_EVENT to the process group is a more reliable
+                # way to terminate a console application and its children on Windows.
+                self.process.send_signal(signal.CTRL_BREAK_EVENT)
+                self.process.wait(timeout=10)  # Wait for the process to exit
+            else:  # POSIX graceful termination
+                self.process.terminate()
+                try:
+                    self.process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    # Force kill if not responding
+                    print("  Server not responding, forcing kill...")
+                    self.process.kill()
+                    self.process.wait(timeout=2)
+        except (ProcessLookupError, PermissionError):
+            # Process might have already terminated, which is fine.
+            pass
+        except subprocess.TimeoutExpired:
+            print("  ⚠ Server did not stop within timeout, attempting final kill.")
+            # Final kill attempt for any OS if wait times out
             try:
-                self.process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                # Force kill if not responding
                 self.process.kill()
-                self.process.wait(timeout=2)
+            except ProcessLookupError:
+                pass  # Already gone
         except Exception as e:
             print(f"  ⚠ Error stopping server: {e}")
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 FastAPI application for elevator scheduling visualization
+Supports both Mock simulation (for quick demos) and Real simulation (actual algorithms)
 """
 
 import json
@@ -10,10 +11,12 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-
 import algo
 
 app = FastAPI(title="Elevator Scheduling Visualization")
+
+# Configuration: Set to True to use real algorithms, False for mock simulation
+USE_REAL_SIMULATION = True  # Change to True when you want to test with real algorithms
 
 # Add CORS middleware
 app.add_middleware(
@@ -62,6 +65,13 @@ async def get_algorithms():
             "display_name": "Hybrid SCAN-RL ⭐",
             "description": "混合SCAN-RL算法 (推荐)",
             "type": "Hybrid"
+
+        },
+        "ScanController": {
+            "name": "ScanController",
+            "display_name": "BASE SCAN",
+            "description": "基础SCAN算法",
+            "type": "Heuristic"
         }
     }
 
@@ -110,11 +120,18 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     active_connections.append(websocket)
 
-    try:
-        # Import mock simulation engine
-        from .mock_simulation import MockSimulationEngine
+    engine = None  # Initialize engine before try block
 
-        engine = None
+    try:
+        # Choose simulation engine based on configuration
+        if USE_REAL_SIMULATION:
+            from webui.real_simulation import RealSimulationEngine
+            EngineClass = RealSimulationEngine
+            print("[WebUI] Using REAL simulation engine")
+        else:
+            from webui.mock_simulation import MockSimulationEngine
+            EngineClass = MockSimulationEngine
+            print("[WebUI] Using MOCK simulation engine")
 
         while True:
             # Receive message from client
@@ -127,21 +144,34 @@ async def websocket_endpoint(websocket: WebSocket):
                 scenario_name = message.get("scenario", "small_morning_rush")
                 speed = message.get("speed", 1.0)
 
+                print(f"[WebUI] Received start request: algorithm={algorithm_name}, scenario={scenario_name}")
+
                 # Stop existing simulation if any
                 if engine:
                     engine.stop()
+                    if USE_REAL_SIMULATION:
+                        # Give time for cleanup
+                        await asyncio.sleep(0.5)
 
-                # Create and start new mock simulation
-                engine = MockSimulationEngine(
-                    algorithm_name=algorithm_name,
-                    scenario_name=scenario_name,
-                    speed=speed,
-                    websocket=websocket
-                )
+                # Create and start new simulation
+                try:
+                    engine = EngineClass(
+                        algorithm_name=algorithm_name,
+                        scenario_name=scenario_name,
+                        speed=speed,
+                        websocket=websocket
+                    )
 
-                # Start simulation in background task
-                import asyncio
-                asyncio.create_task(engine.start())
+                    # Start simulation in background task
+                    import asyncio
+                    asyncio.create_task(engine.start())
+
+                except Exception as e:
+                    print(f"[WebUI] Error creating simulation: {e}")
+                    await websocket.send_json({
+                        "type": "error",
+                        "message": f"Failed to start simulation: {str(e)}"
+                    })
 
             elif msg_type == "pause":
                 if engine:
@@ -154,6 +184,8 @@ async def websocket_endpoint(websocket: WebSocket):
             elif msg_type == "stop":
                 if engine:
                     engine.stop()
+                    if USE_REAL_SIMULATION:
+                        await asyncio.sleep(0.5)
                     engine = None
 
             elif msg_type == "set_speed":
@@ -165,10 +197,15 @@ async def websocket_endpoint(websocket: WebSocket):
         active_connections.remove(websocket)
         if engine:
             engine.stop()
+            if USE_REAL_SIMULATION:
+                import asyncio
+                await asyncio.sleep(0.5)
     except Exception as e:
         print(f"WebSocket error: {e}")
         if websocket in active_connections:
             active_connections.remove(websocket)
+        if engine:
+            engine.stop()
 
 
 if __name__ == "__main__":

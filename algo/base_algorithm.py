@@ -41,6 +41,11 @@ class BaseAlgorithm(ElevatorController, ABC):
         self.floors = floors
         self.num_floors = len(floors)
         self.num_elevators = len(elevators)
+        # --- DEBUG PRINT ---
+        print(f"--- ALGORITHM INITIALIZED ---")
+        print(f"  > Managing {self.num_elevators} elevators and {self.num_floors} floors.")
+        print(f"---------------------------------")
+        # --- END DEBUG ---
 
         # Initialize tracking structures
         for floor in floors:
@@ -55,6 +60,11 @@ class BaseAlgorithm(ElevatorController, ABC):
         elevators: List[ProxyElevator], floors: List[ProxyFloor]
     ) -> None:
         """Handle event execution start - override if needed"""
+        print(f"Tick {tick}: 即将处理 {len(events)} 个事件 {[e.type.value for e in events]}")
+        for i in elevators:
+            print(f"\t{i.id}[{i.target_floor_direction.value},{i.current_floor_float}/{i.target_floor}]" + "👦" * len(
+                i.passengers), end="")
+        print()
         pass
 
     def on_event_execute_end(

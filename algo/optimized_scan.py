@@ -27,6 +27,11 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         """Handle new passenger call"""
         floor_num = floor.floor
         passenger_id = passenger.id
+        # --- DEBUG PRINT ---
+        print(f"--- PASSENGER CALL (Tick: {self.current_tick}) ---")
+        print(
+            f"  > Passenger {passenger_id} at floor {floor_num} requests to go {direction.upper()}. (Destination: {passenger.destination})")
+        # --- END DEBUG ---
 
         # Track waiting passenger
         if direction == "up":
@@ -53,7 +58,10 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         Stop if: passengers need to alight OR passengers waiting in same direction.
         """
         floor_num = floor.floor
-
+        # --- DEBUG PRINT ---
+        print(f"--- ELEVATOR APPROACHING (Tick: {self.current_tick}) ---")
+        print(f"  > Elevator E{elevator.id} is approaching floor {floor_num} while moving {direction.upper()}.")
+        # --- END DEBUG ---
         # Check if any passenger wants to get off at this floor
         # If so, the elevator will automatically stop (handled by simulator)
 
@@ -67,17 +75,26 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         if floor_num == self.num_floors - 1 and self.waiting_down[floor_num]:
             elevator.go_to_floor(floor_num)
         elif floor_num == 0 and self.waiting_up[floor_num]:
-            elevator.go_to_floor(floor_num)
+            elevator.go_to_floor(floor_num)## todo print state when passing
 
     def on_elevator_stopped(self, elevator: ProxyElevator, floor: ProxyFloor) -> None:
         """Handle elevator stopped at floor"""
         floor_num = floor.floor
+        # if floor_num in self.elevator_targets[elevator.id]:
+        #     self.elevator_targets[elevator.id].remove(floor_num)
+
+        elevator_id = elevator.id
+        current_direction = elevator.last_tick_direction.value
+        # --- DEBUG PRINT ---
+        print(f"--- ELEVATOR STOPPED (Tick: {self.current_tick}) ---")
+        print(f"  > Elevator E{elevator.id} has stopped at floor {floor_num}.")
+        # --- END DEBUG ---
 
         # Remove from targets
         if floor_num in self.elevator_targets[elevator.id]:
             self.elevator_targets[elevator.id].remove(floor_num)
 
-        # Passengers will be handled automatically by on_passenger_board
+                # Passengers will be handled automatically by on_passenger_board
         # No need to manually iterate waiting passengers
 
     def on_passenger_board(self, elevator: ProxyElevator, passenger: ProxyPassenger) -> None:
@@ -94,6 +111,12 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         elevator.go_to_floor(destination)
         if destination not in self.elevator_targets[elevator.id]:
             self.elevator_targets[elevator.id].append(destination)
+        # --- DEBUG PRINT ---
+        print(f"--- PASSENGER BOARD (Tick: {self.current_tick}) ---")
+        print(f"  > Passenger {passenger_id} has boarded Elevator E{elevator.id} at floor {floor_num}.")
+        print(f"  > Their destination is floor {destination}.")
+        print(f"  > Elevator E{elevator.id}'s target list is now: {self.elevator_targets[elevator.id]}")
+        # --- END DEBUG ---
 
     # Private helper methods
 

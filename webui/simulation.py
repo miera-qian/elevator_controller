@@ -116,11 +116,23 @@ class SimulationEngine:
         loop = asyncio.get_event_loop()
 
         def run_server():
+            import os
+            # 跨平台兼容的进程创建
+            popen_kwargs = {
+                "stdout": subprocess.PIPE,
+                "stderr": subprocess.PIPE,
+            }
+
+            # POSIX 系统（Linux, macOS）使用 preexec_fn
+            if os.name == 'posix':
+                popen_kwargs['preexec_fn'] = lambda: signal.signal(signal.SIGINT, signal.SIG_IGN)
+            # Windows 使用 CREATE_NEW_PROCESS_GROUP
+            elif os.name == 'nt':
+                popen_kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP
+
             self.server_process = subprocess.Popen(
                 ["uv", "run", "python", "-m", "elevator_saga.server.simulator"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_IGN)
+                **popen_kwargs
             )
             print(f"[SimulationEngine] Server process started with PID: {self.server_process.pid}")
 

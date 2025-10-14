@@ -7,6 +7,7 @@ You can switch between different algorithms by importing them from the algo pack
 """
 
 from algo import OptimizedScanAlgorithm
+from algo import ScanController
 
 # You can switch to a different algorithm by changing the import and instantiation:
 # from algo import MyCustomAlgorithm
@@ -15,5 +16,6 @@ from algo import OptimizedScanAlgorithm
 
 if __name__ == "__main__":
     # Create and start the algorithm
-    algorithm = OptimizedScanAlgorithm()
+    # algorithm = OptimizedScanAlgorithm()
+    algorithm = ScanController()
     algorithm.start()
