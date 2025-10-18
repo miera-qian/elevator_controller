@@ -81,7 +81,7 @@ class RealSimulationEngine:
             if not scenario_file.exists():
                 raise ValueError(f"Scenario file not found: {self.scenario_name}.json")
 
-        with open(scenario_file, 'r') as f:
+        with open(scenario_file, 'r', encoding='utf-8') as f:
             self.scenario_data = json.load(f)
 
         self.building_config = self.scenario_data.get("building", {})
@@ -162,7 +162,7 @@ class RealSimulationEngine:
              "--host", self.server_host,
              "--port", str(self.server_port),
              "--debug"],
-            stdout=open(log_file, 'w'),
+            stdout=open(log_file, 'w', encoding='utf-8'),
             stderr=subprocess.STDOUT,
             text=True
         )

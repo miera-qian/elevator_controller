@@ -1,6 +1,6 @@
 {
   "building": {
-    "floors": 6,
+    "floors": 20,
     "elevators": 2,
     "elevator_capacity": 8,
     "scenario": "down_peak",

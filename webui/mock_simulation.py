@@ -71,7 +71,7 @@ class MockSimulationEngine:
         if not scenario_file.exists():
             raise ValueError(f"Scenario file not found: {scenario_file}")
 
-        with open(scenario_file, 'r') as f:
+        with open(scenario_file, 'r', encoding='utf-8') as f:
             self.scenario_data = json.load(f)
 
         self.building_config = self.scenario_data.get("building", {})

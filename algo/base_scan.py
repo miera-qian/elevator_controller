@@ -67,6 +67,11 @@ class ScanController(BaseAlgorithm):
         self.assigned_calls: Set[int] = set()
         self.BYPASS_THRESHOLD = 0.8
 
+        # 场景识别相关
+        self.peak_mode: str = "unknown"  # "up_peak", "down_peak", "mixed", "unknown"
+        self.pattern_detection_tick = 50  # 在第50个tick进行场景识别
+        self.pattern_detected = False
+
     def on_event_execute_start(
             self, tick: int, events: List[SimulationEvent],
             elevators: List[ProxyElevator], floors: List[ProxyFloor]
@@ -295,21 +300,195 @@ class ScanController(BaseAlgorithm):
             print(f"  > Approaching Decision: E{elevator_id} will stop at {floor_num} for on-the-way pickup.")
             elevator.go_to_floor(floor_num, immediate=True)
 
+    def on_event_execute_end(self, tick: int, events: List[SimulationEvent], elevators: List[ProxyElevator],
+                             floors: List[ProxyFloor]) -> None:
+        # 在指定tick进行场景识别
+        if tick >= self.pattern_detection_tick and not self.pattern_detected:
+            self._detect_traffic_pattern()
+
+        # 为空闲电梯分配任务
+        self._assign_call_to_idle_elevator()
+
     # -------------------------------------------------------------------------
     # 5. 辅助函数 (Helper Functions)
     # -------------------------------------------------------------------------
     # 这些以下划线开头的方法是我们的内部工具，用来帮助主回调函数做决策。
 
+    def _detect_traffic_pattern(self) -> None:
+        """
+        分析流量模式，识别高峰场景类型
+        基于已完成的乘客流量判断是上行高峰、下行高峰还是混合场景
+        """
+        if self.pattern_detected:
+            return
+
+        # 统计所有等待乘客的流向
+        up_count = 0
+        down_count = 0
+        inter_floor_count = 0  # 楼层间移动（非到达底层或顶层）
+
+        # 统计等待队列中的乘客流向
+        for floor_num in range(self.num_floors):
+            # 上行队列
+            for passenger_id in self.waiting_up.get(floor_num, set()):
+                up_count += 1
+                # 如果是从底层（0-2）出发，更可能是上行高峰
+                if floor_num <= 2:
+                    up_count += 0.5
+
+            # 下行队列
+            for passenger_id in self.waiting_down.get(floor_num, set()):
+                down_count += 1
+                # 如果是从高层出发到底层，更可能是下行高峰
+                if floor_num >= self.num_floors - 3:
+                    down_count += 0.5
+
+        total = up_count + down_count
+        if total == 0:
+            return  # 没有足够数据，延迟判断
+
+        # 判断场景类型
+        up_ratio = up_count / total
+        down_ratio = down_count / total
+
+        if up_ratio >= 0.7:
+            self.peak_mode = "up_peak"
+            print(f"\n🔍 [场景识别] 检测到上行高峰模式 (上行占比: {up_ratio:.1%})")
+        elif down_ratio >= 0.7:
+            self.peak_mode = "down_peak"
+            print(f"\n🔍 [场景识别] 检测到下行高峰模式 (下行占比: {down_ratio:.1%})")
+        else:
+            self.peak_mode = "mixed"
+            print(f"\n🔍 [场景识别] 检测到混合场景 (上行:{up_ratio:.1%}, 下行:{down_ratio:.1%})")
+
+        self.pattern_detected = True
+
+    def _can_elevator_handle_on_the_way(self, elevator: ProxyElevator, floor: int, direction: str) -> bool:
+        """
+        判断一个工作中的电梯是否可以顺路处理某个呼叫
+
+        条件：
+        1. 电梯主方向与呼叫方向一致
+        2. 电梯会经过该楼层（在当前位置和最远目标之间）
+        3. 电梯未满载（load_factor < BYPASS_THRESHOLD）
+
+        Args:
+            elevator: 要检查的电梯
+            floor: 呼叫楼层
+            direction: 呼叫方向 ("up" or "down")
+
+        Returns:
+            True 如果电梯可以顺路处理该呼叫
+        """
+        elevator_id = elevator.id
+        main_direction = self.elevator_direction[elevator_id]
+
+        # 条件1: 方向必须一致
+        if main_direction != direction:
+            return False
+
+        # 电梯必须是工作状态（非空闲）
+        if main_direction == "idle":
+            return False
+
+        # 条件3: 电梯负载不能太高
+        if elevator.load_factor >= self.BYPASS_THRESHOLD:
+            return False
+
+        # 条件2: 判断呼叫楼层是否在电梯的路径上
+        targets = self.internal_targets[elevator_id].copy()
+
+        if not targets:
+            # 没有内部目标，无法判断路径
+            return False
+
+        current_floor = elevator.current_floor
+
+        if main_direction == "up":
+            # 上行：呼叫楼层应该在当前位置和最远目标之间
+            max_target = max(targets)
+            is_on_path = current_floor < floor <= max_target
+
+            if is_on_path:
+                print(f"    [顺路分析] E{elevator_id}上行(F{current_floor}→F{max_target})会经过F{floor}")
+            return is_on_path
+
+        else:  # down
+            # 下行：呼叫楼层应该在最近目标和当前位置之间
+            min_target = min(targets)
+            is_on_path = min_target <= floor < current_floor
+
+            if is_on_path:
+                print(f"    [顺路分析] E{elevator_id}下行(F{current_floor}→F{min_target})会经过F{floor}")
+            return is_on_path
+
+    def _calculate_assignment_score(self, elevator: ProxyElevator, floor: int, heatmap: Dict[int, int]) -> float:
+        """
+        计算电梯-楼层配对的综合评分
+
+        评分考虑因素：
+        1. 热力值（等待人数）- 权重最高
+        2. 距离惩罚
+        3. 场景适应性加成（上行/下行高峰的位置优势）
+        4. 电梯空载加成
+
+        Returns:
+            综合评分，分数越高越优先
+        """
+        heat = heatmap[floor]
+        distance = abs(elevator.current_floor - floor)
+
+        # 基础分：热力值（权重最高）
+        # 每个等待乘客贡献100分
+        score = heat * 100
+
+        # 距离惩罚：每层楼扣10分
+        score -= distance * 10
+
+        # 场景适应性加成
+        if self.peak_mode == "up_peak":
+            # 上行高峰：优先使用底层区域(0-2层)的空闲电梯
+            if elevator.current_floor <= 2:
+                score += 25
+                print(f"    [评分] E{elevator.id}在底层(F{elevator.current_floor})，上行高峰加成+25")
+            # 如果电梯在目标楼层下方，顺路优势
+            if elevator.current_floor < floor:
+                score += 10
+
+        elif self.peak_mode == "down_peak":
+            # 下行高峰：优先使用高层区域的空闲电梯
+            high_floor_threshold = self.num_floors - 3
+            if elevator.current_floor >= high_floor_threshold:
+                score += 25
+                print(f"    [评分] E{elevator.id}在高层(F{elevator.current_floor})，下行高峰加成+25")
+            # 如果电梯在目标楼层上方，顺路优势
+            if elevator.current_floor > floor:
+                score += 10
+
+        # 空载加成：完全空的电梯更优先
+        if elevator.load_factor == 0:
+            score += 15
+            print(f"    [评分] E{elevator.id}空载，加成+15")
+
+        return score
+
     def _assign_call_to_idle_elevator(self):
         """
         扫描所有空闲电梯和所有待处理请求，进行最优匹配。
-        这是一个简化的分配策略：让第一部空闲电梯去处理第一个找到的请求。
+        【智能评分策略】：基于热力图、距离、场景特征和电梯状态进行综合评分。
+
+        评分因素：
+        1. 热力值（等待人数）- 权重最高 (100分/人)
+        2. 距离惩罚 (-10分/层)
+        3. 场景适应性加成 (+25分，根据上行/下行高峰调整)
+        4. 空载加成 (+15分)
         """
         # 使用循环，因为在一个tick中我们可能需要进行多次分配
         while True:
-            # 1. 寻找资源：哪些电梯空闲？哪些楼层在呼叫且未被分配？
-            idle_elevators = [e for e in self.elevators if self.elevator_direction[e.id] == 'idle']
+            # 0. 【顺路优化】检查工作中的电梯是否可以顺路处理呼叫
+            working_elevators = [e for e in self.elevators if self.elevator_direction[e.id] != 'idle']
 
+            # 收集所有未分配呼叫
             all_unassigned_calls = set()
             for floor_num, passengers in self.waiting_up.items():
                 if passengers and floor_num not in self.assigned_calls:
@@ -317,6 +496,30 @@ class ScanController(BaseAlgorithm):
             for floor_num, passengers in self.waiting_down.items():
                 if passengers and floor_num not in self.assigned_calls:
                     all_unassigned_calls.add(floor_num)
+
+            # 识别可被顺路处理的呼叫
+            calls_to_skip = set()
+            for floor in all_unassigned_calls:
+                # 判断该楼层的呼叫方向
+                if self.waiting_up.get(floor):
+                    call_direction = "up"
+                elif self.waiting_down.get(floor):
+                    call_direction = "down"
+                else:
+                    continue  # 没有等待乘客，跳过
+
+                # 查找可顺路的工作电梯
+                for elevator in working_elevators:
+                    if self._can_elevator_handle_on_the_way(elevator, floor, call_direction):
+                        calls_to_skip.add(floor)
+                        print(f"  > 【顺路优化】F{floor}将由E{elevator.id}顺路接客，不派遣空闲电梯")
+                        break  # 找到一个即可，不需要继续
+
+            # 从未分配列表中移除可顺路处理的呼叫
+            all_unassigned_calls -= calls_to_skip
+
+            # 1. 寻找资源：哪些电梯空闲？还有哪些呼叫需要空闲电梯？
+            idle_elevators = [e for e in self.elevators if self.elevator_direction[e.id] == 'idle']
 
             # 2. 如果没有空闲电梯或没有新请求，则分配结束
             if not idle_elevators or not all_unassigned_calls:
@@ -330,16 +533,24 @@ class ScanController(BaseAlgorithm):
                     print(f"  > Assignment loop finished: No idle elevators and no unassigned calls.")
                 break
 
-            # 3. 寻找最优匹配：计算所有空闲电梯到所有请求的距离，找到最小的那个
+            # 3. 【热力图+智能评分策略】寻找最优匹配
+            # 计算每个楼层的热力值（等待人数）
+            floor_heatmap = {}
+            for floor in all_unassigned_calls:
+                heat = len(self.waiting_up.get(floor, set())) + len(self.waiting_down.get(floor, set()))
+                floor_heatmap[floor] = heat
+
             best_elevator = None
             best_floor = -1
-            min_distance = float('inf')
+            best_score = float('-inf')  # 使用综合评分
 
+            # 遍历所有电梯-楼层组合，计算综合评分
             for elevator in idle_elevators:
                 for floor in all_unassigned_calls:
-                    distance = abs(elevator.current_floor - floor)
-                    if distance < min_distance:
-                        min_distance = distance
+                    score = self._calculate_assignment_score(elevator, floor, floor_heatmap)
+
+                    if score > best_score:
+                        best_score = score
                         best_elevator = elevator
                         best_floor = floor
 
@@ -347,9 +558,12 @@ class ScanController(BaseAlgorithm):
             if best_elevator is not None:
                 elevator_to_assign = best_elevator
                 target_floor = best_floor
+                heat = floor_heatmap[best_floor]
+                distance = abs(best_elevator.current_floor - best_floor)
 
                 print(
-                    f"  > Assignment: Assigning closest idle E{elevator_to_assign.id} to call at floor {target_floor}.")
+                    f"  > 【智能分配】: E{elevator_to_assign.id} → F{target_floor} "
+                    f"(评分={best_score:.1f}, 热力={heat}人, 距离={distance}层, 模式={self.peak_mode})")
 
                 # 5. 立即更新状态，为下一次循环（如果需要）做准备
 
@@ -409,10 +623,7 @@ class ScanController(BaseAlgorithm):
 
         return None
 
-    def on_event_execute_end(self, tick: int, events: List[SimulationEvent], elevators: List[ProxyElevator],
-                             floors: List[ProxyFloor]) -> None:
-        self._assign_call_to_idle_elevator()
-        pass
+
 
     # -------------------------------------------------------------------------
     # 6. 其他未使用的回调 (Unused Callbacks)
