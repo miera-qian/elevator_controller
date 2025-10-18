@@ -114,13 +114,20 @@ class WebSocketManager {
     }
 
     // Simulation control methods
-    startSimulation(algorithm, scenario, speed = 1.0) {
-        this.send({
+    startSimulation(algorithm, scenario, speed = 1.0, maxTicks = null) {
+        const message = {
             type: 'start',
             algorithm: algorithm,
             scenario: scenario,
             speed: speed
-        });
+        };
+
+        // 只在maxTicks有值时添加到消息中
+        if (maxTicks !== null && maxTicks !== undefined) {
+            message.max_ticks = maxTicks;
+        }
+
+        this.send(message);
     }
 
     pauseSimulation() {

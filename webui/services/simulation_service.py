@@ -24,6 +24,7 @@ class SimulationService:
         algorithm_name: str,
         scenario_name: str,
         speed: float,
+        max_ticks: Optional[int],
         websocket: WebSocket
     ):
         """
@@ -33,14 +34,15 @@ class SimulationService:
             algorithm_name: 算法名称
             scenario_name: 场景名称
             speed: 模拟速度
+            max_ticks: 最大时长（ticks），None表示使用场景默认值
             websocket: WebSocket 连接
 
         Returns:
             模拟引擎实例
         """
         if self.use_real_simulation:
-            from webui.real_simulation import RealSimulationEngine
-            EngineClass = RealSimulationEngine
+            from webui.direct_simulation import DirectSimulationEngine
+            EngineClass = DirectSimulationEngine
         else:
             from webui.mock_simulation import MockSimulationEngine
             EngineClass = MockSimulationEngine
@@ -49,6 +51,7 @@ class SimulationService:
             algorithm_name=algorithm_name,
             scenario_name=scenario_name,
             speed=speed,
+            max_ticks=max_ticks,
             websocket=websocket
         )
 

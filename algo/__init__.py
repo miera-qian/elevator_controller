@@ -5,8 +5,7 @@ This package contains different elevator scheduling algorithm implementations.
 """
 
 from .optimized_scan import OptimizedScanAlgorithm
-from .rl_dqn import RLDQNAlgorithm
-from .hybrid_scan_rl import HybridScanRLAlgorithm
 from .base_scan import ScanController
+from .simple_fcfs import SimpleFCFSAlgorithm
 
-__all__ = ['OptimizedScanAlgorithm', 'RLDQNAlgorithm', 'HybridScanRLAlgorithm', 'ScanController']
+__all__ = ['OptimizedScanAlgorithm', 'ScanController', 'SimpleFCFSAlgorithm']

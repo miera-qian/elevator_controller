@@ -177,15 +177,22 @@ class SimulationController {
         }
 
         try {
+            // 重置统计数据显示
+            this.controlPanelView.resetStats();
+
             // 连接 WebSocket
             if (!this.wsManager.connected) {
                 this.controlPanelView.showStatus('正在连接...', 'info');
                 await this.wsManager.connect();
             }
 
-            // 启动模拟
+            // 获取max_ticks值
             const speed = parseFloat(this.controlPanelView.elements.speedSlider.value);
-            this.wsManager.startSimulation(algorithm.name, scenario.name, speed);
+            const maxTicksInput = this.controlPanelView.elements.maxTicksInput;
+            const maxTicks = maxTicksInput && maxTicksInput.value ? parseInt(maxTicksInput.value) : null;
+
+            // 启动模拟
+            this.wsManager.startSimulation(algorithm.name, scenario.name, speed, maxTicks);
 
             // 更新状态
             this.isSimulating = true;

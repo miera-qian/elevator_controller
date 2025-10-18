@@ -118,11 +118,19 @@ async def _handle_start_simulation(
     algorithm_name = message.get("algorithm", "HybridScanRLAlgorithm")
     scenario_name = message.get("scenario", "small_morning_rush")
     speed = message.get("speed", 1.0)
+    max_ticks = message.get("max_ticks")  # 获取max_ticks参数
 
-    print(f"[WebUI] Received start request: algorithm={algorithm_name}, scenario={scenario_name}")
+    print(f"[WebUI] ========================================")
+    print(f"[WebUI] Received start request")
+    print(f"[WebUI]   algorithm={algorithm_name}")
+    print(f"[WebUI]   scenario={scenario_name}")
+    print(f"[WebUI]   speed={speed}")
+    print(f"[WebUI]   max_ticks={max_ticks}")
+    print(f"[WebUI] ========================================")
 
     # 验证算法和场景是否存在
     if not algorithm_service.validate_algorithm(algorithm_name):
+        print(f"[WebUI] ❌ Algorithm '{algorithm_name}' not found")
         await websocket.send_json({
             "type": "error",
             "message": f"Algorithm '{algorithm_name}' not found"
@@ -130,6 +138,7 @@ async def _handle_start_simulation(
         return
 
     if not scenario_service.validate_scenario(scenario_name):
+        print(f"[WebUI] ❌ Scenario '{scenario_name}' not found")
         await websocket.send_json({
             "type": "error",
             "message": f"Scenario '{scenario_name}' not found"
@@ -139,23 +148,30 @@ async def _handle_start_simulation(
     # 停止现有模拟
     if current_engine:
         current_engine.stop()
-        if USE_REAL_SIMULATION:
+        if True:  # USE_REAL_SIMULATION
             await asyncio.sleep(0.5)
 
     # 创建并启动新模拟
     try:
+        print(f"[WebUI] Creating engine...")
         engine = simulation_service.create_engine(
             algorithm_name=algorithm_name,
             scenario_name=scenario_name,
             speed=speed,
+            max_ticks=max_ticks,
             websocket=websocket
         )
+        print(f"[WebUI] Engine created: {engine}")
 
         # 在后台任务中启动模拟
+        print(f"[WebUI] Creating background task to start engine...")
         asyncio.create_task(engine.start())
+        print(f"[WebUI] Background task created")
 
     except Exception as e:
-        print(f"[WebUI] Error creating simulation: {e}")
+        print(f"[WebUI] ❌ Error creating simulation: {e}")
+        import traceback
+        traceback.print_exc()
         await websocket.send_json({
             "type": "error",
             "message": f"Failed to start simulation: {str(e)}"

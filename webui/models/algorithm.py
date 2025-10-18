@@ -22,6 +22,12 @@ class AlgorithmRepository:
 
     # 算法元数据配置
     ALGORITHM_METADATA: Dict[str, AlgorithmInfo] = {
+        "SimpleFCFSAlgorithm": AlgorithmInfo(
+            name="SimpleFCFSAlgorithm",
+            display_name="Simple FCFS (测试用)",
+            description="简单的先来先服务算法 - 用于测试电梯基本功能",
+            type="Heuristic"
+        ),
         "OptimizedScanAlgorithm": AlgorithmInfo(
             name="OptimizedScanAlgorithm",
             display_name="Optimized SCAN",

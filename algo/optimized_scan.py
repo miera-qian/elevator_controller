@@ -22,6 +22,8 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
 
     def __init__(self, server_url: str = "http://127.0.0.1:8000", enable_logging: bool = True):
         super().__init__(server_url, enable_logging)
+        # Track internal targets (passenger destinations in each elevator)
+        self.internal_targets = {}
 
     def on_passenger_call(self, passenger: ProxyPassenger, floor: ProxyFloor, direction: str) -> None:
         """Handle new passenger call"""
@@ -31,6 +33,7 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         print(f"--- PASSENGER CALL (Tick: {self.current_tick}) ---")
         print(
             f"  > Passenger {passenger_id} at floor {floor_num} requests to go {direction.upper()}. (Destination: {passenger.destination})")
+        print(f"  > Calling _assign_elevator_to_call({floor_num}, {direction})")
         # --- END DEBUG ---
 
         # Track waiting passenger
@@ -48,7 +51,8 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
         best_floor = self._find_nearest_waiting_call(elevator.current_floor)
 
         if best_floor is not None:
-            elevator.go_to_floor(best_floor)
+            # 立即设置目标，确保电梯能够启动前往该楼层
+            elevator.go_to_floor(best_floor, immediate=True)
             if best_floor not in self.elevator_targets[elevator.id]:
                 self.elevator_targets[elevator.id].append(best_floor)
 
@@ -67,55 +71,79 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
 
         # Check if passengers waiting in same direction and add floor as target
         if direction == "up" and self.waiting_up[floor_num]:
-            elevator.go_to_floor(floor_num)
+            elevator.go_to_floor(floor_num, immediate=True)
         elif direction == "down" and self.waiting_down[floor_num]:
-            elevator.go_to_floor(floor_num)
+            elevator.go_to_floor(floor_num, immediate=True)
 
         # If at end of range, also pick up passengers waiting in opposite direction
         if floor_num == self.num_floors - 1 and self.waiting_down[floor_num]:
-            elevator.go_to_floor(floor_num)
+            elevator.go_to_floor(floor_num, immediate=True)
         elif floor_num == 0 and self.waiting_up[floor_num]:
-            elevator.go_to_floor(floor_num)## todo print state when passing
+            elevator.go_to_floor(floor_num, immediate=True)## todo print state when passing
 
     def on_elevator_stopped(self, elevator: ProxyElevator, floor: ProxyFloor) -> None:
         """Handle elevator stopped at floor"""
         floor_num = floor.floor
-        # if floor_num in self.elevator_targets[elevator.id]:
-        #     self.elevator_targets[elevator.id].remove(floor_num)
-
         elevator_id = elevator.id
-        current_direction = elevator.last_tick_direction.value
+
         # --- DEBUG PRINT ---
         print(f"--- ELEVATOR STOPPED (Tick: {self.current_tick}) ---")
         print(f"  > Elevator E{elevator.id} has stopped at floor {floor_num}.")
         # --- END DEBUG ---
 
-        # Remove from targets
-        if floor_num in self.elevator_targets[elevator.id]:
+        # Remove from targets (both internal and external)
+        if floor_num in self.elevator_targets.get(elevator.id, []):
             self.elevator_targets[elevator.id].remove(floor_num)
 
-                # Passengers will be handled automatically by on_passenger_board
-        # No need to manually iterate waiting passengers
+        # ✅ FIX: Remove from internal targets (passengers alighting)
+        self.internal_targets.get(elevator_id, set()).discard(floor_num)
+
+        # ✅ FIX: If elevator has no more tasks, try to assign new ones
+        has_internal_targets = bool(self.internal_targets.get(elevator_id))
+        has_external_targets = bool(self.elevator_targets.get(elevator_id))
+
+        if not has_internal_targets and not has_external_targets:
+            print(f"  > Elevator E{elevator_id} has no more targets, trying to assign new task...")
+            # Try to find and assign nearest waiting call
+            best_floor = self._find_nearest_waiting_call(elevator.current_floor)
+            if best_floor is not None:
+                elevator.go_to_floor(best_floor, immediate=True)
+                if best_floor not in self.elevator_targets[elevator.id]:
+                    self.elevator_targets[elevator.id].append(best_floor)
+                print(f"  > Assigned E{elevator_id} to floor {best_floor}")
+
+        # Passengers will be handled automatically by on_passenger_board
 
     def on_passenger_board(self, elevator: ProxyElevator, passenger: ProxyPassenger) -> None:
         """Handle passenger boarding - register destination and update tracking"""
         floor_num = passenger.origin
         passenger_id = passenger.id
         destination = passenger.destination
+        elevator_id = elevator.id
 
         # Remove from waiting lists
         self.waiting_up[floor_num].discard(passenger_id)
         self.waiting_down[floor_num].discard(passenger_id)
 
-        # Register destination floor
-        elevator.go_to_floor(destination)
+        # ✅ FIX: Add destination to internal_targets
+        if elevator_id not in self.internal_targets:
+            self.internal_targets[elevator_id] = set()
+        self.internal_targets[elevator_id].add(destination)
+
+        # 立即设置目的地（immediate=True），确保电梯能够正确启动
+        # 注意：电梯已经停在乘客上梯的楼层，现在需要前往乘客目的地
+        elevator.go_to_floor(destination, immediate=True)
+
         if destination not in self.elevator_targets[elevator.id]:
             self.elevator_targets[elevator.id].append(destination)
+
         # --- DEBUG PRINT ---
         print(f"--- PASSENGER BOARD (Tick: {self.current_tick}) ---")
         print(f"  > Passenger {passenger_id} has boarded Elevator E{elevator.id} at floor {floor_num}.")
         print(f"  > Their destination is floor {destination}.")
+        print(f"  > 立即设置目标 (immediate=True) 确保电梯启动")
         print(f"  > Elevator E{elevator.id}'s target list is now: {self.elevator_targets[elevator.id]}")
+        print(f"  > Internal targets: {self.internal_targets[elevator_id]}")
         # --- END DEBUG ---
 
     # Private helper methods
@@ -123,11 +151,17 @@ class OptimizedScanAlgorithm(BaseAlgorithm):
     def _assign_elevator_to_call(self, floor_num: int, direction: str) -> None:
         """Assign best elevator to handle a call"""
         best_elevator = self._find_best_elevator(floor_num, direction)
-
+        
+        print(f"  > _assign_elevator_to_call: best_elevator = {best_elevator}")
         if best_elevator:
-            best_elevator.go_to_floor(floor_num)
+            print(f"  > Calling best_elevator.go_to_floor({floor_num}, immediate=True)")
+            # 立即设置目标，确保电梯能够正确启动前往该楼层接客
+            result = best_elevator.go_to_floor(floor_num, immediate=True)
+            print(f"  > go_to_floor returned: {result}")
             if floor_num not in self.elevator_targets[best_elevator.id]:
                 self.elevator_targets[best_elevator.id].append(floor_num)
+        else:
+            print(f"  > No best elevator found!")
 
     def _find_best_elevator(self, target_floor: int, direction: str) -> ProxyElevator:
         """

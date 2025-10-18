@@ -2,9 +2,6 @@
 """
 Elevator simulation server - tick-based discrete event simulation
 Provides HTTP API for controlling elevators and advancing simulation time
-For debugging purposes.
-To run the application formally, use the following command:
-python -m elevator_saga.server.simulator
 """
 import argparse
 import json
@@ -13,7 +10,7 @@ import threading
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, cast
+from typing import Any, Dict, List, Optional, cast
 
 from flask import Flask, Response, request
 
@@ -118,7 +115,6 @@ class ElevatorSimulation:
     traffic_queue: List[TrafficEntry]  # type: ignore
     next_passenger_id: int
     max_duration_ticks: int
-    user_max_ticks: int | None  # User-configured max_ticks via API (overrides scenario default)
 
     def __init__(self, traffic_dir: str, _init_only: bool = False):
         if _init_only:
@@ -128,7 +124,6 @@ class ElevatorSimulation:
         self.current_traffic_index = 0
         self.traffic_files: List[Path] = []
         self.state: SimulationState = create_empty_simulation_state(2, 1, 1)
-        self.user_max_ticks = None  # No user override by default
         self._load_traffic_files()
 
     @property
@@ -185,13 +180,7 @@ class ElevatorSimulation:
                 building_config["elevators"], building_config["floors"], building_config["elevator_capacity"]
             )
             self.reset()
-            # Use user-configured max_ticks if set, otherwise use scenario default
-            if self.user_max_ticks is not None:
-                self.max_duration_ticks = self.user_max_ticks
-                server_debug_log(f"Using user-configured max_ticks: {self.user_max_ticks}")
-            else:
-                self.max_duration_ticks = building_config["duration"]
-                server_debug_log(f"Using scenario default duration: {self.max_duration_ticks}")
+            self.max_duration_ticks = building_config["duration"]
             traffic_data: list[Dict[str, Any]] = file_data["traffic"]
             traffic_data.sort(key=lambda t: cast(int, t["tick"]))
             for entry in traffic_data:
@@ -285,75 +274,89 @@ class ElevatorSimulation:
         # 2. Move elevators
         self._move_elevators()
 
-        # 3. Process elevator stops and passenger alighting
+        # 3. Process elevator stops and passenger boarding/alighting
         self._process_elevator_stops()
 
         # Return events generated this tick
         return self.state.events[events_start:]
 
     def _process_passenger_in(self, elevator: ElevatorState) -> None:
+        """
+        处理乘客上梯
+        前置条件：电梯必须停止在某个楼层
+        """
         current_floor = elevator.current_floor
-        # 只有电梯停止时才允许乘客上电梯
-        if elevator.target_floor_direction != Direction.STOPPED:
+        
+        # 前置条件：电梯必须停止
+        if elevator.run_status != ElevatorStatus.STOPPED:
+            server_debug_log(
+                f"✗ 电梯 E{elevator.id} 不能上梯：电梯未停止 (状态: {elevator.run_status.value})"
+            )
             return
-            
+        
         floor = self.floors[current_floor]
-        passengers_to_board: List[int] = []
         available_capacity = elevator.max_capacity - len(elevator.passengers)
         
-        # Board both up and down passengers since elevator is stopped
+        if available_capacity <= 0:
+            server_debug_log(f"✗ 电梯 E{elevator.id} 已满，无法上梯")
+            return
+        
+        # 上梯乘客列表
+        passengers_to_board: List[int] = []
+        
+        # 先上向上的乘客
         up_to_board = min(available_capacity, len(floor.up_queue))
         passengers_to_board.extend(floor.up_queue[:up_to_board])
         floor.up_queue = floor.up_queue[up_to_board:]
+        available_capacity -= up_to_board
         
-        available_capacity -= len(passengers_to_board)
+        # 再上向下的乘客
         if available_capacity > 0:
             down_to_board = min(available_capacity, len(floor.down_queue))
             passengers_to_board.extend(floor.down_queue[:down_to_board])
             floor.down_queue = floor.down_queue[down_to_board:]
 
-        # Process boarding
+        # 处理每个上梯的乘客
         for passenger_id in passengers_to_board:
             passenger = self.passengers[passenger_id]
             passenger.pickup_tick = self.tick
             passenger.elevator_id = elevator.id
             elevator.passengers.append(passenger_id)
+            
+            server_debug_log(
+                f"✓ 乘客 {passenger_id} 上梯: E{elevator.id} at F{current_floor} "
+                f"(目的地 F{passenger.destination})"
+            )
+            
             self._emit_event(
                 EventType.PASSENGER_BOARD,
                 {"elevator": elevator.id, "floor": current_floor, "passenger": passenger_id},
             )
 
     def _update_elevator_status(self) -> None:
-        """更新电梯运行状态"""
+        """
+        更新电梯运行状态机：STOPPED → START_UP → CONSTANT_SPEED → START_DOWN → STOPPED
+        只处理状态转移，不处理乘客上下梯逻辑
+        """
         for elevator in self.elevators:
-            target_floor = elevator.target_floor
-            old_status = elevator.run_status.value
-
-            # 处理next_target_floor: 如果电梯已停止且没有当前目标方向
+            # 只处理有运动方向的电梯
             if elevator.target_floor_direction == Direction.STOPPED:
-                if elevator.next_target_floor is not None:
-                    self._set_elevator_target_floor(elevator, elevator.next_target_floor)
-                    self._process_passenger_in(elevator)
-                    elevator.next_target_floor = None
-                    # 设置目标后，继续处理状态转换，不要continue
-                else:
-                    # 没有next_target_floor，跳过状态转换
-                    continue
-
-            # 状态转换：从停止到启动
+                # 电梯要么在目标楼层，要么没有目标
+                # 这里不应该改变状态
+                continue
+            
+            # 有运动方向的电梯才需要启动状态转移
             if elevator.run_status == ElevatorStatus.STOPPED:
-                # 只有当有移动方向时才启动
-                if elevator.target_floor_direction != Direction.STOPPED:
-                    elevator.run_status = ElevatorStatus.START_UP
-            # 状态转换：从启动到匀速
+                # 从停止状态启动 → 加速
+                elevator.run_status = ElevatorStatus.START_UP
+                server_debug_log(
+                    f"✓ 电梯{elevator.id} 状态转移: STOPPED → START_UP, 目标: F{elevator.target_floor}, "
+                    f"方向: {elevator.target_floor_direction.value}"
+                )
             elif elevator.run_status == ElevatorStatus.START_UP:
+                # 从加速状态 → 匀速
                 elevator.run_status = ElevatorStatus.CONSTANT_SPEED
-
-            server_debug_log(
-                f"电梯{elevator.id} 状态:{old_status}->{elevator.run_status.value} 方向:{elevator.target_floor_direction.value} "
-                f"位置:{elevator.position.current_floor_float:.1f} 目标:{target_floor}"
-            )
-        # START_DOWN状态会在到达目标时在_move_elevators中切换为STOPPED
+                server_debug_log(f"✓ 电梯{elevator.id} 状态转移: START_UP → CONSTANT_SPEED")
 
     def _process_arrivals(self) -> None:  # OK
         """Process new passenger arrivals"""
@@ -396,7 +399,6 @@ class ElevatorSimulation:
 
             # 根据状态和方向调整移动距离
             elevator.last_tick_direction = elevator.target_floor_direction
-            old_position = elevator.position.current_floor_float
             if elevator.target_floor_direction == Direction.UP:
                 new_floor = elevator.position.floor_up_position_add(movement_speed)
             elif elevator.target_floor_direction == Direction.DOWN:
@@ -445,22 +447,22 @@ class ElevatorSimulation:
 
     def _process_elevator_stops(self) -> None:
         """
-        处理Stopped电梯，上下客，新target处理等。
+        处理停止状态的电梯：下梯 → 上梯 → 发出IDLE事件
+        只在电梯处于STOPPED运行状态时执行
         """
         for elevator in self.elevators:
             current_floor = elevator.current_floor
-
-            # 只处理STOPPED状态的电梯
+            
+            # 只处理完全停止的电梯
             if elevator.run_status != ElevatorStatus.STOPPED:
                 continue
 
-            # 处理乘客下车
+            # 第一步：乘客下梯
             passengers_to_remove: List[int] = []
             for passenger_id in elevator.passengers:
                 passenger = self.passengers[passenger_id]
                 if passenger.destination == current_floor:
                     passenger.dropoff_tick = self.tick
-                    passenger.arrived = True
                     passengers_to_remove.append(passenger_id)
 
             for passenger_id in passengers_to_remove:
@@ -470,37 +472,43 @@ class ElevatorSimulation:
                     {"elevator": elevator.id, "floor": current_floor, "passenger": passenger_id},
                 )
 
-            # 🔑 关键：让等待的乘客上车（无论电梯之前是什么状态）
+            # 第二步：乘客上梯
+            # 注意：这会自动处理当前楼层等待的乘客
             self._process_passenger_in(elevator)
-
-            # 如果电梯已经完全停止（方向也是STOPPED），发送IDLE事件
-            if elevator.last_tick_direction == Direction.STOPPED:
+            
+            # 第三步：如果没有下一个目标且没有待接乘客，发出IDLE事件
+            floor = self.floors[current_floor]
+            has_waiting_passengers = len(floor.up_queue) > 0 or len(floor.down_queue) > 0
+            
+            if elevator.next_target_floor is None and not has_waiting_passengers:
                 self._emit_event(EventType.IDLE, {"elevator": elevator.id, "floor": current_floor})
-
-            # Note: next_target_floor is now handled in _update_elevator_status() at the start of next tick
-            # This ensures proper state transition timing
+            
+            # 第四步：处理下一个目标楼层（如果有）
+            if elevator.next_target_floor is not None:
+                self._set_elevator_target_floor(elevator, elevator.next_target_floor)
+                elevator.next_target_floor = None
 
     def _set_elevator_target_floor(self, elevator: ElevatorState, floor: int) -> None:
         """
-        同一个tick内提示
-        [SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
-        [SERVER-DEBUG] 电梯 E0 被设定为前往 F1
-        说明电梯处于stop状态，这个tick直接采用下一个目的地运行了
+        设置电梯目标楼层，并确保电梯能够正确启动移动
+        这是最关键的函数 - 它确保电梯从停止状态启动
         """
+        # 验证楼层范围
+        if not (0 <= floor < len(self.floors)):
+            server_debug_log(f"❌ 电梯 E{elevator.id} 目标楼层 F{floor} 超出范围 [0, {len(self.floors)-1}]")
+            return
+            
+        # 设置目标楼层
         elevator.position.target_floor = floor
-        server_debug_log(f"电梯 E{elevator.id} 被设定为前往 F{floor}")
-        new_target_floor_should_accel = self._should_start_deceleration(elevator)
-        if not new_target_floor_should_accel:
-            if elevator.run_status == ElevatorStatus.START_DOWN:  # 不应该加速但是加了
-                elevator.run_status = ElevatorStatus.CONSTANT_SPEED
-                server_debug_log(f"电梯 E{elevator.id} 被设定为匀速")
-        elif new_target_floor_should_accel:
-            if elevator.run_status == ElevatorStatus.CONSTANT_SPEED:  # 应该减速了，但是之前是匀速
-                elevator.run_status = ElevatorStatus.START_DOWN
-                server_debug_log(f"电梯 E{elevator.id} 被设定为减速")
-        if elevator.current_floor != floor or elevator.position.floor_up_position != 0:
-            old_status = elevator.run_status.value
-            server_debug_log(f"电梯{elevator.id} 状态:{old_status}->{elevator.run_status.value}")
+        server_debug_log(f"✓ 电梯 E{elevator.id} 设置目标楼层为 F{floor} (当前位置: F{elevator.current_floor})")
+        
+        # 🔑 关键：如果电梯停止且目标楼层不同，立即启动电梯
+        # 这确保了乘客上梯后，电梯会立即开始运动
+        if elevator.run_status == ElevatorStatus.STOPPED and elevator.current_floor != floor:
+            elevator.run_status = ElevatorStatus.START_UP
+            server_debug_log(
+                f"✓ 电梯 E{elevator.id} 启动！状态: STOPPED → START_UP, 目标方向: {elevator.target_floor_direction.value}"
+            )
 
     def _calculate_distance_to_target(self, elevator: ElevatorState) -> float:
         """计算到目标楼层的距离（以floor_up_position为单位）"""
@@ -532,19 +540,35 @@ class ElevatorSimulation:
     def elevator_go_to_floor(self, elevator_id: int, floor: int, immediate: bool = False) -> None:
         """
         设置电梯去向，是生命周期开始，分配目的地
+        
+        Args:
+            elevator_id: 电梯ID
+            floor: 目标楼层
+            immediate: 如果为True，立即设置目标；如果为False，存储为next_target_floor待处理
         """
-        if 0 <= elevator_id < len(self.elevators) and 0 <= floor < len(self.floors):
-            elevator = self.elevators[elevator_id]
-            if immediate:
-                self._set_elevator_target_floor(elevator, floor)
-            else:
-                elevator.next_target_floor = floor
-                server_debug_log(f"电梯 E{elevator_id} 下一目的地设定为 F{floor}")
-                
-                # 如果电梯已经停止且在目标楼层，立即处理乘客上车
-                if elevator.target_floor_direction == Direction.STOPPED and elevator.current_floor == floor:
-                    server_debug_log(f"电梯 E{elevator_id} 已在目标楼层 F{floor}，处理乘客上车")
-                    self._process_passenger_in(elevator)
+        if not (0 <= elevator_id < len(self.elevators)):
+            server_debug_log(f"❌ 电梯ID {elevator_id} 超出范围")
+            return
+            
+        if not (0 <= floor < len(self.floors)):
+            server_debug_log(f"❌ 目标楼层 F{floor} 超出范围 [0, {len(self.floors)-1}]")
+            return
+            
+        elevator = self.elevators[elevator_id]
+        
+        if immediate:
+            # 立即设置目标并启动电梯
+            self._set_elevator_target_floor(elevator, floor)
+            server_debug_log(f"✓ 电梯 E{elevator_id} 立即设定目标 F{floor}")
+        else:
+            # 存储为下一个目标，待电梯到站后处理
+            elevator.next_target_floor = floor
+            server_debug_log(f"✓ 电梯 E{elevator_id} 下一目的地设定为 F{floor}")
+            
+            # 如果电梯已经停止在目标楼层，立即处理乘客上车
+            if elevator.target_floor_direction == Direction.STOPPED and elevator.current_floor == floor:
+                server_debug_log(f"✓ 电梯 E{elevator_id} 已在目标楼层 F{floor}，处理乘客上车")
+                self._process_passenger_in(elevator)
 
     def get_state(self) -> SimulationStateResponse:
         """Get complete simulation state"""
@@ -624,16 +648,13 @@ class ElevatorSimulation:
         return completed_count
 
     def reset(self) -> None:
-        """Reset simulation to initial state
-
-        Note: This does not reset max_duration_ticks, which is managed
-        separately by load_traffic_from_current_file().
-        """
+        """Reset simulation to initial state"""
         with self.lock:
             self.state = create_empty_simulation_state(
                 len(self.elevators), len(self.floors), self.elevators[0].max_capacity
             )
             self.traffic_queue: List[TrafficEntry] = []
+            self.max_duration_ticks = 0
             self.next_passenger_id = 1
 
 
@@ -733,81 +754,6 @@ def get_traffic_info() -> Response | tuple[Response, int]:
         return json_response({"error": str(e)}, 500)
 
 
-@app.route("/api/config/max_ticks", methods=["POST"])
-def set_max_ticks() -> Response | tuple[Response, int]:
-    """设置最大模拟时长（ticks）"""
-    try:
-        data: Dict[str, Any] = request.get_json() or {}
-        max_ticks = data.get("max_ticks")
-
-        if max_ticks is None:
-            return json_response({"error": "max_ticks is required"}, 400)
-
-        max_ticks_int = int(max_ticks)
-        if max_ticks_int <= 0:
-            return json_response({"error": "max_ticks must be positive"}, 400)
-
-        # Store user preference and apply immediately
-        simulation.user_max_ticks = max_ticks_int
-        simulation.max_duration_ticks = max_ticks_int
-        server_debug_log(f"Set user_max_ticks and max_duration_ticks to {max_ticks_int}")
-
-        return json_response({
-            "success": True,
-            "max_ticks": simulation.max_duration_ticks
-        })
-    except ValueError as e:
-        return json_response({"error": f"Invalid max_ticks value: {str(e)}"}, 400)
-    except Exception as e:
-        return json_response({"error": str(e)}, 500)
-
-
-@app.route("/api/load_scenario", methods=["POST"])
-def load_scenario() -> Response | tuple[Response, int]:
-    """加载指定场景文件"""
-    try:
-        data: Dict[str, Any] = request.get_json() or {}
-        scenario_name = data.get("scenario_name")
-
-        if not scenario_name:
-            return json_response({"error": "scenario_name is required"}, 400)
-
-        server_debug_log(f"Looking for scenario: {scenario_name}")
-
-        # 查找场景文件（不含.json后缀）
-        scenario_file = None
-        for f in simulation.traffic_files:
-            if f.stem == scenario_name:  # stem是不含扩展名的文件名
-                scenario_file = f
-                break
-
-        if not scenario_file:
-            available = [f.stem for f in simulation.traffic_files]
-            return json_response({
-                "error": f"Scenario '{scenario_name}' not found",
-                "available_scenarios": available
-            }, 404)
-
-        # 设置索引并加载场景
-        simulation.current_traffic_index = simulation.traffic_files.index(scenario_file)
-        server_debug_log(f"Loading scenario index {simulation.current_traffic_index}: {scenario_file.name}")
-        simulation.load_current_traffic()
-
-        return json_response({
-            "success": True,
-            "scenario": scenario_name,
-            "elevators": len(simulation.elevators),
-            "floors": len(simulation.floors),
-            "passengers": len(simulation.traffic_queue),
-            "max_ticks": simulation.max_duration_ticks
-        })
-    except Exception as e:
-        server_debug_log(f"Error loading scenario: {e}")
-        import traceback
-        traceback.print_exc()
-        return json_response({"error": str(e)}, 500)
-
-
 def main() -> None:
     global simulation
 
@@ -825,8 +771,7 @@ def main() -> None:
         app.config["DEBUG"] = True
 
     # Create simulation with traffic directory
-    simulation = ElevatorSimulation(f"{os.path.join(os.path.dirname(__file__), 'traffic')}")
-
+    simulation = ElevatorSimulation(f"{os.path.join(os.path.dirname(__file__), '..', 'traffic')}")
 
     # Print traffic status
     print(f"Elevator simulation server running on http://{args.host}:{args.port}")

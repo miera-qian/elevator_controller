@@ -32,10 +32,10 @@ class ScenarioRepository:
         初始化场景仓库
 
         Args:
-            data_dir: 数据目录路径，默认为 webui/../data
+            data_dir: 数据目录路径，默认为 ./traffic (统一的traffic目录)
         """
         if data_dir is None:
-            self.data_dir = Path(__file__).parent.parent.parent / "data"
+            self.data_dir = Path(__file__).parent.parent.parent / "traffic"
         else:
             self.data_dir = data_dir
 

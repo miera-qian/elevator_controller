@@ -12,6 +12,7 @@ class ControlPanelView {
             scenarioInfo: document.getElementById('scenario-info'),
             speedSlider: document.getElementById('speed-slider'),
             speedValue: document.getElementById('speed-value'),
+            maxTicksInput: document.getElementById('max-ticks-input'),
             startBtn: document.getElementById('start-btn'),
             pauseBtn: document.getElementById('pause-btn'),
             resumeBtn: document.getElementById('resume-btn'),
@@ -158,6 +159,11 @@ class ControlPanelView {
                 <span class="info-value">${scenario.type}</span>
             </div>
         `;
+
+        // 更新max_ticks输入框的默认值为场景时长
+        if (this.elements.maxTicksInput && scenario.duration) {
+            this.elements.maxTicksInput.value = scenario.duration;
+        }
     }
 
     /**
@@ -188,6 +194,18 @@ class ControlPanelView {
                 this.elements.stats.avgWait.textContent = stats.avg_wait_time.toFixed(2);
             }
         }
+    }
+
+    /**
+     * 重置统计数据显示
+     */
+    resetStats() {
+        this.elements.stats.tick.textContent = '0';
+        this.elements.stats.total.textContent = '0';
+        this.elements.stats.waiting.textContent = '0';
+        this.elements.stats.inElevator.textContent = '0';
+        this.elements.stats.completed.textContent = '0';
+        this.elements.stats.avgWait.textContent = '0.0';
     }
 
     /**

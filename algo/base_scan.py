@@ -63,8 +63,6 @@ class ScanController(BaseAlgorithm):
         #    只记录每部电梯内部乘客的目的地。
         self.internal_targets: Dict[int, Set[int]] = {e.id: set() for e in elevators}
 
-        #用于记录已经被指派给某部空闲电梯，但电梯尚未到达的楼层呼叫
-        self.assigned_calls: Set[int] = set()
         self.BYPASS_THRESHOLD = 0.8
 
     def on_event_execute_start(
@@ -101,7 +99,7 @@ class ScanController(BaseAlgorithm):
             self.waiting_down[floor_num].add(passenger.id)
 
         # 2. 尝试将此任务分配给一部空闲的电梯
-        # self._assign_call_to_idle_elevator()
+        self._assign_call_to_idle_elevator()
 
     def on_passenger_board(self, elevator: ProxyElevator, passenger: ProxyPassenger) -> None:
         """
@@ -124,7 +122,6 @@ class ScanController(BaseAlgorithm):
             self.waiting_down[origin_floor].discard(passenger.id)
 
         print(f"  > E{elevator_id} internal targets are now: {self.internal_targets[elevator_id]}")
-        self.assigned_calls.discard(origin_floor)
 
     def on_elevator_stopped(self, elevator: ProxyElevator, floor: ProxyFloor) -> None:
         """
@@ -155,9 +152,8 @@ class ScanController(BaseAlgorithm):
             # 2. 如果只有一个电梯（就是自己），或者自己的ID是竞争者中最小的，则自己负责接客
             if len(competitors) == 1 or elevator.id == min(e.id for e in competitors):
                 print(f"  > E{elevator_id} will handle pickup at F{floor_num}. Kicking start to trigger boarding.")
-                self.assigned_calls.discard(floor_num)
 
-                # 向呼叫方向移动一层楼来“启动”电梯
+                # 向呼叫方向移动一层楼来"启动"电梯
                 next_floor = floor_num + 1 if current_direction == "up" else floor_num - 1
                 if 0 <= next_floor < self.num_floors:
                     elevator.go_to_floor(next_floor)
@@ -195,7 +191,6 @@ class ScanController(BaseAlgorithm):
         ###停止检测
         print(f"--- Elevator Stopped (Tick {self.current_tick}) ---")
         print(f"  > E{elevator_id} stopped at {floor_num}. Main direction: {current_direction}.")
-        self.assigned_calls.discard(floor_num)
 
         # 1. 处理下客 (从内部目标移除)
         self.internal_targets[elevator_id].discard(floor_num)
@@ -210,12 +205,6 @@ class ScanController(BaseAlgorithm):
             # a. 如果当前方向还有任务，继续前进
             print(f"  > Decision: Continue {current_direction} to next target: {next_target}.")
             elevator.go_to_floor(next_target)
-            if current_direction == "up" and len(self.waiting_up.get(floor_num, set())) <= (
-                    1 - elevator.load_factor) * elevator.max_capacity:
-                self.assigned_calls.add(next_target)
-            elif current_direction == "down" and len(self.waiting_down.get(floor_num, set())) <= (
-                    1 - elevator.load_factor) * elevator.max_capacity:
-                self.assigned_calls.add(next_target)
         else:
             # b. 如果当前方向没任务了，尝试掉头
             opposite_direction = "down" if current_direction == "up" else "up"
@@ -227,16 +216,12 @@ class ScanController(BaseAlgorithm):
                     f"  > Decision: No more {current_direction} targets. Reversing to {opposite_direction} for target {next_target_after_turn}.")
                 self.elevator_direction[elevator_id] = opposite_direction
                 elevator.go_to_floor(next_target_after_turn)
-                if opposite_direction == "up" and len(self.waiting_up.get(floor_num, set())) <= (
-                        1 - elevator.load_factor) * elevator.max_capacity:
-                    self.assigned_calls.add(next_target)
-                elif opposite_direction == "down" and len(self.waiting_down.get(floor_num, set())) <= (
-                        1 - elevator.load_factor) * elevator.max_capacity:
-                    self.assigned_calls.add(next_target)
             else:
                 # c. 如果所有方向都没有任务了，进入空闲
                 print(f"  > Decision: No targets in any direction. E{elevator_id} will become idle.")
                 self.elevator_direction[elevator_id] = "idle"
+                # 立即尝试分配新任务
+                self._assign_call_to_idle_elevator()
 
     def on_elevator_idle(self, elevator: ProxyElevator) -> None:
         """
@@ -250,7 +235,7 @@ class ScanController(BaseAlgorithm):
         self.elevator_direction[elevator.id] = "idle"
 
         # 尝试分配一个新任务
-        # self._assign_call_to_idle_elevator()
+        self._assign_call_to_idle_elevator()
 
     def on_elevator_approaching(self, elevator: ProxyElevator, floor: ProxyFloor, direction: str) -> None:
         """
@@ -283,9 +268,9 @@ class ScanController(BaseAlgorithm):
             return  # 决策完成，不接客，函数结束
 
         # 决策3: 是否可以顺路接客？
-        # 条件：电梯未满，且该楼层有同方向的、未被分配的请求
+        # 条件：电梯未满，且该楼层有同方向的请求
         should_pickup = False
-        if elevator.load_factor < 1.0 and floor_num not in self.assigned_calls:
+        if elevator.load_factor < 1.0:
             if direction == "up" and self.waiting_up[floor_num]:
                 should_pickup = True
             elif direction == "down" and self.waiting_down[floor_num]:
@@ -312,10 +297,10 @@ class ScanController(BaseAlgorithm):
 
             all_unassigned_calls = set()
             for floor_num, passengers in self.waiting_up.items():
-                if passengers and floor_num not in self.assigned_calls:
+                if passengers:  # 只要有人等待，就添加
                     all_unassigned_calls.add(floor_num)
             for floor_num, passengers in self.waiting_down.items():
-                if passengers and floor_num not in self.assigned_calls:
+                if passengers:  # 只要有人等待，就添加
                     all_unassigned_calls.add(floor_num)
 
             # 2. 如果没有空闲电梯或没有新请求，则分配结束
@@ -353,8 +338,6 @@ class ScanController(BaseAlgorithm):
 
                 # 5. 立即更新状态，为下一次循环（如果需要）做准备
 
-                self.assigned_calls.add(target_floor)
-
                 if target_floor > elevator_to_assign.current_floor:
                     self.elevator_direction[elevator_to_assign.id] = "up"
                 elif target_floor < elevator_to_assign.current_floor:
@@ -391,21 +374,22 @@ class ScanController(BaseAlgorithm):
         internal = self.internal_targets[elevator_id]
 
         # 【核心修正】: 不再只看同向请求，而是看所有楼层的请求，以找到真正的端点
-        all_up_calls = {floor for floor, passengers in self.waiting_up.items() if passengers and floor not in self.assigned_calls}
-        all_down_calls = {floor for floor, passengers in self.waiting_down.items() if passengers and floor not in self.assigned_calls}
+        all_up_calls = {floor for floor, passengers in self.waiting_up.items() if passengers}
+        all_down_calls = {floor for floor, passengers in self.waiting_down.items() if passengers}
         all_external_calls = all_up_calls | all_down_calls
 
         all_possible_stops = internal | all_external_calls
 
-        # 2. 在指定方向上查找
+        # 2. 在指定方向上查找 - SCAN算法要扫描到端点
         if direction == "up":
-            # 寻找当前楼层之上的“最远”请求点作为扫描终点
+            # 寻找当前楼层之上的"最远"请求点作为扫描终点
             stops_above = [f for f in all_possible_stops if f > current_floor]
-            return min(stops_above) if stops_above else None  # 仍然是去最近的，但现在考虑了所有请求
+            return max(stops_above) if stops_above else None  # 修正：返回最高楼层
 
         elif direction == "down":
+            # 寻找当前楼层之下的"最远"请求点作为扫描终点
             stops_below = [f for f in all_possible_stops if f < current_floor]
-            return max(stops_below) if stops_below else None
+            return min(stops_below) if stops_below else None  # 修正：返回最低楼层
 
         return None
 
