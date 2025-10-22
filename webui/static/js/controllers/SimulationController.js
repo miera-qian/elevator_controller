@@ -116,9 +116,21 @@ class SimulationController {
 
         this.wsManager.on('complete', (message) => {
             console.log('[SimulationController] Simulation complete:', message);
+
+            // 先更新最终统计数据
+            if (message.stats) {
+                this.controlPanelView.updateStats(message);
+                this.controlPanelView.showFinalStats(message.stats);
+            }
+
+            // 处理可视化完成状态
             this.visualizationView.handleCompletion();
-            this.controlPanelView.showStatus('模拟已完成', 'success');
-            this._handleStopSimulation();
+
+            // 显示完成状态
+            this.controlPanelView.showStatus('模拟已完成 - 可以选择新场景开始下一次模拟', 'success');
+
+            // 停止模拟但不重置统计数据
+            this._handleCompletionCleanup();
         });
 
         this.wsManager.on('error', (message) => {
@@ -176,6 +188,9 @@ class SimulationController {
             return;
         }
 
+        // 重置统计数据（开始新模拟时）
+        this._resetStats();
+
         try {
             // 连接 WebSocket
             if (!this.wsManager.connected) {
@@ -230,6 +245,41 @@ class SimulationController {
         this.isSimulating = false;
         this.controlPanelView.setSimulationState(false);
         this.controlPanelView.showStatus('模拟已停止', 'info');
+
+        // 重置统计数据
+        this._resetStats();
+    }
+
+    /**
+     * 处理模拟完成后的清理（不重置统计数据）
+     * @private
+     */
+    _handleCompletionCleanup() {
+        this.wsManager.stopSimulation();
+        this.visualizationView.stopAnimation();
+        this.isSimulating = false;
+
+        // 启用场景和算法选择，允许用户开始新的模拟
+        this.controlPanelView.setSimulationState(false);
+
+        // 注意：不重置统计数据，保留最终结果供用户查看
+    }
+
+    /**
+     * 重置统计数据显示
+     * @private
+     */
+    _resetStats() {
+        this.controlPanelView.updateStats({
+            tick: 0,
+            stats: {
+                total_passengers: 0,
+                waiting: 0,
+                in_elevator: 0,
+                completed: 0,
+                avg_wait_time: 0
+            }
+        });
     }
 
     /**

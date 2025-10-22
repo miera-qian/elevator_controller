@@ -191,6 +191,30 @@ class ControlPanelView {
     }
 
     /**
+     * 显示最终统计数据（高亮显示）
+     * @param {Object} stats - 最终统计数据
+     */
+    showFinalStats(stats) {
+        console.log('[ControlPanelView] Showing final stats:', stats);
+
+        // 添加高亮效果
+        const statsContainer = document.querySelector('.stats-panel');
+        if (statsContainer) {
+            statsContainer.classList.add('stats-highlight');
+
+            // 3秒后移除高亮
+            setTimeout(() => {
+                statsContainer.classList.remove('stats-highlight');
+            }, 3000);
+        }
+
+        // 如果有 p95 等待时间，可以在控制台显示
+        if (stats.p95_wait_time !== undefined) {
+            console.log(`[Final Stats] P95 Wait Time: ${stats.p95_wait_time.toFixed(2)}s`);
+        }
+    }
+
+    /**
      * 显示状态消息
      * @param {string} message - 消息内容
      * @param {string} type - 消息类型 ('info', 'success', 'error')

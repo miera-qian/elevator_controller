@@ -9,4 +9,4 @@ from .rl_dqn import RLDQNAlgorithm
 from .hybrid_scan_rl import HybridScanRLAlgorithm
 from .base_scan import ScanController
 
-__all__ = ['OptimizedScanAlgorithm', 'RLDQNAlgorithm', 'HybridScanRLAlgorithm', 'ScanController']
+__all__ = ['ScanController']

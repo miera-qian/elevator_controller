@@ -89,8 +89,20 @@ class ElevatorRenderer {
     calculateLayout() {
         const availableHeight = this.canvas.height - this.topMargin - this.bottomMargin;
 
-        // Calculate floor height based on number of floors
-        this.floorHeight = Math.min(60, availableHeight / (this.numFloors + 1));
+        // 动态计算楼层高度（移除最小值限制，让其完全自适应）
+        this.floorHeight = availableHeight / (this.numFloors + 1);
+
+        // 电梯高度 = 楼层高度的50%（降低比例，确保在楼层间有更多空隙）
+        // 设置最小值10px，允许更小的电梯
+        this.elevatorHeight = Math.max(10, this.floorHeight * 0.5);
+
+        // 电梯宽度 = 电梯高度 * 1.6（保持长宽比约1.6:1）
+        // 设置最小值30px
+        this.elevatorWidth = Math.max(30, this.elevatorHeight * 1.6);
+
+        // 乘客圆圈半径也随楼层高度调整
+        // 范围：2px（最小）到 5px（最大），进一步缩小
+        this.passengerRadius = Math.max(2, Math.min(5, this.elevatorHeight / 10));
 
         // Calculate elevator spacing to fit exactly
         // Each elevator needs: elevatorWidth + some spacing
@@ -374,7 +386,8 @@ class ElevatorRenderer {
         // Draw circles with passenger IDs (same style as waiting area)
 
         const maxPerRow = 4;
-        const spacing = 16; // Increased spacing for larger circles
+        // 动态计算间距：半径的2倍 + 4px间隙，最小12px
+        const spacing = Math.max(12, this.passengerRadius * 2 + 4);
 
         passengers.forEach((passenger, idx) => {
             const row = Math.floor(idx / maxPerRow);
@@ -416,7 +429,8 @@ class ElevatorRenderer {
             if (passengers && passengers.length > 0) {
                 // Draw passengers waiting at this floor
                 const maxPerRow = 8;
-                const spacing = 18; // Increased spacing for larger circles
+                // 动态计算间距：半径的2倍 + 4px间隙，最小12px
+                const spacing = Math.max(12, this.passengerRadius * 2 + 4);
 
                 passengers.forEach((passenger, idx) => {
                     const row = Math.floor(idx / maxPerRow);
@@ -441,11 +455,17 @@ class ElevatorRenderer {
                 });
 
                 // Draw count label (showing actual waiting count)
+                // 将标签放置在乘客圆圈的右侧，避免遮挡
+                const maxRows = Math.ceil(passengers.length / maxPerRow);
+                const maxCols = Math.min(passengers.length, maxPerRow);
+                const labelX = waitingAreaX + maxCols * spacing + 10; // 在最右侧圆圈右边10px处
+                const labelY = floorY - 25; // 与第一排乘客圆圈对齐
+
                 this.ctx.fillStyle = this.colors.text;
-                this.ctx.font = '12px sans-serif';
+                this.ctx.font = '10px sans-serif';
                 this.ctx.textAlign = 'left';
                 this.ctx.textBaseline = 'middle';
-                this.ctx.fillText(`等待: ${passengers.length}`, waitingAreaX, floorY + 15);
+                this.ctx.fillText(`等待: ${passengers.length}`, labelX, labelY);
             }
         });
     }

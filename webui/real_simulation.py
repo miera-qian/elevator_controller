@@ -70,17 +70,29 @@ class RealSimulationEngine:
     def _load_scenario(self):
         """Load scenario data from JSON file"""
         print(f"[RealSimulation] Loading scenario: {self.scenario_name}")
-        data_dir = Path(__file__).parent.parent / "data"
-        scenario_file = data_dir / f"{self.scenario_name}.json"
 
-        if not scenario_file.exists():
-            # Try to find the file in traffic folder as well
-            traffic_dir = Path(__file__).parent.parent / "traffic"
+        # 从 elevator-py 包的 traffic 目录加载场景
+        try:
+            import elevator_saga
+            traffic_dir = Path(elevator_saga.__file__).parent / "traffic"
             scenario_file = traffic_dir / f"{self.scenario_name}.json"
+
+            if not scenario_file.exists():
+                # 回退到本地 data 目录
+                data_dir = Path(__file__).parent.parent / "data"
+                scenario_file = data_dir / f"{self.scenario_name}.json"
+
+                if not scenario_file.exists():
+                    raise ValueError(f"Scenario file not found: {self.scenario_name}.json")
+        except ImportError:
+            # 如果包不存在，使用本地目录
+            data_dir = Path(__file__).parent.parent / "data"
+            scenario_file = data_dir / f"{self.scenario_name}.json"
 
             if not scenario_file.exists():
                 raise ValueError(f"Scenario file not found: {self.scenario_name}.json")
 
+        print(f"[RealSimulation] Using scenario file: {scenario_file}")
         with open(scenario_file, 'r', encoding='utf-8') as f:
             self.scenario_data = json.load(f)
 
@@ -125,40 +137,19 @@ class RealSimulationEngine:
 
     async def _start_server(self):
         """Start the simulator server in a subprocess"""
-        # Clean up and prepare traffic directory for the specific scenario
-        traffic_dir = Path(__file__).parent.parent / "traffic"
-
-        # Clean up existing traffic files to ensure only selected scenario is loaded
-        if traffic_dir.exists():
-            import shutil
-            for file in traffic_dir.glob("*.json"):
-                file.unlink()
-        else:
-            traffic_dir.mkdir(exist_ok=True)
-
-        # Copy ONLY the selected scenario to traffic directory
-        scenario_file = Path(__file__).parent.parent / "data" / f"{self.scenario_name}.json"
-        if not scenario_file.exists():
-            raise FileNotFoundError(f"Scenario file not found: {scenario_file}")
-
-        traffic_file = traffic_dir / f"{self.scenario_name}.json"
-        import shutil
-        shutil.copy(scenario_file, traffic_file)
-        print(f"[RealSimulation] Copied scenario {self.scenario_name}.json to traffic directory")
-
-        # Start server subprocess with output capture
-        # 跨平台兼容：使用 sys.executable 获取当前 Python 解释器路径
+        # 使用虚拟环境的 Python 解释器
         import sys
         python_executable = sys.executable
-        simulator_script = Path(__file__).parent.parent / "simulator.py"
 
         # Create log file for simulator output
         log_dir = Path(__file__).parent.parent / "logs"
         log_dir.mkdir(exist_ok=True)
         log_file = log_dir / f"simulator_{self.server_port}.log"
 
+        # 启动 simulator 模块（来自 elevator-py 包）
+        # simulator 会自动从 elevator_saga/traffic 目录加载场景文件
         self.server_process = subprocess.Popen(
-            [python_executable, str(simulator_script),
+            [python_executable, "-m", "elevator_saga.server.simulator",
              "--host", self.server_host,
              "--port", str(self.server_port),
              "--debug"],

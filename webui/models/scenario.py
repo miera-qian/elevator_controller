@@ -32,10 +32,21 @@ class ScenarioRepository:
         初始化场景仓库
 
         Args:
-            data_dir: 数据目录路径，默认为 webui/../data
+            data_dir: 数据目录路径，默认从 elevator-py 包的 traffic 目录加载
         """
         if data_dir is None:
-            self.data_dir = Path(__file__).parent.parent.parent / "data"
+            # 优先从 elevator-py 包的 traffic 目录加载场景
+            try:
+                import elevator_saga
+                package_dir = Path(elevator_saga.__file__).parent / "traffic"
+                if package_dir.exists():
+                    self.data_dir = package_dir
+                else:
+                    # 回退到本地 data 目录
+                    self.data_dir = Path(__file__).parent.parent.parent / "data"
+            except ImportError:
+                # 如果包不存在，使用本地 data 目录
+                self.data_dir = Path(__file__).parent.parent.parent / "data"
         else:
             self.data_dir = data_dir
 
