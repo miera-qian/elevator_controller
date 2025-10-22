@@ -113,44 +113,118 @@ check_python() {
     print_success "Python $PYTHON_VERSION found"
 }
 
+check_pip() {
+    print_step "Checking pip..."
+
+    # Ensure pip is available
+    if ! python3 -m pip --version &> /dev/null; then
+        print_warning "pip is not available, trying to bootstrap..."
+
+        # Try different methods to get pip
+        # Method 1: Use ensurepip (built into Python 3.4+)
+        if python3 -m ensurepip --user &> /dev/null; then
+            print_success "pip installed via ensurepip"
+        # Method 2: Download get-pip.py
+        elif command -v curl &> /dev/null; then
+            print_step "Downloading pip installer..."
+            if curl -sSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py; then
+                python3 /tmp/get-pip.py --user
+                rm -f /tmp/get-pip.py
+                print_success "pip installed via get-pip.py"
+            fi
+        elif command -v wget &> /dev/null; then
+            print_step "Downloading pip installer..."
+            if wget -q https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py; then
+                python3 /tmp/get-pip.py --user
+                rm -f /tmp/get-pip.py
+                print_success "pip installed via get-pip.py"
+            fi
+        else
+            print_error "Failed to install pip"
+            echo "Please install pip manually:"
+            echo "  Windows: python -m ensurepip --upgrade"
+            echo "  Or download: https://bootstrap.pypa.io/get-pip.py"
+            exit 1
+        fi
+    else
+        print_success "pip is available"
+    fi
+
+    # Upgrade pip to latest version (suppress output)
+    print_step "Ensuring pip is up to date..."
+    python3 -m pip install --user --upgrade pip --quiet 2>/dev/null || true
+    print_success "pip is ready"
+}
+
 check_uv() {
     print_step "Checking uv installation..."
 
     if ! command -v uv &> /dev/null; then
         print_warning "uv is not installed"
-        print_step "Installing uv..."
+        print_step "Installing uv via pip..."
 
-        # Install uv based on OS
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS
-            if command -v brew &> /dev/null; then
-                print_step "Installing uv via Homebrew..."
-                brew install uv
+        # Install uv using pip (cross-platform: Windows, macOS, Linux)
+        if python3 -m pip install --user uv; then
+            print_success "uv installed via pip"
+
+            # Determine user bin directory based on OS
+            if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+                # Windows (Git Bash/MSYS/Cygwin)
+                USER_SCRIPTS=$(python3 -c "import site; print(site.USER_SITE.replace('site-packages', 'Scripts'))" 2>/dev/null)
+                if [ -d "$USER_SCRIPTS" ]; then
+                    export PATH="$USER_SCRIPTS:$PATH"
+                    print_step "Added $USER_SCRIPTS to PATH"
+                fi
+                # Also add Windows Python Scripts directory
+                PYTHON_SCRIPTS=$(python3 -c "import os, sys; print(os.path.join(os.path.dirname(sys.executable), 'Scripts'))" 2>/dev/null)
+                if [ -d "$PYTHON_SCRIPTS" ]; then
+                    export PATH="$PYTHON_SCRIPTS:$PATH"
+                fi
             else
-                print_step "Installing uv via curl..."
-                curl -LsSf https://astral.sh/uv/install.sh | sh
+                # Unix-like systems (macOS, Linux)
+                USER_BIN="$HOME/.local/bin"
+                if [ -d "$USER_BIN" ] && [[ ":$PATH:" != *":$USER_BIN:"* ]]; then
+                    export PATH="$USER_BIN:$PATH"
+                    print_step "Added $USER_BIN to PATH"
+                fi
+
+                # Also check Python user base
+                PYTHON_USER_BASE=$(python3 -m site --user-base 2>/dev/null)
+                if [ -n "$PYTHON_USER_BASE" ] && [ -d "$PYTHON_USER_BASE/bin" ]; then
+                    export PATH="$PYTHON_USER_BASE/bin:$PATH"
+                fi
             fi
+
+            # Verify installation
+            if ! command -v uv &> /dev/null; then
+                print_error "uv installed but not found in PATH"
+                echo ""
+                echo "Please add uv to your PATH manually:"
+                echo ""
+                if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+                    echo "  Windows: Add Python Scripts directory to PATH"
+                    echo "  Location: $(python3 -c "import os, sys; print(os.path.join(os.path.dirname(sys.executable), 'Scripts'))" 2>/dev/null || echo "C:\\Users\\<YourUser>\\AppData\\Local\\Programs\\Python\\Python3X\\Scripts")"
+                else
+                    echo "  Unix: Add to ~/.bashrc or ~/.zshrc:"
+                    echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+                fi
+                echo ""
+                echo "Then restart your terminal and run this script again."
+                exit 1
+            fi
+
+            print_success "uv is now available"
         else
-            # Linux
-            print_step "Installing uv via curl..."
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-        fi
-
-        # Source the shell profile to update PATH
-        if [ -f "$HOME/.cargo/env" ]; then
-            source "$HOME/.cargo/env"
-        fi
-
-        # Verify installation
-        if ! command -v uv &> /dev/null; then
-            print_error "Failed to install uv"
-            echo "Please install manually: https://github.com/astral-sh/uv"
+            print_error "Failed to install uv via pip"
+            echo ""
+            echo "Troubleshooting steps:"
+            echo "1. Upgrade pip: python3 -m pip install --upgrade pip"
+            echo "2. Try again: python3 -m pip install --user uv"
+            echo "3. Check Python version: python3 --version (need 3.12+)"
             exit 1
         fi
-
-        print_success "uv installed successfully"
     else
-        UV_VERSION=$(uv --version | awk '{print $2}')
+        UV_VERSION=$(uv --version 2>/dev/null | awk '{print $2}' || echo "unknown")
         print_success "uv $UV_VERSION found"
     fi
 }
@@ -176,11 +250,24 @@ install_dependencies() {
 
 check_simulator_running() {
     # Check if simulator is already running on the port
-    if lsof -Pi :$SIMULATOR_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
-        return 0  # Running
+    # Use different methods based on OS
+    if command -v lsof &> /dev/null; then
+        # Unix/macOS: use lsof
+        if lsof -Pi :$SIMULATOR_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+            return 0  # Running
+        fi
+    elif command -v netstat &> /dev/null; then
+        # Windows/fallback: use netstat
+        if netstat -an 2>/dev/null | grep -q ":$SIMULATOR_PORT.*LISTEN"; then
+            return 0  # Running
+        fi
     else
-        return 1  # Not running
+        # Fallback: try to connect
+        if timeout 1 bash -c "cat < /dev/null > /dev/tcp/127.0.0.1/$SIMULATOR_PORT" 2>/dev/null; then
+            return 0  # Running
+        fi
     fi
+    return 1  # Not running
 }
 
 start_simulator() {
@@ -248,19 +335,23 @@ main() {
     check_python
     echo ""
 
-    # Step 2: Check/Install uv
+    # Step 2: Check pip
+    check_pip
+    echo ""
+
+    # Step 3: Check/Install uv
     check_uv
     echo ""
 
-    # Step 3: Install dependencies
+    # Step 4: Install dependencies
     install_dependencies
     echo ""
 
-    # Step 4: Start simulator
+    # Step 5: Start simulator
     start_simulator
     echo ""
 
-    # Step 5: Run controller
+    # Step 6: Run controller
     print_header "🎮 Starting Elevator Controller"
     echo ""
     print_step "Press Ctrl+C to stop"
