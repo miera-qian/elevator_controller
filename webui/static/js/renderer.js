@@ -89,20 +89,21 @@ class ElevatorRenderer {
     calculateLayout() {
         const availableHeight = this.canvas.height - this.topMargin - this.bottomMargin;
 
-        // 动态计算楼层高度（移除最小值限制，让其完全自适应）
+        // 完全自适应楼层高度（移除最小值限制）
         this.floorHeight = availableHeight / (this.numFloors + 1);
 
-        // 电梯高度 = 楼层高度的50%（降低比例，确保在楼层间有更多空隙）
-        // 设置最小值10px，允许更小的电梯
-        this.elevatorHeight = Math.max(10, this.floorHeight * 0.5);
+        // 电梯高度 = 楼层高度的50%，最小值降低到8px以支持更多楼层
+        this.elevatorHeight = Math.max(8, this.floorHeight * 0.5);
 
         // 电梯宽度 = 电梯高度 * 1.6（保持长宽比约1.6:1）
-        // 设置最小值30px
-        this.elevatorWidth = Math.max(30, this.elevatorHeight * 1.6);
+        // 最小值降低到25px
+        this.elevatorWidth = Math.max(25, this.elevatorHeight * 1.6);
 
-        // 乘客圆圈半径也随楼层高度调整
-        // 范围：2px（最小）到 5px（最大），进一步缩小
-        this.passengerRadius = Math.max(2, Math.min(5, this.elevatorHeight / 10));
+        // 乘客圆圈半径自适应：4-8px范围（降低最小值）
+        this.passengerRadius = Math.max(4, Math.min(8, this.elevatorHeight / 8));
+
+        // 字体大小自适应
+        this.fontSize = Math.max(8, Math.min(14, this.floorHeight / 5));
 
         // Calculate elevator spacing to fit exactly
         // Each elevator needs: elevatorWidth + some spacing
@@ -160,25 +161,29 @@ class ElevatorRenderer {
         // Check for simulation completion
         if (state.type === 'complete') {
             this.simulationComplete = true;
-            // IMPROVEMENT #4: 整个调度结束后所有电梯回到最底层
-            // Force all elevators to floor 1 immediately (no animation)
-            for (let i = 0; i < this.numElevators; i++) {
-                this.elevatorPositions[i] = 1;  // Current visual position
-                this.targetPositions[i] = 1;     // Target position
+
+            // ✅ 保持电梯位置和乘客，只清空等待区
+            if (state.elevators && state.elevators.length > 0) {
+                console.log('[Renderer] Received completion state with elevators:', state.elevators);
+
+                // 使用服务器发送的最终电梯状态
+                this.currentState.elevators = state.elevators;
+
+                // 同步视觉位置到最终位置（立即，无动画）
+                state.elevators.forEach((elev, idx) => {
+                    if (idx < this.elevatorPositions.length) {
+                        this.elevatorPositions[idx] = elev.floor;
+                        this.targetPositions[idx] = elev.floor;
+                        console.log(`[Renderer] E${elev.id} final position: floor ${elev.floor}, ${elev.passengers.length} passengers`);
+                    }
+                });
+            } else if (this.currentState && this.currentState.elevators) {
+                // 如果没有发送电梯状态，保持当前状态
+                console.log('[Renderer] No elevator data in completion, keeping current state');
             }
 
-            // Clear all passengers from elevators and waiting areas
-            // Create clean state with empty elevators at floor 1
-            this.currentState = {
-                elevators: Array.from({ length: this.numElevators }, (_, i) => ({
-                    id: i,
-                    floor: 1,
-                    direction: 'idle',
-                    passengers: [],
-                    capacity: this.capacity
-                })),
-                waiting: {}
-            };
+            // 清空等待区
+            this.currentState.waiting = {};
 
             // Force immediate render to show completion state
             this.render();
@@ -437,7 +442,9 @@ class ElevatorRenderer {
                     const col = idx % maxPerRow;
 
                     const x = waitingAreaX + col * spacing;
-                    const py = floorY - 25 - row * spacing; // Adjusted to be between floors
+                    // 将乘客圆圈放置在两条楼层线之间的中央位置
+                    // floorY 是当前楼层线的位置，往上半个楼层高度到达两线之间
+                    const py = floorY - this.floorHeight / 2 - row * spacing;
 
                     // IMPROVEMENT #2: Draw passenger circle with unique ID
                     this.ctx.fillStyle = this.colors.passenger;
@@ -455,15 +462,18 @@ class ElevatorRenderer {
                 });
 
                 // Draw count label (showing actual waiting count)
-                // 将标签放置在乘客圆圈的右侧，避免遮挡
+                // 标签放在等待区圆圈下方中央
                 const maxRows = Math.ceil(passengers.length / maxPerRow);
                 const maxCols = Math.min(passengers.length, maxPerRow);
-                const labelX = waitingAreaX + maxCols * spacing + 10; // 在最右侧圆圈右边10px处
-                const labelY = floorY - 25; // 与第一排乘客圆圈对齐
+                // 计算圆圈区域的水平中心位置
+                const circlesStartX = waitingAreaX;
+                const circlesCenterX = circlesStartX + (maxCols * spacing / 2) - (spacing / 2);
+                const labelX = circlesCenterX; // 圆圈水平中心
+                const labelY = floorY - this.floorHeight / 2 + (maxRows * spacing / 2) + 15; // 圆圈下方
 
                 this.ctx.fillStyle = this.colors.text;
                 this.ctx.font = '10px sans-serif';
-                this.ctx.textAlign = 'left';
+                this.ctx.textAlign = 'center'; // 居中对齐
                 this.ctx.textBaseline = 'middle';
                 this.ctx.fillText(`等待: ${passengers.length}`, labelX, labelY);
             }

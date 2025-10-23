@@ -117,10 +117,12 @@ class SimulationController {
         this.wsManager.on('complete', (message) => {
             console.log('[SimulationController] Simulation complete:', message);
 
-            // 先更新最终统计数据
+            // 【修复】先锁定统计数据，再更新（确保最终数据不被清零）
             if (message.stats) {
-                this.controlPanelView.updateStats(message);
+                // 先锁定，防止后续更新覆盖
                 this.controlPanelView.showFinalStats(message.stats);
+                // 更新统计（会被锁定机制拦截，保持最终值）
+                this.controlPanelView.updateStats(message);
             }
 
             // 处理可视化完成状态
@@ -270,6 +272,9 @@ class SimulationController {
      * @private
      */
     _resetStats() {
+        // 解锁统计数据，允许更新
+        this.controlPanelView.unlockStats();
+
         this.controlPanelView.updateStats({
             tick: 0,
             stats: {

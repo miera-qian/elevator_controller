@@ -36,6 +36,10 @@ class ControlPanelView {
         this.onStopClick = null;
         this.onSpeedChange = null;
 
+        // 最终统计数据锁定（模拟完成后保留数据）
+        this.finalStatsLocked = false;
+        this.finalStats = null;
+
         this._bindEvents();
     }
 
@@ -165,6 +169,11 @@ class ControlPanelView {
      * @param {Object} stats - 统计数据
      */
     updateStats(message) {
+        // 如果最终统计已锁定，不再更新（保留完成时的数据）
+        if (this.finalStatsLocked) {
+            return;
+        }
+
         if (message.tick !== undefined) {
             this.elements.stats.tick.textContent = message.tick;
         }
@@ -197,6 +206,10 @@ class ControlPanelView {
     showFinalStats(stats) {
         console.log('[ControlPanelView] Showing final stats:', stats);
 
+        // 锁定最终统计数据，防止被后续更新覆盖
+        this.finalStatsLocked = true;
+        this.finalStats = stats;
+
         // 添加高亮效果
         const statsContainer = document.querySelector('.stats-panel');
         if (statsContainer) {
@@ -212,6 +225,14 @@ class ControlPanelView {
         if (stats.p95_wait_time !== undefined) {
             console.log(`[Final Stats] P95 Wait Time: ${stats.p95_wait_time.toFixed(2)}s`);
         }
+    }
+
+    /**
+     * 重置统计数据锁定（开始新模拟时调用）
+     */
+    unlockStats() {
+        this.finalStatsLocked = false;
+        this.finalStats = null;
     }
 
     /**

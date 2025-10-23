@@ -101,6 +101,28 @@ class RealSimulationEngine:
 
         print(f"[RealSimulation] Loaded {len(self.traffic_events)} passengers")
 
+    def _find_scenario_index(self) -> int:
+        """Find the index of the selected scenario in traffic files list"""
+        try:
+            # 获取traffic目录中的所有JSON文件（按名称排序）
+            import elevator_saga
+            traffic_dir = Path(elevator_saga.__file__).parent / "traffic"
+            traffic_files = sorted([f.stem for f in traffic_dir.glob("*.json")])
+
+            print(f"[RealSimulation] Available scenarios: {traffic_files}")
+            print(f"[RealSimulation] Looking for scenario: {self.scenario_name}")
+
+            if self.scenario_name in traffic_files:
+                index = traffic_files.index(self.scenario_name)
+                print(f"[RealSimulation] Found scenario at index {index}")
+                return index
+            else:
+                print(f"[RealSimulation] Scenario '{self.scenario_name}' not found, using index 0")
+                return 0
+        except Exception as e:
+            print(f"[RealSimulation] Error finding scenario index: {e}")
+            return 0
+
     async def start(self):
         """Start the real simulation"""
         print(f"[RealSimulation] Starting: {self.algorithm_name} on {self.scenario_name}")
@@ -196,6 +218,57 @@ class RealSimulationEngine:
 
     async def _run_simulation(self):
         """Main simulation loop"""
+        # 【场景选择修复】设置正确的场景文件
+        scenario_index = self._find_scenario_index()
+        current_index = 0
+
+        # 获取当前服务器加载的场景索引
+        try:
+            response = requests.get(f"{self.server_url}/api/traffic/info", timeout=5)
+            if response.status_code == 200:
+                current_index = response.json().get("current_index", 0)
+                print(f"[RealSimulation] Server current scenario index: {current_index}")
+        except Exception as e:
+            print(f"[RealSimulation] Failed to get traffic info: {e}")
+
+        # 如果当前索引不是目标场景，循环调用next直到到达目标
+        attempts = 0
+        max_attempts = 20  # 防止无限循环
+        while current_index != scenario_index and attempts < max_attempts:
+            attempts += 1
+            try:
+                print(f"[RealSimulation] Switching from index {current_index} to {scenario_index}...")
+                response = requests.post(
+                    f"{self.server_url}/api/traffic/next",
+                    json={"full_reset": False},
+                    timeout=5
+                )
+                if response.status_code == 200:
+                    result = response.json()
+                    if result.get("success"):
+                        current_index += 1
+                        print(f"[RealSimulation] Switched to index {current_index}")
+                    else:
+                        print(f"[RealSimulation] Switch failed, resetting...")
+                        # 尝试完全重置
+                        response = requests.post(
+                            f"{self.server_url}/api/traffic/next",
+                            json={"full_reset": True},
+                            timeout=5
+                        )
+                        current_index = 0
+                else:
+                    print(f"[RealSimulation] Server returned {response.status_code}")
+                    break
+            except Exception as e:
+                print(f"[RealSimulation] Error switching scenario: {e}")
+                break
+
+        if current_index == scenario_index:
+            print(f"[RealSimulation] ✅ Successfully loaded scenario: {self.scenario_name} (index {scenario_index})")
+        else:
+            print(f"[RealSimulation] ⚠️  Could not load exact scenario, using index {current_index}")
+
         # Start algorithm in background task
         self.algorithm_task = asyncio.create_task(self._run_algorithm())
 
@@ -409,7 +482,7 @@ class RealSimulationEngine:
         })
 
     async def _send_completion(self):
-        """Send completion message"""
+        """Send completion message with full final state"""
         try:
             # Get final stats from server with longer timeout
             response = requests.get(f"{self.server_url}/api/state", timeout=10)
@@ -417,13 +490,48 @@ class RealSimulationEngine:
                 state_data = response.json()
                 metrics = state_data.get("metrics", {})
 
+                # 提取最终电梯状态（保持位置和乘客）
+                elevators_state = []
+                for elev in state_data.get("elevators", []):
+                    position = elev.get("position", {})
+                    current_floor = position.get("current_floor", 0) if position else elev.get("current_floor", 0)
+
+                    # 转换乘客信息
+                    passengers_info = []
+                    passengers_dict = state_data.get("passengers", {})
+                    for p_id in elev.get("passengers", []):
+                        if str(p_id) in passengers_dict:
+                            p = passengers_dict[str(p_id)]
+                            passengers_info.append({
+                                "id": p.get("id"),
+                                "from_floor": p.get("origin", 0) + 1,
+                                "to_floor": p.get("destination", 0) + 1,
+                                "call_time": p.get("arrive_tick", 0)
+                            })
+
+                    elevators_state.append({
+                        "id": elev.get("id"),
+                        "floor": current_floor + 1,  # Convert to 1-indexed
+                        "direction": "idle",  # 模拟完成时都是idle
+                        "passengers": passengers_info,
+                        "capacity": elev.get("max_capacity", 8)
+                    })
+
+                print(f"[RealSimulation] Sending completion with {len(elevators_state)} elevators, "
+                      f"{sum(len(e['passengers']) for e in elevators_state)} passengers still in elevators")
+
+                # 发送完整的最终状态
                 await self.websocket.send_json({
                     "type": "complete",
                     "tick": self.current_tick,
+                    "elevators": elevators_state,  # 包含电梯位置和乘客
+                    "waiting": {},  # 清空等待区
                     "stats": {
-                        "total_passengers": metrics.get("completed_passengers", 0),
-                        "avg_wait_time": round(metrics.get("average_floor_wait_time", 0), 2),
-                        "p95_wait_time": round(metrics.get("p95_floor_wait_time", 0), 2)
+                        "total_passengers": len(self.traffic_events),
+                        "waiting": 0,
+                        "in_elevator": sum(len(e["passengers"]) for e in elevators_state),
+                        "completed": metrics.get("completed_passengers", 0),
+                        "avg_wait_time": round(metrics.get("average_floor_wait_time", 0), 2)
                     }
                 })
                 return
