@@ -72,6 +72,9 @@ class ScanController(BaseAlgorithm):
         self.pattern_detection_tick = 50  # 在第50个tick进行场景识别
         self.pattern_detected = False
 
+    # -------------------------------------------------------------------------
+    # 4. 核心事件处理 (Event Handlers)
+    # -------------------------------------------------------------------------
     def on_event_execute_start(
             self, tick: int, events: List[SimulationEvent],
             elevators: List[ProxyElevator], floors: List[ProxyFloor]
@@ -82,12 +85,7 @@ class ScanController(BaseAlgorithm):
             print(f"\t{i.id}[{i.target_floor_direction.value},{i.current_floor_float}/{i.target_floor}]" + "👦" * len(
                 i.passengers), end="")
         print()
-
-
-    # -------------------------------------------------------------------------
-    # 4. 核心事件处理 (Event Handlers)
-    # -------------------------------------------------------------------------
-    # 下面的 on_... 方法是算法的“大脑”，它们在特定事件发生时被框架自动调用。
+        pass
 
     def on_passenger_call(self, passenger: ProxyPassenger, floor: ProxyFloor, direction: str) -> None:
         """

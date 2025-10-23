@@ -1,175 +1,180 @@
-2025-10-23 17:51:49 [INFO] Running on DESKTOP-A3GT1OF(127.0.1.1) with agent(v1.2.8) in workspace /home/hp/gitee_go_agent/workspace/083846c1-b370-4ff1-bcc4-b8c217e4db28
-2025-10-23 17:51:49 + set -e
-2025-10-23 17:51:49 + env bash /home/hp/run.sh
-2025-10-23 17:51:49 当前目录是：/home/hp/gitee_go_agent/workspace/083846c1-b370-4ff1-bcc4-b8c217e4db28
-2025-10-23 17:51:49 评测仓库：https://z.gitee.cn/zgca/elevator_con.git
-2025-10-23 17:51:49 检查 8000 端口占用...
-2025-10-23 17:51:49 准备安装评测依赖
-2025-10-23 17:51:49 Writing to /home/hp/.config/pip/pip.conf
-2025-10-23 17:51:50 Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
-2025-10-23 17:51:50 Requirement already satisfied: elevator-py in /home/hp/miniforge3/lib/python3.12/site-packages (0.0.10)
-2025-10-23 17:51:50 Requirement already satisfied: numpy>=1.20.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (2.3.3)
-2025-10-23 17:51:50 Requirement already satisfied: quart>=0.19.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.20.0)
-2025-10-23 17:51:50 Requirement already satisfied: hypercorn>=0.15.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.17.3)
-2025-10-23 17:51:50 Requirement already satisfied: h11 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (0.16.0)
-2025-10-23 17:51:50 Requirement already satisfied: h2>=3.1.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (4.2.0)
-2025-10-23 17:51:50 Requirement already satisfied: priority in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (2.0.0)
-2025-10-23 17:51:50 Requirement already satisfied: wsproto>=0.14.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (1.2.0)
-2025-10-23 17:51:50 Requirement already satisfied: hyperframe<7,>=6.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (6.1.0)
-2025-10-23 17:51:50 Requirement already satisfied: hpack<5,>=4.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (4.1.0)
-2025-10-23 17:51:50 Requirement already satisfied: aiofiles in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (25.1.0)
-2025-10-23 17:51:50 Requirement already satisfied: blinker>=1.6 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (1.9.0)
-2025-10-23 17:51:50 Requirement already satisfied: click>=8.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (8.3.0)
-2025-10-23 17:51:50 Requirement already satisfied: flask>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.2)
-2025-10-23 17:51:50 Requirement already satisfied: itsdangerous in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (2.2.0)
-2025-10-23 17:51:50 Requirement already satisfied: jinja2 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.6)
-2025-10-23 17:51:50 Requirement already satisfied: markupsafe in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.0.3)
-2025-10-23 17:51:50 Requirement already satisfied: werkzeug>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.3)
-2025-10-23 17:51:50 准备替换测试用例...
-2025-10-23 17:51:50 警告：ELEVATOR_JSON_CONTENT 环境变量为空，跳过测试用例替换
-2025-10-23 17:51:50 启动 simulator...
-2025-10-23 17:51:50 Simulator PID: 333698
-2025-10-23 17:51:50 等待 simulator 启动...
-2025-10-23 17:51:55 获取提交仓库
-2025-10-23 17:51:55 Cloning into 'repo_root'...
-2025-10-23 17:51:56 找到脚本: start_no_gui.sh
-2025-10-23 17:51:57 添加执行权限...
-2025-10-23 17:51:57 执行脚本: start_no_gui.sh
-2025-10-23 17:51:57 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2025-10-23 17:51:57 🚀 Elevator Controller Startup
-2025-10-23 17:51:57 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2025-10-23 17:51:57 ▶ Checking Python version...
-2025-10-23 17:51:57 ✓ Python 3.12 found
-2025-10-23 17:51:57 ▶ Checking pip...
-2025-10-23 17:51:57 ✓ pip is available
-2025-10-23 17:51:57 ▶ Ensuring pip is up to date...
-2025-10-23 17:51:57 ✓ pip is ready
-2025-10-23 17:51:57 ▶ Checking uv installation...
-2025-10-23 17:51:57 ✓ uv 0.9.5 found in PATH
-2025-10-23 17:51:57 ▶ Installing project dependencies...
-2025-10-23 17:51:57 Using CPython 3.12.11 interpreter at: /home/hp/miniforge3/bin/python3
-2025-10-23 17:51:57 Creating virtual environment at: .venv
-2025-10-23 17:51:57 Resolved 39 packages in 0.57ms
-2025-10-23 17:51:57 Installed 37 packages in 59ms
-2025-10-23 17:51:57  + annotated-types==0.7.0
-2025-10-23 17:51:57  + anyio==4.11.0
-2025-10-23 17:51:57  + blinker==1.9.0
-2025-10-23 17:51:57  + certifi==2025.8.3
-2025-10-23 17:51:57  + charset-normalizer==3.4.3
-2025-10-23 17:51:57  + click==8.3.0
-2025-10-23 17:51:57  + elevator-py==0.0.5
-2025-10-23 17:51:57  + fastapi==0.118.0
-2025-10-23 17:51:57  + flask==3.1.2
-2025-10-23 17:51:57  + h11==0.16.0
-2025-10-23 17:51:57  + httptools==0.6.4
-2025-10-23 17:51:57  + idna==3.10
-2025-10-23 17:51:57  + itsdangerous==2.2.0
-2025-10-23 17:51:57  + jinja2==3.1.6
-2025-10-23 17:51:57  + markdown-it-py==4.0.0
-2025-10-23 17:51:57  + markupsafe==3.0.3
-2025-10-23 17:51:57  + mdurl==0.1.2
-2025-10-23 17:51:57  + numpy==2.3.3
-2025-10-23 17:51:57  + pydantic==2.11.9
-2025-10-23 17:51:57  + pydantic-core==2.33.2
-2025-10-23 17:51:57  + pygments==2.19.2
-2025-10-23 17:51:57  + python-dotenv==1.1.1
-2025-10-23 17:51:57  + pyyaml==6.0.3
-2025-10-23 17:51:57  + requests==2.32.5
-2025-10-23 17:51:57  + rich==14.1.0
-2025-10-23 17:51:57  + shellingham==1.5.4
-2025-10-23 17:51:57  + sniffio==1.3.1
-2025-10-23 17:51:57  + starlette==0.48.0
-2025-10-23 17:51:57  + typer==0.19.2
-2025-10-23 17:51:57  + typing-extensions==4.15.0
-2025-10-23 17:51:57  + typing-inspection==0.4.2
-2025-10-23 17:51:57  + urllib3==2.5.0
-2025-10-23 17:51:57  + uvicorn==0.37.0
-2025-10-23 17:51:57  + uvloop==0.21.0
-2025-10-23 17:51:57  + watchfiles==1.1.0
-2025-10-23 17:51:57  + websockets==15.0.1
-2025-10-23 17:51:57  + werkzeug==3.1.3
-2025-10-23 17:51:57 ✓ Dependencies installed successfully
-2025-10-23 17:51:57 ▶ Starting simulator server...
-2025-10-23 17:51:58 ⚠ Simulator is already running on port 8000
-2025-10-23 17:51:58 ▶ Using existing simulator instance
-2025-10-23 17:51:58 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2025-10-23 17:51:58 🎮 Starting Elevator Controller
-2025-10-23 17:51:58 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2025-10-23 17:51:58 ▶ Press Ctrl+C to stop
-2025-10-23 17:51:58 [DEBUG] API Client initialized for http://127.0.0.1:8000
-2025-10-23 17:51:58 启动 ScanController 算法
-2025-10-23 17:51:58 [DEBUG] Updated traffic info - max_tick: 800
-2025-10-23 17:51:58 --- SCAN Algorithm Initialized ---
-2025-10-23 17:51:58 [INIT] Kick-starting elevators to enable tick progression...
-2025-10-23 17:51:58 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
-2025-10-23 17:51:58 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
-2025-10-23 17:51:58   > E0 → F2 (kick-start)
-2025-10-23 17:51:58 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
-2025-10-23 17:51:58 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
-2025-10-23 17:51:58   > E1 → F4 (kick-start)
-2025-10-23 17:51:58 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
-2025-10-23 17:51:58 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
-2025-10-23 17:51:58   > E2 → F6 (kick-start)
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
-2025-10-23 17:51:58 Tick 0: 即将处理 0 个事件 []
-2025-10-23 17:51:58     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
-2025-10-23 17:51:58   > Assignment loop finished: No idle elevators and no unassigned calls.
+2025-10-23 18:14:36 [INFO] Running on DESKTOP-A3GT1OF(127.0.1.1) with agent(v1.2.8) in workspace /home/hp/gitee_go_agent/workspace/bdca409f-cf19-492c-8265-1357956215b7
+2025-10-23 18:14:36 + set -e
+2025-10-23 18:14:36 + env bash /home/hp/run.sh
+2025-10-23 18:14:36 当前目录是：/home/hp/gitee_go_agent/workspace/bdca409f-cf19-492c-8265-1357956215b7
+2025-10-23 18:14:36 评测仓库：https://z.gitee.cn/zgca/elevator_con.git
+2025-10-23 18:14:36 检查 8000 端口占用...
+2025-10-23 18:14:37 准备安装评测依赖
+2025-10-23 18:14:37 Writing to /home/hp/.config/pip/pip.conf
+2025-10-23 18:14:37 Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+2025-10-23 18:14:37 Requirement already satisfied: elevator-py in /home/hp/miniforge3/lib/python3.12/site-packages (0.0.10)
+2025-10-23 18:14:37 Requirement already satisfied: numpy>=1.20.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (2.3.3)
+2025-10-23 18:14:37 Requirement already satisfied: quart>=0.19.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.20.0)
+2025-10-23 18:14:37 Requirement already satisfied: hypercorn>=0.15.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.17.3)
+2025-10-23 18:14:37 Requirement already satisfied: h11 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (0.16.0)
+2025-10-23 18:14:37 Requirement already satisfied: h2>=3.1.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (4.2.0)
+2025-10-23 18:14:37 Requirement already satisfied: priority in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (2.0.0)
+2025-10-23 18:14:37 Requirement already satisfied: wsproto>=0.14.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (1.2.0)
+2025-10-23 18:14:37 Requirement already satisfied: hyperframe<7,>=6.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (6.1.0)
+2025-10-23 18:14:37 Requirement already satisfied: hpack<5,>=4.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (4.1.0)
+2025-10-23 18:14:37 Requirement already satisfied: aiofiles in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (25.1.0)
+2025-10-23 18:14:38 Requirement already satisfied: blinker>=1.6 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (1.9.0)
+2025-10-23 18:14:38 Requirement already satisfied: click>=8.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (8.3.0)
+2025-10-23 18:14:38 Requirement already satisfied: flask>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.2)
+2025-10-23 18:14:38 Requirement already satisfied: itsdangerous in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (2.2.0)
+2025-10-23 18:14:38 Requirement already satisfied: jinja2 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.6)
+2025-10-23 18:14:38 Requirement already satisfied: markupsafe in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.0.3)
+2025-10-23 18:14:38 Requirement already satisfied: werkzeug>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.3)
+2025-10-23 18:14:38 准备替换测试用例...
+2025-10-23 18:14:38 警告：ELEVATOR_JSON_CONTENT 环境变量为空，跳过测试用例替换
+2025-10-23 18:14:38 启动 simulator...
+2025-10-23 18:14:38 Simulator PID: 335468
+2025-10-23 18:14:38 等待 simulator 启动...
+2025-10-23 18:14:43 获取提交仓库
+2025-10-23 18:14:43 Cloning into 'repo_root'...
+2025-10-23 18:14:45 找到脚本: start_no_gui.sh
+2025-10-23 18:14:45 添加执行权限...
+2025-10-23 18:14:45 执行脚本: start_no_gui.sh
+2025-10-23 18:14:45 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 18:14:45 🚀 Elevator Controller Startup
+2025-10-23 18:14:45 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 18:14:45 ▶ Checking Python version...
+2025-10-23 18:14:45 ✓ Python 3.12 found
+2025-10-23 18:14:45 ▶ Checking pip...
+2025-10-23 18:14:45 ✓ pip is available
+2025-10-23 18:14:45 ▶ Ensuring pip is up to date...
+2025-10-23 18:14:45 ✓ pip is ready
+2025-10-23 18:14:45 ▶ Checking uv installation...
+2025-10-23 18:14:45 ✓ uv 0.9.5 found in PATH
+2025-10-23 18:14:45 ▶ Installing project dependencies...
+2025-10-23 18:14:45 Using CPython 3.12.11 interpreter at: /home/hp/miniforge3/bin/python3
+2025-10-23 18:14:45 Creating virtual environment at: .venv
+2025-10-23 18:14:45 Resolved 39 packages in 13ms
+2025-10-23 18:14:45 Installed 37 packages in 82ms
+2025-10-23 18:14:45  + annotated-types==0.7.0
+2025-10-23 18:14:45  + anyio==4.11.0
+2025-10-23 18:14:45  + blinker==1.9.0
+2025-10-23 18:14:45  + certifi==2025.8.3
+2025-10-23 18:14:45  + charset-normalizer==3.4.3
+2025-10-23 18:14:45  + click==8.3.0
+2025-10-23 18:14:45  + elevator-py==0.0.5
+2025-10-23 18:14:45  + fastapi==0.118.0
+2025-10-23 18:14:45  + flask==3.1.2
+2025-10-23 18:14:45  + h11==0.16.0
+2025-10-23 18:14:45  + httptools==0.6.4
+2025-10-23 18:14:45  + idna==3.10
+2025-10-23 18:14:45  + itsdangerous==2.2.0
+2025-10-23 18:14:45  + jinja2==3.1.6
+2025-10-23 18:14:45  + markdown-it-py==4.0.0
+2025-10-23 18:14:45  + markupsafe==3.0.3
+2025-10-23 18:14:45  + mdurl==0.1.2
+2025-10-23 18:14:45  + numpy==2.3.3
+2025-10-23 18:14:45  + pydantic==2.11.9
+2025-10-23 18:14:45  + pydantic-core==2.33.2
+2025-10-23 18:14:45  + pygments==2.19.2
+2025-10-23 18:14:45  + python-dotenv==1.1.1
+2025-10-23 18:14:45  + pyyaml==6.0.3
+2025-10-23 18:14:45  + requests==2.32.5
+2025-10-23 18:14:45  + rich==14.1.0
+2025-10-23 18:14:45  + shellingham==1.5.4
+2025-10-23 18:14:45  + sniffio==1.3.1
+2025-10-23 18:14:45  + starlette==0.48.0
+2025-10-23 18:14:45  + typer==0.19.2
+2025-10-23 18:14:45  + typing-extensions==4.15.0
+2025-10-23 18:14:45  + typing-inspection==0.4.2
+2025-10-23 18:14:45  + urllib3==2.5.0
+2025-10-23 18:14:45  + uvicorn==0.37.0
+2025-10-23 18:14:45  + uvloop==0.21.0
+2025-10-23 18:14:45  + watchfiles==1.1.0
+2025-10-23 18:14:45  + websockets==15.0.1
+2025-10-23 18:14:45  + werkzeug==3.1.3
+2025-10-23 18:14:45 ✓ Dependencies installed successfully
+2025-10-23 18:14:45 ▶ Starting simulator server...
+2025-10-23 18:14:46 ⚠ Simulator is already running on port 8000
+2025-10-23 18:14:46 ▶ Using existing simulator instance
+2025-10-23 18:14:46 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 18:14:46 🎮 Starting Elevator Controller
+2025-10-23 18:14:46 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 18:14:46 ▶ Press Ctrl+C to stop
+2025-10-23 18:14:46 [DEBUG] API Client initialized for http://127.0.0.1:8000
+2025-10-23 18:14:46 启动 ScanController 算法
+2025-10-23 18:14:46 [DEBUG] Updated traffic info - max_tick: 800
+2025-10-23 18:14:46 --- SCAN Algorithm Initialized ---
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 1 To:F4
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/1/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E1 → F4 (kickstart)
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 2 To:F6
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/2/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E2 → F6 (kickstart)
+2025-10-23 18:14:46 Tick 0: 即将处理 0 个事件 []
+2025-10-23 18:14:46     0[stopped,0.0/0]        1[stopped,0.0/0]        2[stopped,0.0/0]
+2025-10-23 18:14:46 [KICKSTART] Tick 0 deadlock detected - activating elevators...
+2025-10-23 18:14:46 [DEBUG] Sending elevator command: go_to_floor to elevator 0 To:F2
+2025-10-23 18:14:46 [DEBUG] Go to floor failed: POST http://127.0.0.1:8000/api/elevators/0/go_to_floor failed: HTTP Error 403:
+2025-10-23 18:14:46   > E0 → F2 (kickstart)

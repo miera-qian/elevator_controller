@@ -237,7 +237,7 @@ main() {
     echo ""
 
     # Step 6: Start WebUI
-    uv run python -m webui.app
+    python -m webui.app
 }
 
 ################################################################################

@@ -338,7 +338,7 @@ main() {
     echo ""
 
     # Run the controller with all passed arguments
-    uv run python elevator_controller.py "$@"
+    python elevator_controller.py "$@"
 }
 
 ################################################################################
