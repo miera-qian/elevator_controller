@@ -1,0 +1,304 @@
+2025-10-23 17:05:31 [INFO] Running on DESKTOP-A3GT1OF(127.0.1.1) with agent(v1.2.8) in workspace /home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21
+2025-10-23 17:05:31 + set -e
+2025-10-23 17:05:31 + env bash /home/hp/run.sh
+2025-10-23 17:05:31 当前目录是：/home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21
+2025-10-23 17:05:31 评测仓库：https://z.gitee.cn/zgca/elevator_con.git
+2025-10-23 17:05:31 检查 8000 端口占用...
+2025-10-23 17:05:31 准备安装评测依赖
+2025-10-23 17:05:31 Writing to /home/hp/.config/pip/pip.conf
+2025-10-23 17:05:32 Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+2025-10-23 17:05:32 Requirement already satisfied: elevator-py in /home/hp/miniforge3/lib/python3.12/site-packages (0.0.10)
+2025-10-23 17:05:32 Requirement already satisfied: numpy>=1.20.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (2.3.3)
+2025-10-23 17:05:32 Requirement already satisfied: quart>=0.19.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.20.0)
+2025-10-23 17:05:32 Requirement already satisfied: hypercorn>=0.15.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from elevator-py) (0.17.3)
+2025-10-23 17:05:32 Requirement already satisfied: h11 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (0.16.0)
+2025-10-23 17:05:32 Requirement already satisfied: h2>=3.1.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (4.2.0)
+2025-10-23 17:05:32 Requirement already satisfied: priority in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (2.0.0)
+2025-10-23 17:05:32 Requirement already satisfied: wsproto>=0.14.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from hypercorn>=0.15.0->elevator-py) (1.2.0)
+2025-10-23 17:05:32 Requirement already satisfied: hyperframe<7,>=6.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (6.1.0)
+2025-10-23 17:05:32 Requirement already satisfied: hpack<5,>=4.1 in /home/hp/miniforge3/lib/python3.12/site-packages (from h2>=3.1.0->hypercorn>=0.15.0->elevator-py) (4.1.0)
+2025-10-23 17:05:32 Requirement already satisfied: aiofiles in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (25.1.0)
+2025-10-23 17:05:32 Requirement already satisfied: blinker>=1.6 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (1.9.0)
+2025-10-23 17:05:32 Requirement already satisfied: click>=8.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (8.3.0)
+2025-10-23 17:05:32 Requirement already satisfied: flask>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.2)
+2025-10-23 17:05:32 Requirement already satisfied: itsdangerous in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (2.2.0)
+2025-10-23 17:05:32 Requirement already satisfied: jinja2 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.6)
+2025-10-23 17:05:32 Requirement already satisfied: markupsafe in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.0.3)
+2025-10-23 17:05:32 Requirement already satisfied: werkzeug>=3.0 in /home/hp/miniforge3/lib/python3.12/site-packages (from quart>=0.19.0->elevator-py) (3.1.3)
+2025-10-23 17:05:32 准备替换测试用例...
+2025-10-23 17:05:32 警告：ELEVATOR_JSON_CONTENT 环境变量为空，跳过测试用例替换
+2025-10-23 17:05:32 启动 simulator...
+2025-10-23 17:05:32 Simulator PID: 329481
+2025-10-23 17:05:32 等待 simulator 启动...
+2025-10-23 17:05:37 获取提交仓库
+2025-10-23 17:05:37 Cloning into 'repo_root'...
+2025-10-23 17:05:39 找到脚本: start.sh
+2025-10-23 17:05:39 添加执行权限...
+2025-10-23 17:05:39 执行脚本: start.sh
+2025-10-23 17:05:39 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:39 🚀 Elevator Controller Startup
+2025-10-23 17:05:39 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:39 ▶ Checking Python version...
+2025-10-23 17:05:39 ✓ Python 3.12 found
+2025-10-23 17:05:39 ▶ Checking pip...
+2025-10-23 17:05:39 ✓ pip is available
+2025-10-23 17:05:39 ▶ Ensuring pip is up to date...
+2025-10-23 17:05:40 ✓ pip is ready
+2025-10-23 17:05:40 ▶ Checking uv installation...
+2025-10-23 17:05:40 ✓ uv 0.9.5 found in PATH
+2025-10-23 17:05:40 ▶ Installing project dependencies...
+2025-10-23 17:05:40 Using CPython 3.12.11 interpreter at: /home/hp/miniforge3/bin/python3
+2025-10-23 17:05:40 Creating virtual environment at: .venv
+2025-10-23 17:05:40 Resolved 39 packages in 13ms
+2025-10-23 17:05:40 Installed 37 packages in 105ms
+2025-10-23 17:05:40  + annotated-types==0.7.0
+2025-10-23 17:05:40  + anyio==4.11.0
+2025-10-23 17:05:40  + blinker==1.9.0
+2025-10-23 17:05:40  + certifi==2025.8.3
+2025-10-23 17:05:40  + charset-normalizer==3.4.3
+2025-10-23 17:05:40  + click==8.3.0
+2025-10-23 17:05:40  + elevator-py==0.0.5
+2025-10-23 17:05:40  + fastapi==0.118.0
+2025-10-23 17:05:40  + flask==3.1.2
+2025-10-23 17:05:40  + h11==0.16.0
+2025-10-23 17:05:40  + httptools==0.6.4
+2025-10-23 17:05:40  + idna==3.10
+2025-10-23 17:05:40  + itsdangerous==2.2.0
+2025-10-23 17:05:40  + jinja2==3.1.6
+2025-10-23 17:05:40  + markdown-it-py==4.0.0
+2025-10-23 17:05:40  + markupsafe==3.0.3
+2025-10-23 17:05:40  + mdurl==0.1.2
+2025-10-23 17:05:40  + numpy==2.3.3
+2025-10-23 17:05:40  + pydantic==2.11.9
+2025-10-23 17:05:40  + pydantic-core==2.33.2
+2025-10-23 17:05:40  + pygments==2.19.2
+2025-10-23 17:05:40  + python-dotenv==1.1.1
+2025-10-23 17:05:40  + pyyaml==6.0.3
+2025-10-23 17:05:40  + requests==2.32.5
+2025-10-23 17:05:40  + rich==14.1.0
+2025-10-23 17:05:40  + shellingham==1.5.4
+2025-10-23 17:05:40  + sniffio==1.3.1
+2025-10-23 17:05:40  + starlette==0.48.0
+2025-10-23 17:05:40  + typer==0.19.2
+2025-10-23 17:05:40  + typing-extensions==4.15.0
+2025-10-23 17:05:40  + typing-inspection==0.4.2
+2025-10-23 17:05:40  + urllib3==2.5.0
+2025-10-23 17:05:40  + uvicorn==0.37.0
+2025-10-23 17:05:40  + uvloop==0.21.0
+2025-10-23 17:05:40  + watchfiles==1.1.0
+2025-10-23 17:05:40  + websockets==15.0.1
+2025-10-23 17:05:40  + werkzeug==3.1.3
+2025-10-23 17:05:40 ✓ Dependencies installed successfully
+2025-10-23 17:05:40 ▶ Starting simulator server...
+2025-10-23 17:05:41 ⚠ Simulator is already running on port 8000
+2025-10-23 17:05:41 ▶ Using existing simulator instance
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 🎮 Starting Elevator Controller
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 ▶ Press Ctrl+C to stop
+2025-10-23 17:05:41 [DEBUG] API Client initialized for http://127.0.0.1:8000
+2025-10-23 17:05:41 启动 ScanController 算法
+2025-10-23 17:05:41 [DEBUG] Updated traffic info - max_tick: 500
+2025-10-23 17:05:41 --- SCAN Algorithm Initialized ---
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 [ERROR] on_event_execute_start called 11 times at tick 0!
+2025-10-23 17:05:41 [ERROR] Possible infinite loop detected. Stopping to prevent runaway.
+2025-10-23 17:05:41 模拟运行错误: Infinite loop detected at tick 0
+2025-10-23 17:05:41 算法运行出错: Infinite loop detected at tick 0
+2025-10-23 17:05:41 停止 ScanController 算法
+2025-10-23 17:05:41 Traceback (most recent call last):
+2025-10-23 17:05:41   File "/home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21/repo_root/elevator_controller.py", line 21, in <module>
+2025-10-23 17:05:41     algorithm.start()
+2025-10-23 17:05:41   File "/home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21/repo_root/.venv/lib/python3.12/site-packages/elevator_saga/client/base_controller.py", line 191, in start
+2025-10-23 17:05:41     self._run_event_driven_simulation()
+2025-10-23 17:05:41   File "/home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21/repo_root/.venv/lib/python3.12/site-packages/elevator_saga/client/base_controller.py", line 260, in _run_event_driven_simulation
+2025-10-23 17:05:41     self.on_event_execute_start(self.current_tick, events, self.elevators, self.floors)
+2025-10-23 17:05:41   File "/home/hp/gitee_go_agent/workspace/262992d7-c287-4b04-9937-b25fd6254a21/repo_root/algo/base_scan.py", line 87, in on_event_execute_start
+2025-10-23 17:05:41     raise RuntimeError("Infinite loop detected at tick 0")
+2025-10-23 17:05:41 RuntimeError: Infinite loop detected at tick 0
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 Cleaning up...
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 ✓ Cleanup complete
+2025-10-23 17:05:41 脚本执行完成
+2025-10-23 17:05:41 停止 simulator...
+2025-10-23 17:05:41 错误：未找到 result.json
+2025-10-23 17:05:41 === Simulator 日志 ===
+2025-10-23 17:05:41 DEBUG    [SERVER] Server debug mode enabled
+2025-10-23 17:05:41 DEBUG    [SERVER] Found 1 traffic files: ['test_case_3_22_passengers_same_floor.json']
+2025-10-23 17:05:41 INFO     [SERVER] Loading traffic from test_case_3_22_passengers_same_floor.json
+2025-10-23 17:05:41 DEBUG    [SERVER] Building config: {'floors': 10, 'elevators': 2, 'elevator_capacity': 10, 'elevator_energy_rates': [1.0, 1.0], 'scenario': 'test_case_3', 'description': '测试用例3 - 22乘客从0层同时上行到随机楼层(1-9)', 'expected_passengers': 22, 'duration': 500}
+2025-10-23 17:05:41 DEBUG    [SERVER] 电梯 E0 能耗率设置为: 1.0
+2025-10-23 17:05:41 DEBUG    [SERVER] 电梯 E1 能耗率设置为: 1.0
+2025-10-23 17:05:41 INFO     [SERVER] Elevator simulation server (Async) running on http://127.0.0.1:8000
+2025-10-23 17:05:41 INFO     [SERVER] Using Quart (async Flask) for better concurrency
+2025-10-23 17:05:41 INFO     [SERVER] Debug mode: enabled
+2025-10-23 17:05:41 [2025-10-23 17:05:32 +0800] [329481] [INFO] Running on http://127.0.0.1:8000 (CTRL + C to quit)
+2025-10-23 17:05:41  * Serving Quart app 'simulator'
+2025-10-23 17:05:41  * Debug mode: True
+2025-10-23 17:05:41  * Please use an ASGI server (e.g. Hypercorn) directly in production
+2025-10-23 17:05:41  * Running on http://127.0.0.1:8000 (CTRL + C to quit)
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43662 GET /api/state 1.1 200 1500 5674
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43678 GET /api/traffic/info 1.1 200 55 1949
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43680 POST /api/step 1.1 200 25 1684
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43684 GET /api/state 1.1 200 1500 1796
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43694 POST /api/step 1.1 200 25 1686
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43710 GET /api/state 1.1 200 1500 1507
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43716 POST /api/step 1.1 200 25 1770
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43732 GET /api/state 1.1 200 1500 1430
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43742 POST /api/step 1.1 200 25 2526
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43750 GET /api/state 1.1 200 1500 1640
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43758 POST /api/step 1.1 200 25 1610
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43760 GET /api/state 1.1 200 1500 1488
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43770 POST /api/step 1.1 200 25 1716
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43776 GET /api/state 1.1 200 1500 1553
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43778 POST /api/step 1.1 200 25 1599
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43782 GET /api/state 1.1 200 1500 1675
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43786 POST /api/step 1.1 200 25 1737
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43788 GET /api/state 1.1 200 1500 1555
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43798 POST /api/step 1.1 200 25 1670
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43810 GET /api/state 1.1 200 1500 1527
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43822 POST /api/step 1.1 200 25 2151
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43824 GET /api/state 1.1 200 1500 1585
+2025-10-23 17:05:41 DEBUG    [SERVER] GUI step (no tick): tick 0
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43828 POST /api/step 1.1 200 25 1570
+2025-10-23 17:05:41 [2025-10-23 17:05:41 +0800] [329481] [INFO] 127.0.0.1:43832 GET /api/state 1.1 200 1500 1451
+2025-10-23 17:05:41 === 学生脚本日志 ===
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 🚀 Elevator Controller Startup
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 ▶ Checking Python version...
+2025-10-23 17:05:41 ✓ Python 3.12 found
+2025-10-23 17:05:41 ▶ Checking pip...
+2025-10-23 17:05:41 ✓ pip is available
+2025-10-23 17:05:41 ▶ Ensuring pip is up to date...
+2025-10-23 17:05:41 ✓ pip is ready
+2025-10-23 17:05:41 ▶ Checking uv installation...
+2025-10-23 17:05:41 ✓ uv 0.9.5 found in PATH
+2025-10-23 17:05:41 ▶ Installing project dependencies...
+2025-10-23 17:05:41 Using CPython 3.12.11 interpreter at: /home/hp/miniforge3/bin/python3
+2025-10-23 17:05:41 Creating virtual environment at: .venv
+2025-10-23 17:05:41 Resolved 39 packages in 13ms
+2025-10-23 17:05:41 Installed 37 packages in 105ms
+2025-10-23 17:05:41  + annotated-types==0.7.0
+2025-10-23 17:05:41  + anyio==4.11.0
+2025-10-23 17:05:41  + blinker==1.9.0
+2025-10-23 17:05:41  + certifi==2025.8.3
+2025-10-23 17:05:41  + charset-normalizer==3.4.3
+2025-10-23 17:05:41  + click==8.3.0
+2025-10-23 17:05:41  + elevator-py==0.0.5
+2025-10-23 17:05:41  + fastapi==0.118.0
+2025-10-23 17:05:41  + flask==3.1.2
+2025-10-23 17:05:41  + h11==0.16.0
+2025-10-23 17:05:41  + httptools==0.6.4
+2025-10-23 17:05:41  + idna==3.10
+2025-10-23 17:05:41  + itsdangerous==2.2.0
+2025-10-23 17:05:41  + jinja2==3.1.6
+2025-10-23 17:05:41  + markdown-it-py==4.0.0
+2025-10-23 17:05:41  + markupsafe==3.0.3
+2025-10-23 17:05:41  + mdurl==0.1.2
+2025-10-23 17:05:41  + numpy==2.3.3
+2025-10-23 17:05:41  + pydantic==2.11.9
+2025-10-23 17:05:41  + pydantic-core==2.33.2
+2025-10-23 17:05:41  + pygments==2.19.2
+2025-10-23 17:05:41  + python-dotenv==1.1.1
+2025-10-23 17:05:41  + pyyaml==6.0.3
+2025-10-23 17:05:41  + requests==2.32.5
+2025-10-23 17:05:41  + rich==14.1.0
+2025-10-23 17:05:41  + shellingham==1.5.4
+2025-10-23 17:05:41  + sniffio==1.3.1
+2025-10-23 17:05:41  + starlette==0.48.0
+2025-10-23 17:05:41  + typer==0.19.2
+2025-10-23 17:05:41  + typing-extensions==4.15.0
+2025-10-23 17:05:41  + typing-inspection==0.4.2
+2025-10-23 17:05:41  + urllib3==2.5.0
+2025-10-23 17:05:41  + uvicorn==0.37.0
+2025-10-23 17:05:41  + uvloop==0.21.0
+2025-10-23 17:05:41  + watchfiles==1.1.0
+2025-10-23 17:05:41  + websockets==15.0.1
+2025-10-23 17:05:41  + werkzeug==3.1.3
+2025-10-23 17:05:41 ✓ Dependencies installed successfully
+2025-10-23 17:05:41 ▶ Starting simulator server...
+2025-10-23 17:05:41 ⚠ Simulator is already running on port 8000
+2025-10-23 17:05:41 ▶ Using existing simulator instance
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 🎮 Starting Elevator Controller
+2025-10-23 17:05:41 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2025-10-23 17:05:41 ▶ Press Ctrl+C to stop
+2025-10-23 17:05:41 [DEBUG] API Client initialized for http://127.0.0.1:8000
+2025-10-23 17:05:41 启动 ScanController 算法
+2025-10-23 17:05:41 [DEBUG] Updated traffic info - max_tick: 500
+2025-10-23 17:05:41 --- SCAN Algorithm Initialized ---
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls for 2 idle elevator(s).
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end finished for tick 0
+2025-10-23 17:05:41 Tick 0: 即将处理 0 个事件 []
+2025-10-23 17:05:41     0[stopped,0.0/0]        1[stopped,0.0/0]
+2025-10-23 17:05:41 [DEBUG] on_event_execute_end called for tick 0
+2025-10-23 17:05:41   > Assignment loop finished: No unassigned calls
