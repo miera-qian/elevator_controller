@@ -72,22 +72,6 @@ class ScanController(BaseAlgorithm):
         self.pattern_detection_tick = 50  # 在第50个tick进行场景识别
         self.pattern_detected = False
 
-        # -------------------------------------------------------------------------
-        # 【关键修复】启动电梯以打破 tick 0 死锁
-        # -------------------------------------------------------------------------
-        # elevator-saga 框架的 tick 只在有电梯移动时才会推进
-        # 如果所有电梯都 stopped 且没有目标，服务器会拒绝推进 tick
-        # 解决方法：在初始化时给电梯分配初始目标，让它们开始移动
-        print("[INIT] Kick-starting elevators to enable tick progression...")
-        for i, elevator in enumerate(elevators):
-            if self.num_floors > 1:
-                # 将电梯均匀分布到不同楼层，提高响应效率
-                # 例如：3部电梯，20层 → E0→2, E1→4, E2→6
-                target_floor = min((i + 1) * 2, self.num_floors - 1)
-                elevator.go_to_floor(target_floor)
-                self.elevator_direction[elevator.id] = "up" if target_floor > 0 else "idle"
-                print(f"  > E{elevator.id} → F{target_floor} (kick-start)")
-
     def on_event_execute_start(
             self, tick: int, events: List[SimulationEvent],
             elevators: List[ProxyElevator], floors: List[ProxyFloor]
@@ -317,6 +301,33 @@ class ScanController(BaseAlgorithm):
 
     def on_event_execute_end(self, tick: int, events: List[SimulationEvent], elevators: List[ProxyElevator],
                              floors: List[ProxyFloor]) -> None:
+        # -------------------------------------------------------------------------
+        # 【Tick 0 死锁检测和修复】
+        # -------------------------------------------------------------------------
+        # 问题：elevator-saga 的 tick 只在有电梯移动时推进
+        # 如果 tick 0 时所有电梯都 stopped，tick 永远无法前进
+        # 解决：在 tick 0 且无事件时，检测并启动电梯
+        if tick == 0 and len(events) == 0:
+            # 检查是否所有电梯都处于 stopped 状态
+            all_stopped = all(
+                e.target_floor_direction.value == "stopped"
+                for e in elevators
+            )
+
+            if all_stopped and self.num_floors > 1:
+                print("[KICKSTART] Tick 0 deadlock detected - activating elevators...")
+                for i, elevator in enumerate(elevators):
+                    # 将电梯分散到不同楼层
+                    target_floor = min((i + 1) * 2, self.num_floors - 1)
+                    elevator.go_to_floor(target_floor)
+                    print(f"  > E{elevator.id} → F{target_floor} (kickstart)")
+                # Kickstart 完成后直接返回，不执行正常分配逻辑
+                return
+
+        # -------------------------------------------------------------------------
+        # 正常的事件处理逻辑
+        # -------------------------------------------------------------------------
+
         # 在指定tick进行场景识别
         if tick >= self.pattern_detection_tick and not self.pattern_detected:
             self._detect_traffic_pattern()
