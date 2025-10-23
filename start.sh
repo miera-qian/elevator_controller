@@ -225,7 +225,7 @@ main() {
     # Step 5: Display WebUI info
     print_header "🎨 Starting WebUI"
     echo ""
-    echo -e "${GREEN}📝 WebUI will be available at: http://localhost:8080${NC}"
+    echo -e "${GREEN}📝 WebUI will be available at: http://localhost:5173${NC}"
     echo ""
     echo "Features:"
     echo "  • Real-time elevator visualization"

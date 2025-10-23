@@ -269,6 +269,38 @@ class RealSimulationEngine:
         else:
             print(f"[RealSimulation] ⚠️  Could not load exact scenario, using index {current_index}")
 
+        # 【修复】验证场景加载成功，确保 max_tick > 0
+        try:
+            response = requests.get(f"{self.server_url}/api/traffic/info", timeout=5)
+            if response.status_code == 200:
+                info = response.json()
+                max_tick = info.get("max_tick", 0)
+                print(f"[RealSimulation] After switching: max_tick={max_tick}")
+
+                if max_tick == 0:
+                    print(f"[RealSimulation] ⚠️ WARNING: max_tick is 0 after switching! Attempting reset...")
+                    # 尝试重置并重新加载
+                    requests.post(f"{self.server_url}/api/reset", timeout=5)
+                    await asyncio.sleep(0.5)
+
+                    # 重新验证
+                    response = requests.get(f"{self.server_url}/api/traffic/info", timeout=5)
+                    if response.status_code == 200:
+                        info = response.json()
+                        max_tick = info.get("max_tick", 0)
+                        print(f"[RealSimulation] After reset: max_tick={max_tick}")
+
+                        if max_tick == 0:
+                            raise RuntimeError("Failed to load scenario: max_tick is still 0 after reset")
+            else:
+                print(f"[RealSimulation] Failed to verify scenario: HTTP {response.status_code}")
+        except Exception as e:
+            print(f"[RealSimulation] Error verifying scenario: {e}")
+            # 继续执行，但可能会失败
+
+        # 给服务器一些时间完全加载场景
+        await asyncio.sleep(0.5)
+
         # Start algorithm in background task
         self.algorithm_task = asyncio.create_task(self._run_algorithm())
 
@@ -326,6 +358,32 @@ class RealSimulationEngine:
         """Run the algorithm in background with controlled speed"""
         try:
             import time
+
+            # 【修复】等待场景完全加载，确保 max_tick > 0
+            max_retries = 10
+            max_tick = 0
+            for i in range(max_retries):
+                try:
+                    response = requests.get(f"{self.server_url}/api/traffic/info", timeout=5)
+                    if response.status_code == 200:
+                        info = response.json()
+                        max_tick = info.get("max_tick", 0)
+                        if max_tick > 0:
+                            print(f"[RealSimulation] Traffic loaded successfully, max_tick={max_tick}")
+                            break
+                        else:
+                            print(f"[RealSimulation] Waiting for traffic to load... (attempt {i+1}/{max_retries}, max_tick={max_tick})")
+                            await asyncio.sleep(0.5)
+                    else:
+                        print(f"[RealSimulation] Traffic info request failed: HTTP {response.status_code}")
+                        await asyncio.sleep(0.5)
+                except Exception as e:
+                    print(f"[RealSimulation] Error checking traffic info: {e}")
+                    await asyncio.sleep(0.5)
+
+            # 如果最终 max_tick 仍然是 0，抛出错误
+            if max_tick == 0:
+                raise RuntimeError("Cannot start algorithm: max_tick is 0 (no passengers in scenario)")
 
             # Get algorithm class
             algorithm_class = getattr(algo, self.algorithm_name)
