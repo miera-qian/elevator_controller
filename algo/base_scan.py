@@ -34,7 +34,6 @@ class ScanController(BaseAlgorithm):
     """
     def __init__(self, server_url: str = "http://127.0.0.1:8000", enable_logging: bool = True):
         super().__init__(server_url, enable_logging)
-        self._event_start_call_count = 0  # Debug counter to detect infinite loops
     # -------------------------------------------------------------------------
     # 3. 初始化 (on_init)
     # -------------------------------------------------------------------------
@@ -73,22 +72,27 @@ class ScanController(BaseAlgorithm):
         self.pattern_detection_tick = 50  # 在第50个tick进行场景识别
         self.pattern_detected = False
 
+        # -------------------------------------------------------------------------
+        # 【关键修复】启动电梯以打破 tick 0 死锁
+        # -------------------------------------------------------------------------
+        # elevator-saga 框架的 tick 只在有电梯移动时才会推进
+        # 如果所有电梯都 stopped 且没有目标，服务器会拒绝推进 tick
+        # 解决方法：在初始化时给电梯分配初始目标，让它们开始移动
+        print("[INIT] Kick-starting elevators to enable tick progression...")
+        for i, elevator in enumerate(elevators):
+            if self.num_floors > 1:
+                # 将电梯均匀分布到不同楼层，提高响应效率
+                # 例如：3部电梯，20层 → E0→2, E1→4, E2→6
+                target_floor = min((i + 1) * 2, self.num_floors - 1)
+                elevator.go_to_floor(target_floor)
+                self.elevator_direction[elevator.id] = "up" if target_floor > 0 else "idle"
+                print(f"  > E{elevator.id} → F{target_floor} (kick-start)")
+
     def on_event_execute_start(
             self, tick: int, events: List[SimulationEvent],
             elevators: List[ProxyElevator], floors: List[ProxyFloor]
     ) -> None:
         """Handle event execution start - override if needed"""
-        # Debug: Detect infinite loops at tick 0
-        if tick == 0:
-            self._event_start_call_count += 1
-            if self._event_start_call_count > 10:
-                print(f"[ERROR] on_event_execute_start called {self._event_start_call_count} times at tick 0!")
-                print("[ERROR] Possible infinite loop detected. Stopping to prevent runaway.")
-                raise RuntimeError("Infinite loop detected at tick 0")
-        else:
-            # Reset counter once we move past tick 0
-            self._event_start_call_count = 0
-
         print(f"Tick {tick}: 即将处理 {len(events)} 个事件 {[e.type.value for e in events]}")
         for i in elevators:
             print(f"\t{i.id}[{i.target_floor_direction.value},{i.current_floor_float}/{i.target_floor}]" + "👦" * len(
@@ -313,16 +317,12 @@ class ScanController(BaseAlgorithm):
 
     def on_event_execute_end(self, tick: int, events: List[SimulationEvent], elevators: List[ProxyElevator],
                              floors: List[ProxyFloor]) -> None:
-        print(f"[DEBUG] on_event_execute_end called for tick {tick}")
-
         # 在指定tick进行场景识别
         if tick >= self.pattern_detection_tick and not self.pattern_detected:
             self._detect_traffic_pattern()
 
         # 为空闲电梯分配任务
         self._assign_call_to_idle_elevator()
-
-        print(f"[DEBUG] on_event_execute_end finished for tick {tick}")
 
     # -------------------------------------------------------------------------
     # 5. 辅助函数 (Helper Functions)
