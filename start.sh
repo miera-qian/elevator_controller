@@ -3,13 +3,15 @@
 # Elevator Controller Startup Script
 #
 # This script automates the complete setup and launch process:
-# 1. Checks and installs uv (Python package manager)
-# 2. Installs project dependencies
-# 3. Starts the simulator server in background
-# 4. Runs the elevator controller
+# 1. Checks Python version (3.12+)
+# 2. Ensures pip is available
+# 3. Installs uv if not present (no Homebrew required)
+# 4. Installs project dependencies via uv sync
+# 5. Starts the simulator server in background
+# 6. Runs the elevator controller
 #
 # Usage:
-#   ./start_controller.sh
+#   ./start.sh
 #
 # Requirements:
 #   - Python 3.12 or higher
@@ -120,29 +122,13 @@ check_pip() {
     if ! python3 -m pip --version &> /dev/null; then
         print_warning "pip is not available, trying to bootstrap..."
 
-        # Try different methods to get pip
-        # Method 1: Use ensurepip (built into Python 3.4+)
-        if python3 -m ensurepip --user &> /dev/null; then
+        # Try to use ensurepip (built into Python 3.4+)
+        if python3 -m ensurepip &> /dev/null; then
             print_success "pip installed via ensurepip"
-        # Method 2: Download get-pip.py
-        elif command -v curl &> /dev/null; then
-            print_step "Downloading pip installer..."
-            if curl -sSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py; then
-                python3 /tmp/get-pip.py --user
-                rm -f /tmp/get-pip.py
-                print_success "pip installed via get-pip.py"
-            fi
-        elif command -v wget &> /dev/null; then
-            print_step "Downloading pip installer..."
-            if wget -q https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py; then
-                python3 /tmp/get-pip.py --user
-                rm -f /tmp/get-pip.py
-                print_success "pip installed via get-pip.py"
-            fi
         else
             print_error "Failed to install pip"
             echo "Please install pip manually:"
-            echo "  Windows: python -m ensurepip --upgrade"
+            echo "  python3 -m ensurepip --upgrade"
             echo "  Or download: https://bootstrap.pypa.io/get-pip.py"
             exit 1
         fi
@@ -150,82 +136,77 @@ check_pip() {
         print_success "pip is available"
     fi
 
-    # Upgrade pip to latest version (suppress output)
+    # Upgrade pip to latest version
     print_step "Ensuring pip is up to date..."
-    python3 -m pip install --user --upgrade pip --quiet 2>/dev/null || true
+    python3 -m pip install --upgrade pip --quiet 2>/dev/null || true
     print_success "pip is ready"
 }
 
 check_uv() {
     print_step "Checking uv installation..."
 
-    if ! command -v uv &> /dev/null; then
-        print_warning "uv is not installed"
-        print_step "Installing uv via pip..."
+    # Check if uv is already in PATH
+    if command -v uv &> /dev/null; then
+        UV_VERSION=$(uv --version 2>/dev/null | awk '{print $2}' || echo "unknown")
+        print_success "uv $UV_VERSION found in PATH"
+        return 0
+    fi
 
-        # Install uv using pip (cross-platform: Windows, macOS, Linux)
-        if python3 -m pip install --user uv; then
-            print_success "uv installed via pip"
+    # Check common installation locations
+    UV_PATHS=(
+        "/opt/homebrew/bin/uv"
+        "$HOME/.local/bin/uv"
+        "$HOME/.cargo/bin/uv"
+    )
 
-            # Determine user bin directory based on OS
-            if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
-                # Windows (Git Bash/MSYS/Cygwin)
-                USER_SCRIPTS=$(python3 -c "import site; print(site.USER_SITE.replace('site-packages', 'Scripts'))" 2>/dev/null)
-                if [ -d "$USER_SCRIPTS" ]; then
-                    export PATH="$USER_SCRIPTS:$PATH"
-                    print_step "Added $USER_SCRIPTS to PATH"
-                fi
-                # Also add Windows Python Scripts directory
-                PYTHON_SCRIPTS=$(python3 -c "import os, sys; print(os.path.join(os.path.dirname(sys.executable), 'Scripts'))" 2>/dev/null)
-                if [ -d "$PYTHON_SCRIPTS" ]; then
-                    export PATH="$PYTHON_SCRIPTS:$PATH"
-                fi
-            else
-                # Unix-like systems (macOS, Linux)
-                USER_BIN="$HOME/.local/bin"
-                if [ -d "$USER_BIN" ] && [[ ":$PATH:" != *":$USER_BIN:"* ]]; then
-                    export PATH="$USER_BIN:$PATH"
-                    print_step "Added $USER_BIN to PATH"
-                fi
+    for UV_PATH in "${UV_PATHS[@]}"; do
+        if [ -f "$UV_PATH" ]; then
+            export PATH="$(dirname "$UV_PATH"):$PATH"
+            UV_VERSION=$($UV_PATH --version 2>/dev/null | awk '{print $2}' || echo "unknown")
+            print_success "uv $UV_VERSION found at $UV_PATH"
+            return 0
+        fi
+    done
 
-                # Also check Python user base
-                PYTHON_USER_BASE=$(python3 -m site --user-base 2>/dev/null)
-                if [ -n "$PYTHON_USER_BASE" ] && [ -d "$PYTHON_USER_BASE/bin" ]; then
-                    export PATH="$PYTHON_USER_BASE/bin:$PATH"
-                fi
+    # uv not found, install it via pip
+    print_warning "uv is not installed"
+    print_step "Installing uv via pip (this may take a moment)..."
+
+    # Install uv WITHOUT --user flag to avoid virtualenv conflicts
+    if python3 -m pip install uv --quiet; then
+        print_success "uv installed successfully"
+
+        # Add common binary directories to PATH
+        if [[ "$OSTYPE" == "darwin"* ]] || [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            # Unix-like systems
+            export PATH="$HOME/.local/bin:$PATH"
+            PYTHON_USER_BASE=$(python3 -m site --user-base 2>/dev/null)
+            if [ -n "$PYTHON_USER_BASE" ] && [ -d "$PYTHON_USER_BASE/bin" ]; then
+                export PATH="$PYTHON_USER_BASE/bin:$PATH"
             fi
+        fi
 
-            # Verify installation
-            if ! command -v uv &> /dev/null; then
-                print_error "uv installed but not found in PATH"
-                echo ""
-                echo "Please add uv to your PATH manually:"
-                echo ""
-                if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
-                    echo "  Windows: Add Python Scripts directory to PATH"
-                    echo "  Location: $(python3 -c "import os, sys; print(os.path.join(os.path.dirname(sys.executable), 'Scripts'))" 2>/dev/null || echo "C:\\Users\\<YourUser>\\AppData\\Local\\Programs\\Python\\Python3X\\Scripts")"
-                else
-                    echo "  Unix: Add to ~/.bashrc or ~/.zshrc:"
-                    echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
-                fi
-                echo ""
-                echo "Then restart your terminal and run this script again."
-                exit 1
-            fi
-
-            print_success "uv is now available"
+        # Verify installation
+        if command -v uv &> /dev/null; then
+            UV_VERSION=$(uv --version 2>/dev/null | awk '{print $2}' || echo "unknown")
+            print_success "uv $UV_VERSION is now available"
         else
-            print_error "Failed to install uv via pip"
+            print_error "uv installed but not found in PATH"
             echo ""
-            echo "Troubleshooting steps:"
-            echo "1. Upgrade pip: python3 -m pip install --upgrade pip"
-            echo "2. Try again: python3 -m pip install --user uv"
-            echo "3. Check Python version: python3 --version (need 3.12+)"
+            echo "Please add uv to your PATH manually:"
+            echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+            echo ""
+            echo "Then restart your terminal and run this script again."
             exit 1
         fi
     else
-        UV_VERSION=$(uv --version 2>/dev/null | awk '{print $2}' || echo "unknown")
-        print_success "uv $UV_VERSION found"
+        print_error "Failed to install uv via pip"
+        echo ""
+        echo "Troubleshooting steps:"
+        echo "1. Upgrade pip: python3 -m pip install --upgrade pip"
+        echo "2. Try again: python3 -m pip install uv"
+        echo "3. Check Python version: python3 --version (need 3.12+)"
+        exit 1
     fi
 }
 
@@ -240,6 +221,11 @@ install_dependencies() {
         print_success "Dependencies installed successfully"
     else
         print_error "Failed to install dependencies"
+        echo ""
+        echo "Troubleshooting:"
+        echo "1. Check your internet connection"
+        echo "2. Try: uv sync --reinstall"
+        echo "3. Check pyproject.toml for syntax errors"
         exit 1
     fi
 }
@@ -250,20 +236,14 @@ install_dependencies() {
 
 check_simulator_running() {
     # Check if simulator is already running on the port
-    # Use different methods based on OS
     if command -v lsof &> /dev/null; then
         # Unix/macOS: use lsof
         if lsof -Pi :$SIMULATOR_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
             return 0  # Running
         fi
     elif command -v netstat &> /dev/null; then
-        # Windows/fallback: use netstat
+        # Fallback: use netstat
         if netstat -an 2>/dev/null | grep -q ":$SIMULATOR_PORT.*LISTEN"; then
-            return 0  # Running
-        fi
-    else
-        # Fallback: try to connect
-        if timeout 1 bash -c "cat < /dev/null > /dev/tcp/127.0.0.1/$SIMULATOR_PORT" 2>/dev/null; then
             return 0  # Running
         fi
     fi
