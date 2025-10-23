@@ -1,0 +1,2159 @@
+warning: `VIRTUAL_ENV=/Users/qianhuang/Documents/elevator_controller/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[SERVER-DEBUG] Server debug mode enabled
+[SERVER-DEBUG] Found 11 traffic files: ['down_peak.json', 'fire_evacuation.json', 'high_density.json', 'inter_floor.json', 'lunch_rush.json', 'medical.json', 'meeting_event.json', 'mixed_scenario.json', 'progressive_test.json', 'random.json', 'up_peak.json']
+[SERVER-DEBUG] Loading traffic from down_peak.json
+[SERVER-DEBUG] Building config: {'floors': 6, 'elevators': 2, 'elevator_capacity': 8, 'scenario': 'down_peak', 'scale': 'medium', 'description': '下行高峰 - 主要从高层到底层 (medium规模)', 'expected_passengers': 74, 'duration': 200}
+Elevator simulation server running on http://127.0.0.1:8000
+ * Serving Flask app 'simulator'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+[SERVER-DEBUG] Server debug mode enabled
+[SERVER-DEBUG] Found 11 traffic files: ['down_peak.json', 'fire_evacuation.json', 'high_density.json', 'inter_floor.json', 'lunch_rush.json', 'medical.json', 'meeting_event.json', 'mixed_scenario.json', 'progressive_test.json', 'random.json', 'up_peak.json']
+[SERVER-DEBUG] Loading traffic from down_peak.json
+[SERVER-DEBUG] Building config: {'floors': 6, 'elevators': 2, 'elevator_capacity': 8, 'scenario': 'down_peak', 'scale': 'medium', 'description': '下行高峰 - 主要从高层到底层 (medium规模)', 'expected_passengers': 74, 'duration': 200}
+ * Debugger is active!
+ * Debugger PIN: 960-117-255
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/traffic/info HTTP/1.1" 200 -
+Elevator simulation server running on http://127.0.0.1:8000
+[SERVER-DEBUG] 乘客    1： 创建 | PassengerInfo(id=1, origin=2, destination=0, arrive_tick=1, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 1}
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 0, 'floor': 0}
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 1, 'floor': 0}
+[SERVER-DEBUG] Step completed - Final tick: 1, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 1, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 1, 'floor': 0}
+[SERVER-DEBUG] Step completed - Final tick: 2, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 2, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:0.1 目标:2
+[SERVER-DEBUG] 乘客    2： 创建 | PassengerInfo(id=2, origin=2, destination=1, arrive_tick=3, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 2}
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 1, 'floor': 0}
+[SERVER-DEBUG] Step completed - Final tick: 3, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 3, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:2
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 1, 'floor': 0}
+[SERVER-DEBUG] Step completed - Final tick: 4, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 4, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:2
+[SERVER-DEBUG] 乘客    3： 创建 | PassengerInfo(id=3, origin=4, destination=0, arrive_tick=5, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 3}
+[SERVER-DEBUG] Event emitted: idle with data {'elevator': 1, 'floor': 0}
+[SERVER-DEBUG] Step completed - Final tick: 5, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 5, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F4
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F4
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] 乘客    4： 创建 | PassengerInfo(id=4, origin=3, destination=0, arrive_tick=6, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 4}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 6, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 6, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:0.1 目标:4
+[SERVER-DEBUG] 乘客    5： 创建 | PassengerInfo(id=5, origin=5, destination=0, arrive_tick=7, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 5}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 7, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 7, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:4
+[SERVER-DEBUG] Step completed - Final tick: 8, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 8, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:4
+[SERVER-DEBUG] 乘客    6： 创建 | PassengerInfo(id=6, origin=4, destination=0, arrive_tick=9, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 6}
+[SERVER-DEBUG] Step completed - Final tick: 9, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 9, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:4
+[SERVER-DEBUG] 乘客    7： 创建 | PassengerInfo(id=7, origin=1, destination=0, arrive_tick=10, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 7}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 10, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 10, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.9 目标:4
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 11, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 11, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:1.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.1 目标:4
+[SERVER-DEBUG] 乘客    8： 创建 | PassengerInfo(id=8, origin=5, destination=0, arrive_tick=12, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 8}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 12, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 12, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:4
+[SERVER-DEBUG] 乘客    9： 创建 | PassengerInfo(id=9, origin=3, destination=0, arrive_tick=13, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 9}
+[SERVER-DEBUG] Step completed - Final tick: 13, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 13, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:2.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:4
+[SERVER-DEBUG] 乘客   10： 创建 | PassengerInfo(id=10, origin=3, destination=0, arrive_tick=14, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 10}
+[SERVER-DEBUG] Step completed - Final tick: 14, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 14, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:4
+[SERVER-DEBUG] 乘客   11： 创建 | PassengerInfo(id=11, origin=2, destination=0, arrive_tick=15, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 11}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 15, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 15, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.9 目标:4
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 16, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 16, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.1 目标:4
+[SERVER-DEBUG] 乘客   12： 创建 | PassengerInfo(id=12, origin=1, destination=0, arrive_tick=17, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 12}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 17, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 17, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:2.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:4
+[SERVER-DEBUG] 乘客   13： 创建 | PassengerInfo(id=13, origin=3, destination=2, arrive_tick=18, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 13}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 18, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 18, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F5
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F5
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:4
+[SERVER-DEBUG] 乘客   14： 创建 | PassengerInfo(id=14, origin=4, destination=0, arrive_tick=19, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 14}
+[SERVER-DEBUG] Step completed - Final tick: 19, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 19, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:3.1 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:4
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 20, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 20, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.9 目标:4
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 21, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 21, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.1 目标:4
+[SERVER-DEBUG] 乘客   15： 创建 | PassengerInfo(id=15, origin=3, destination=0, arrive_tick=22, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 15}
+[SERVER-DEBUG] Step completed - Final tick: 22, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 22, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:4
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 23, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 23, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.9 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:4
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 24, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 24, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.1 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:4
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 25, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 25, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.3 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:3.9 目标:4
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 4, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 26, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 26, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.5 目标:5
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 4, 'passenger': 3}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 4, 'passenger': 6}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 4, 'passenger': 14}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:4.0 目标:4
+[SERVER-DEBUG] Step completed - Final tick: 27, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 27, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.7 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] 乘客   16： 创建 | PassengerInfo(id=16, origin=5, destination=4, arrive_tick=28, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 16}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 5, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 28, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 28, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:4.9 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 5, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 29, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 29, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 5}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 8}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 16}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:5.0 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] 乘客   17： 创建 | PassengerInfo(id=17, origin=1, destination=0, arrive_tick=30, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 17}
+[SERVER-DEBUG] Step completed - Final tick: 30, Total events: 4
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 30, events: 4
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:4.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 31, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 31, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] 乘客   18： 创建 | PassengerInfo(id=18, origin=3, destination=0, arrive_tick=32, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 18}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 32, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 32, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.5 目标:3
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 4}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 9}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 10}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 13}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 15}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 33, Total events: 5
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 33, events: 5
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 34, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 34, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯 E0 被设定为减速
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:4.1 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] 乘客   19： 创建 | PassengerInfo(id=19, origin=4, destination=0, arrive_tick=35, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 19}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 4, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 4, 'passenger': 16}
+[SERVER-DEBUG] Step completed - Final tick: 35, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 35, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 19}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:4.0 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 36, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 36, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] 乘客   20： 创建 | PassengerInfo(id=20, origin=4, destination=0, arrive_tick=37, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 20}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 37, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 37, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 2, 'passenger': 13}
+[SERVER-DEBUG] Step completed - Final tick: 38, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 38, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 2, 'passenger': 1}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] 乘客   21： 创建 | PassengerInfo(id=21, origin=1, destination=0, arrive_tick=39, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 21}
+[SERVER-DEBUG] Step completed - Final tick: 39, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 39, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] 乘客   22： 创建 | PassengerInfo(id=22, origin=5, destination=0, arrive_tick=40, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 22}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 40, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 40, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] 乘客   23： 创建 | PassengerInfo(id=23, origin=5, destination=0, arrive_tick=41, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 23}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 41, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 41, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 3, 'passenger': 18}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] 乘客   24： 创建 | PassengerInfo(id=24, origin=5, destination=0, arrive_tick=42, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 24}
+[SERVER-DEBUG] Step completed - Final tick: 42, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 42, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 43, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 43, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] 乘客   25： 创建 | PassengerInfo(id=25, origin=2, destination=1, arrive_tick=44, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 25}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 44, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 44, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] 乘客   26： 创建 | PassengerInfo(id=26, origin=4, destination=0, arrive_tick=45, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 26}
+[SERVER-DEBUG] Step completed - Final tick: 45, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 45, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 乘客   27： 创建 | PassengerInfo(id=27, origin=1, destination=0, arrive_tick=46, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 27}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 46, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 46, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 47, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 47, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 2, 'passenger': 2}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 2, 'passenger': 11}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 2, 'passenger': 25}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] Step completed - Final tick: 48, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 48, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] 乘客   28： 创建 | PassengerInfo(id=28, origin=3, destination=0, arrive_tick=49, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 28}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 49, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 49, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] 乘客   29： 创建 | PassengerInfo(id=29, origin=5, destination=0, arrive_tick=50, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 29}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 3}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 6}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 14}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 4}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 9}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 10}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 15}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 1}
+[SERVER-DEBUG] Step completed - Final tick: 50, Total events: 10
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 50, events: 10
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] 乘客   30： 创建 | PassengerInfo(id=30, origin=5, destination=0, arrive_tick=51, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 30}
+[SERVER-DEBUG] Step completed - Final tick: 51, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 51, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] 乘客   31： 创建 | PassengerInfo(id=31, origin=4, destination=3, arrive_tick=52, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 31}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 52, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 52, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] 乘客   32： 创建 | PassengerInfo(id=32, origin=3, destination=1, arrive_tick=53, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 32}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 1, 'passenger': 2}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 1, 'passenger': 25}
+[SERVER-DEBUG] Step completed - Final tick: 53, Total events: 4
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 53, events: 4
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 1, 'passenger': 7}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 1, 'passenger': 12}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 1, 'passenger': 17}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 54, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 54, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] 乘客   33： 创建 | PassengerInfo(id=33, origin=3, destination=0, arrive_tick=55, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 33}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 55, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 55, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 56, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 56, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 57, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 57, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:1.1 目标:2
+[SERVER-DEBUG] 乘客   34： 创建 | PassengerInfo(id=34, origin=5, destination=0, arrive_tick=58, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 34}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 58, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 58, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:2
+[SERVER-DEBUG] 乘客   35： 创建 | PassengerInfo(id=35, origin=3, destination=0, arrive_tick=59, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 35}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 5}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 8}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 19}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 18}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 11}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 7}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 12}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 17}
+[SERVER-DEBUG] Step completed - Final tick: 59, Total events: 10
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 59, events: 10
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:2
+[SERVER-DEBUG] 乘客   36： 创建 | PassengerInfo(id=36, origin=4, destination=3, arrive_tick=60, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 36}
+[SERVER-DEBUG] Step completed - Final tick: 60, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 60, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 61, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 61, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:1.9 目标:2
+[SERVER-DEBUG] 乘客   37： 创建 | PassengerInfo(id=37, origin=5, destination=0, arrive_tick=62, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 37}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 62, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 62, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:2.0 目标:2
+[SERVER-DEBUG] 乘客   38： 创建 | PassengerInfo(id=38, origin=4, destination=0, arrive_tick=63, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 38}
+[SERVER-DEBUG] Step completed - Final tick: 63, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 63, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:2.1 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 64, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 64, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:3
+[SERVER-DEBUG] 乘客   39： 创建 | PassengerInfo(id=39, origin=4, destination=0, arrive_tick=65, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 39}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 65, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 65, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F4
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 66, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 66, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:1.1 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 67, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 67, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:2.9 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 68, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 68, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F5
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:4
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F5
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:3.0 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 69, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 69, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:3.1 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 70, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 70, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.9 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:5
+[SERVER-DEBUG] 乘客   40： 创建 | PassengerInfo(id=40, origin=2, destination=0, arrive_tick=71, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 40}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 71, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 71, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.1 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:5
+[SERVER-DEBUG] Step completed - Final tick: 72, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 72, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:5
+[SERVER-DEBUG] 乘客   41： 创建 | PassengerInfo(id=41, origin=4, destination=0, arrive_tick=73, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 41}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 73, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 73, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.9 目标:5
+[SERVER-DEBUG] 乘客   42： 创建 | PassengerInfo(id=42, origin=4, destination=0, arrive_tick=74, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 42}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 74, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 74, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.1 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 75, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 75, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.9 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.3 目标:5
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 76, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 76, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.1 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.5 目标:5
+[SERVER-DEBUG] Step completed - Final tick: 77, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 77, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.7 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 5, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 78, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 78, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:4.9 目标:5
+[SERVER-DEBUG] 乘客   43： 创建 | PassengerInfo(id=43, origin=3, destination=0, arrive_tick=79, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 43}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 5, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 79, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 79, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:4
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 22}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 23}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 24}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 29}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 30}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 34}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 37}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:5.0 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 80, Total events: 8
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 80, events: 8
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:3.9 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:4.9 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 4, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 81, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 81, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 20}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 26}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 31}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 36}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 38}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 39}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 41}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 42}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:4.0 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.7 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 82, Total events: 8
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 82, events: 8
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.5 目标:3
+[SERVER-DEBUG] 乘客   44： 创建 | PassengerInfo(id=44, origin=5, destination=1, arrive_tick=83, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 44}
+[SERVER-DEBUG] Step completed - Final tick: 83, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 83, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.3 目标:3
+[SERVER-DEBUG] 乘客   45： 创建 | PassengerInfo(id=45, origin=3, destination=0, arrive_tick=84, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 45}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 84, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 84, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.1 目标:3
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 85, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 85, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 86, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 86, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 3, 'passenger': 31}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 3, 'passenger': 36}
+[SERVER-DEBUG] Step completed - Final tick: 87, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 87, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 3, 'passenger': 28}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 3, 'passenger': 32}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 88, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 88, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 89, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 89, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 90, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 90, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 33}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] 乘客   46： 创建 | PassengerInfo(id=46, origin=1, destination=0, arrive_tick=91, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 46}
+[SERVER-DEBUG] Step completed - Final tick: 91, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 91, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 92, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 92, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 93, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 93, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] 乘客   47： 创建 | PassengerInfo(id=47, origin=3, destination=0, arrive_tick=94, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 47}
+[SERVER-DEBUG] Step completed - Final tick: 94, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 94, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 95, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 95, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 96, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 96, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] 乘客   48： 创建 | PassengerInfo(id=48, origin=2, destination=0, arrive_tick=97, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 48}
+[SERVER-DEBUG] Step completed - Final tick: 97, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 97, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 98, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 98, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] 乘客   49： 创建 | PassengerInfo(id=49, origin=3, destination=0, arrive_tick=99, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 49}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 1, 'passenger': 32}
+[SERVER-DEBUG] Step completed - Final tick: 99, Total events: 3
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 99, events: 3
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 1, 'passenger': 21}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 100, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 100, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 101, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 101, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 102, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 102, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 103, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 103, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 乘客   50： 创建 | PassengerInfo(id=50, origin=3, destination=0, arrive_tick=104, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 50}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 104, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 104, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] 乘客   51： 创建 | PassengerInfo(id=51, origin=5, destination=0, arrive_tick=105, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 51}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 20}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 26}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 38}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 39}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 41}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 42}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 28}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 21}
+[SERVER-DEBUG] Step completed - Final tick: 105, Total events: 10
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 105, events: 10
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] Step completed - Final tick: 106, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 106, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 107, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 107, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 22}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 23}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 24}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 29}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 30}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 34}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 37}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 33}
+[SERVER-DEBUG] Step completed - Final tick: 108, Total events: 9
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 108, events: 9
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] Step completed - Final tick: 109, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 109, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 110, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 110, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] 乘客   52： 创建 | PassengerInfo(id=52, origin=5, destination=0, arrive_tick=111, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 52}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 111, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 111, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 112, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 112, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:1.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 113, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 113, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 114, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 114, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] 乘客   53： 创建 | PassengerInfo(id=53, origin=1, destination=0, arrive_tick=115, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 53}
+[SERVER-DEBUG] Step completed - Final tick: 115, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 115, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:1.1 目标:3
+[SERVER-DEBUG] 乘客   54： 创建 | PassengerInfo(id=54, origin=2, destination=0, arrive_tick=116, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 54}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 116, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 116, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:1.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 117, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 117, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 118, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 118, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:2.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:3
+[SERVER-DEBUG] 乘客   55： 创建 | PassengerInfo(id=55, origin=5, destination=0, arrive_tick=119, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 55}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 119, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 119, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.9 目标:3
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 120, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 120, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.1 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 121, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 121, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:3
+[SERVER-DEBUG] 乘客   56： 创建 | PassengerInfo(id=56, origin=5, destination=0, arrive_tick=122, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 56}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 122, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 122, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:2.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 123, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 123, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F5
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F5
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:3
+[SERVER-DEBUG] 乘客   57： 创建 | PassengerInfo(id=57, origin=3, destination=2, arrive_tick=124, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 57}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 124, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 124, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:3.1 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:2.9 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 125, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 125, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:5
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 35}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 43}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 45}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 47}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 49}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 50}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 57}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 126, Total events: 7
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 126, events: 7
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] 乘客   58： 创建 | PassengerInfo(id=58, origin=3, destination=2, arrive_tick=127, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 58}
+[SERVER-DEBUG] Step completed - Final tick: 127, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 127, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 128, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 128, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.9 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] 乘客   59： 创建 | PassengerInfo(id=59, origin=2, destination=0, arrive_tick=129, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 59}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 129, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 129, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.1 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] 乘客   60： 创建 | PassengerInfo(id=60, origin=3, destination=0, arrive_tick=130, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 60}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 130, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 130, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.3 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 2, 'passenger': 57}
+[SERVER-DEBUG] Step completed - Final tick: 131, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 131, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.5 目标:5
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 2, 'passenger': 40}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 2, 'passenger': 48}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 132, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 132, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.7 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 5, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 133, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 133, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:4.9 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 5, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 134, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 134, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 44}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 51}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 52}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 55}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 56}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:5.0 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 135, Total events: 5
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 135, events: 5
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:4.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] 乘客   61： 创建 | PassengerInfo(id=61, origin=5, destination=0, arrive_tick=136, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 61}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 136, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 136, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 137, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 137, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.5 目标:3
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] 乘客   62： 创建 | PassengerInfo(id=62, origin=5, destination=0, arrive_tick=138, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 62}
+[SERVER-DEBUG] Step completed - Final tick: 138, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 138, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 139, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 139, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 0, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 140, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 140, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] Step completed - Final tick: 141, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 141, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 142, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 142, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 35}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 43}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 45}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 47}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 49}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 50}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 40}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 48}
+[SERVER-DEBUG] Step completed - Final tick: 143, Total events: 9
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 143, events: 9
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 144, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 144, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 145, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 145, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 3, 'passenger': 58}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 3, 'passenger': 60}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 146, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 146, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 147, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 147, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] 乘客   63： 创建 | PassengerInfo(id=63, origin=2, destination=0, arrive_tick=148, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 63}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 148, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 148, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 149, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 149, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] 乘客   64： 创建 | PassengerInfo(id=64, origin=2, destination=0, arrive_tick=150, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 64}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 150, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 150, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:1.1 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 2, 'passenger': 58}
+[SERVER-DEBUG] Step completed - Final tick: 151, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 151, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 2, 'passenger': 54}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 2, 'passenger': 59}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 152, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 152, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:2
+[SERVER-DEBUG] 乘客   65： 创建 | PassengerInfo(id=65, origin=5, destination=0, arrive_tick=153, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 65}
+[SERVER-DEBUG] Step completed - Final tick: 153, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 153, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 154, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 154, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:1.9 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 155, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 155, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F5
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F5
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:up 位置:2.0 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 156, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 156, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:up 位置:2.1 目标:5
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 1, 'passenger': 44}
+[SERVER-DEBUG] Step completed - Final tick: 157, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 157, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 1, 'passenger': 27}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:5
+[SERVER-DEBUG] 乘客   66： 创建 | PassengerInfo(id=66, origin=3, destination=2, arrive_tick=158, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 66}
+[SERVER-DEBUG] Step completed - Final tick: 158, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 158, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:5
+[SERVER-DEBUG] Step completed - Final tick: 159, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 159, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 160, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 160, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:2.9 目标:5
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 161, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 161, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.1 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 162, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 162, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F0
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:5
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 51}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 52}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 55}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 56}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 60}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 54}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 59}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 0, 'floor': 0, 'passenger': 27}
+[SERVER-DEBUG] Step completed - Final tick: 163, Total events: 9
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 163, events: 9
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:0.0 目标:0
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:5
+[SERVER-DEBUG] Step completed - Final tick: 164, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 164, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:0.1 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:5
+[SERVER-DEBUG] 乘客   67： 创建 | PassengerInfo(id=67, origin=5, destination=0, arrive_tick=165, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 67}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 165, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 165, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.3 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:3.9 目标:5
+[SERVER-DEBUG] 乘客   68： 创建 | PassengerInfo(id=68, origin=3, destination=0, arrive_tick=166, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 68}
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 166, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 166, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.5 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.1 目标:5
+[SERVER-DEBUG] Step completed - Final tick: 167, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 167, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:0.7 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.3 目标:5
+[SERVER-DEBUG] 乘客   69： 创建 | PassengerInfo(id=69, origin=2, destination=0, arrive_tick=168, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 2, 'passenger': 69}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 1, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 168, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 168, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F1
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:0.9 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.5 目标:5
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 169, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 169, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:1.0 目标:1
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:up 位置:4.7 目标:5
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 5, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 170, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 170, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:1.1 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:up 位置:4.9 目标:5
+[SERVER-DEBUG] 乘客   70： 创建 | PassengerInfo(id=70, origin=5, destination=0, arrive_tick=171, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 70}
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 5, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 171, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 171, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.3 目标:2
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 61}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 62}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 65}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 67}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 5, 'passenger': 70}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:5.0 目标:5
+[SERVER-DEBUG] 乘客   71： 创建 | PassengerInfo(id=71, origin=3, destination=0, arrive_tick=172, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 3, 'passenger': 71}
+[SERVER-DEBUG] Step completed - Final tick: 172, Total events: 6
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 172, events: 6
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.5 目标:2
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:4.9 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 173, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 173, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:1.7 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.7 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 2, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 174, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 174, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F2
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:1.9 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.5 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 175, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 175, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:2.0 目标:2
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.3 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 176, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 176, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:2.1 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:4.1 目标:3
+[SERVER-DEBUG] Event emitted: passing_floor with data {'elevator': 1, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 177, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 177, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.3 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.9 目标:3
+[SERVER-DEBUG] Step completed - Final tick: 178, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 178, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.5 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.7 目标:3
+[SERVER-DEBUG] 乘客   72： 创建 | PassengerInfo(id=72, origin=4, destination=0, arrive_tick=179, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 4, 'passenger': 72}
+[SERVER-DEBUG] Step completed - Final tick: 179, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 179, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:2.7 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.5 目标:3
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 3, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 180, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 180, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:2.9 目标:3
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:3.3 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 3, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 181, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 181, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F4
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:3.0 目标:3
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:3.1 目标:3
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 3, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 182, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 182, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F2
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:3.1 目标:4
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 66}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 68}
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 3, 'passenger': 71}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:3.0 目标:3
+[SERVER-DEBUG] 乘客   73： 创建 | PassengerInfo(id=73, origin=5, destination=0, arrive_tick=183, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 5, 'passenger': 73}
+[SERVER-DEBUG] Step completed - Final tick: 183, Total events: 4
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 183, events: 4
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.3 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:2.9 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 184, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 184, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.5 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.7 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 185, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 185, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:3.7 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.5 目标:2
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 186, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 186, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:3.9 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:2.3 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 4, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 2, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 187, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 187, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F5
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F2
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F5
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:up 位置:4.0 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:2.1 目标:2
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 2, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 2, 'passenger': 66}
+[SERVER-DEBUG] Step completed - Final tick: 188, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 188, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:up 位置:4.1 目标:5
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F1
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 1, 'floor': 2, 'passenger': 63}
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:2.0 目标:2
+[SERVER-DEBUG] Step completed - Final tick: 189, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 189, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.3 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:1.9 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 190, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 190, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.5 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.7 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 191, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 191, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:up 位置:4.7 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.5 目标:1
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 5, 'direction': 'up'}
+[SERVER-DEBUG] Step completed - Final tick: 192, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 192, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:up 位置:4.9 目标:5
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:1.3 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 5, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 1, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 193, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 193, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F4
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 5, 'passenger': 73}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:5.0 目标:5
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:1.1 目标:1
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 1, 'reason': 'move_reached'}
+[SERVER-DEBUG] Step completed - Final tick: 194, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 194, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F0
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_up->constant_speed 方向:down 位置:4.9 目标:4
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:stopped->stopped
+[SERVER-DEBUG] 电梯1 状态:stopped->start_up 方向:down 位置:1.0 目标:1
+[SERVER-DEBUG] Step completed - Final tick: 195, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 195, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.7 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_up->constant_speed 方向:down 位置:0.9 目标:0
+[SERVER-DEBUG] 乘客   74： 创建 | PassengerInfo(id=74, origin=1, destination=0, arrive_tick=196, pickup_tick=0, dropoff_tick=0, elevator_id=None)
+[SERVER-DEBUG] Event emitted: down_button_pressed with data {'floor': 1, 'passenger': 74}
+[SERVER-DEBUG] Step completed - Final tick: 196, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 196, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.5 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.7 目标:0
+[SERVER-DEBUG] Step completed - Final tick: 197, Total events: 0
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 197, events: 0
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:constant_speed->constant_speed 方向:down 位置:4.3 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.5 目标:0
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 0, 'floor': 4, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 198, Total events: 1
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 198, events: 1
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F4
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯0 状态:start_down->start_down 方向:down 位置:4.1 目标:4
+[SERVER-DEBUG] 电梯1 状态:constant_speed->constant_speed 方向:down 位置:0.3 目标:0
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 0, 'floor': 4, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: elevator_approaching with data {'elevator': 1, 'floor': 0, 'direction': 'down'}
+[SERVER-DEBUG] Step completed - Final tick: 199, Total events: 2
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 199, events: 2
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 下一目的地设定为 F3
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/0/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 被设定为前往 F0
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E0 被设定为前往 F3
+[SERVER-DEBUG] 电梯0 状态:stopped->stopped
+[SERVER-DEBUG] Event emitted: passenger_board with data {'elevator': 0, 'floor': 4, 'passenger': 72}
+[SERVER-DEBUG] 电梯0 状态:stopped->start_up 方向:down 位置:4.0 目标:4
+[SERVER-DEBUG] 电梯1 状态:start_down->start_down 方向:down 位置:0.1 目标:0
+[SERVER-DEBUG] Event emitted: stopped_at_floor with data {'elevator': 1, 'floor': 0, 'reason': 'move_reached'}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 61}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 62}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 65}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 67}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 70}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 68}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 71}
+[SERVER-DEBUG] Event emitted: passenger_alight with data {'elevator': 1, 'floor': 0, 'passenger': 63}
+[SERVER-DEBUG] Step completed - Final tick: 200, Total events: 10
+[SERVER-DEBUG] HTTP /api/step response ----- tick: 200, events: 10
+
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/step HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+[SERVER-DEBUG] 电梯 E1 下一目的地设定为 F1
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/elevators/1/go_to_floor HTTP/1.1" 200 -
+[SERVER-DEBUG] Loading traffic from fire_evacuation.json
+[SERVER-DEBUG] Building config: {'floors': 6, 'elevators': 2, 'elevator_capacity': 8, 'scenario': 'fire_evacuation', 'scale': 'medium', 'description': '火警疏散 - 紧急疏散到大厅 (medium规模)', 'expected_passengers': 28, 'duration': 200}
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/traffic/next HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "POST /api/reset HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2025 16:11:41] "GET /api/traffic/info HTTP/1.1" 200 -
+/Users/qianhuang/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
